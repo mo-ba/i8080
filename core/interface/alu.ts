@@ -30,6 +30,13 @@ export interface IAlu {
 
     cmp(a: number, b: number): IAluResult;
 
+    rotateLeftThroughCarry(a: number, carry: boolean): IAluResult;
+
+    rotateRightThroughCarry(a: number, carry: boolean): IAluResult;
+
+    rotateLeft(a: number): IAluResult;
+
+    rotateRight(a: number): IAluResult;
 
     increment(a: number): IAluResult;
 

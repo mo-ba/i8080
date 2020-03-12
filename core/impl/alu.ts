@@ -8,7 +8,8 @@ import {
     BYTE_MAX,
     DECIMAL_ADJUST,
     DECIMAL_MAX_DIGIT,
-    NIBBLE_LENGTH, NIBBLE_MAX
+    NIBBLE_LENGTH,
+    NIBBLE_MAX
 } from "../util/bits";
 import {xAddWithFlags, xDecrementWithFlags, xIncrementWithFlags} from "../util/arithmetic";
 import {HighLow} from "../interface/register";
@@ -124,6 +125,39 @@ class Alu implements IAlu {
 
     xDecrement(a: HighLow): IXAluResult {
         return xDecrementWithFlags(a);
+    }
+
+    rotateLeft(a: number): IAluResult {
+        const shifted = a << 1;
+        const carry = 0 != (shifted & BYTE_CARRY_BIT);
+        const result = (shifted | +carry) & BYTE_MAX;
+
+        return {result, flags: {...NO_FLAGS, carry}};
+    }
+
+    rotateRight(a: number): IAluResult {
+        const carry = 0 != (a & 1);
+        const shifted = a >> 1;
+        const result = (shifted | +carry << 7) & BYTE_MAX;
+
+        return {result, flags: {...NO_FLAGS, carry}};
+    }
+
+    rotateLeftThroughCarry(a: number, carryIn: boolean): IAluResult {
+
+        const shifted = a << 1;
+        const carry = 0 != (shifted & BYTE_CARRY_BIT);
+        const result = (shifted | +carryIn) & BYTE_MAX;
+
+        return {result, flags: {...NO_FLAGS, carry}};
+    }
+
+    rotateRightThroughCarry(a: number, carryIn: boolean): IAluResult {
+        const carry = 0 != (a & 1);
+        const shifted = a >> 1;
+        const result = (shifted | +carryIn << 7) & BYTE_MAX;
+
+        return {result, flags: {...NO_FLAGS, carry}};
     }
 
 

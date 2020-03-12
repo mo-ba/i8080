@@ -490,7 +490,7 @@ describe('exec', () => {
         });
 
         it('should do carry flag operations', () => {
-            register.setCarry(false)
+            register.setCarry(false);
             expect(register.getCarry()).to.eq(false);
             executor.execute({type: OPERATION.CMC});
             expect(register.getCarry()).to.eq(true);
@@ -500,6 +500,163 @@ describe('exec', () => {
             expect(register.getCarry()).to.eq(true);
 
         });
+    });
+
+    describe('test rotation left', () => {
+
+        beforeEach(() => {
+            rebuild();
+        });
+        it('should rotate left 10001001', () => {
+            const a = binary('10001001');
+            const b = binary('00010011');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(false);
+
+            executor.execute({type: OPERATION.RLC});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(true)
+
+        });
+        it('should rotate right 00010011', () => {
+            const a = binary('00010011');
+            const b = binary('00100110');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(true);
+
+            executor.execute({type: OPERATION.RLC});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(false)
+
+        });
+        it('should rotate right through carry 10001001 0', () => {
+            const a = binary('10001001');
+            const b = binary('00010010');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(false);
+
+            executor.execute({type: OPERATION.RAL});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(true)
+
+        });
+        it('should rotate right through carry 10001001 1', () => {
+            const a = binary('10001001');
+            const b = binary('00010011');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(true);
+
+            executor.execute({type: OPERATION.RAL});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(true)
+
+        });
+        it('should rotate right through carry 00010011 0', () => {
+            const a = binary('00010011');
+            const b = binary('00100110');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(false);
+
+            executor.execute({type: OPERATION.RAL});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(false)
+
+        });
+        it('should rotate right through carry  00010011 1', () => {
+            const a = binary('00010011');
+            const b = binary('00100111');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(true);
+
+            executor.execute({type: OPERATION.RAL});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(false)
+
+        })
+    });
+    describe('test rotation right', () => {
+
+        beforeEach(() => {
+            rebuild();
+        });
+        it('should rotate right 10001001', () => {
+            const a = binary('10001001');
+            const b = binary('11000100');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(false);
+
+            executor.execute({type: OPERATION.RRC});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(true)
+
+        });
+        it('should rotate right 00010010', () => {
+            const a = binary('00010010');
+            const b = binary('00001001');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(true);
+
+            executor.execute({type: OPERATION.RRC});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(false)
+
+        });
+        it('should rotate right through carry  00010010 1', () => {
+            const a = binary('10001001');
+            const b = binary('01000100');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(false);
+
+            executor.execute({type: OPERATION.RAR});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(true)
+
+        });
+        it('should rotate right through carry  10001001 1', () => {
+            const a = binary('10001001');
+            const b = binary('11000100');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(true);
+
+            executor.execute({type: OPERATION.RAR});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(true)
+
+        });
+        it('should rotate right through carry 00010010 0', () => {
+            const a = binary('00010010');
+            const b = binary('00001001');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(false);
+
+            executor.execute({type: OPERATION.RAR});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(false)
+
+        });
+        it('should rotate right through carry  00010010 1', () => {
+            const a = binary('00010010');
+            const b = binary('10001001');
+
+            register.store(REGISTER.A, a);
+            register.setCarry(true);
+
+            executor.execute({type: OPERATION.RAR});
+            expect(register.load(REGISTER.A)).to.eq(b);
+            expect(register.getCarry()).to.eql(false)
+
+        })
     });
 
     describe('test stack', () => {

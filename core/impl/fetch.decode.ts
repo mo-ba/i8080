@@ -32,6 +32,24 @@ class FetchDecode implements IFetchDecode {
 
         switch (opCode) {
 
+            case 0x07:
+                return {type: OPERATION.RLC};
+            case 0x0f:
+                return {type: OPERATION.RRC};
+            case 0x17:
+                return {type: OPERATION.RAL};
+            case 0x1f:
+                return {type: OPERATION.RAR};
+
+            case 0x27:
+                return {type: OPERATION.DAA};
+            case 0x2f:
+                return {type: OPERATION.CMA};
+            case 0x37:
+                return {type: OPERATION.STC};
+            case 0x3f:
+                return {type: OPERATION.CMC};
+
             case 0x03:
                 return {type: OPERATION.INX, register: REGISTER.B};
             case 0x13:
@@ -407,6 +425,24 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.ORI, value: this.fetch()};
             case 0xfe:
                 return {type: OPERATION.CPI, value: this.fetch()};
+
+
+            case 0xc1:
+                return {type: OPERATION.POP, register: REGISTER.B};
+            case 0xc5:
+                return {type: OPERATION.PUSH, register: REGISTER.B};
+            case 0xd1:
+                return {type: OPERATION.POP, register: REGISTER.D};
+            case 0xd5:
+                return {type: OPERATION.PUSH, register: REGISTER.D};
+            case 0xe1:
+                return {type: OPERATION.POP, register: REGISTER.H};
+            case 0xe5:
+                return {type: OPERATION.PUSH, register: REGISTER.H};
+            case 0xf1:
+                return {type: OPERATION.POP, register: REGISTER.PSW};
+            case 0xf5:
+                return {type: OPERATION.PUSH, register: REGISTER.PSW};
         }
     }
 }

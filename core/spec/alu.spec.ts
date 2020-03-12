@@ -278,6 +278,7 @@ describe('alu test', () => {
         expect(result.result).to.eql(b);
         expect(result.flags.carry).to.eql(false)
     });
+
     it('should rotate left through carry 10001001 0', () => {
         const a = binary('10001001');
         const b = binary('00010010');

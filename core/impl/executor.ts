@@ -155,6 +155,33 @@ class Executor implements IExecutor {
             case OPERATION.DCR:
                 return this.processIncOrDec(this.alu.decrement(this.register.load(op.register)), op);
 
+
+            case OPERATION.RLC:
+                return processAluResult(
+                    this.alu.rotateLeft(this.register.load(REGISTER.A)),
+                    (flags) => this.storeCarry(flags)
+                );
+
+            case OPERATION.RRC:
+                return processAluResult(
+                    this.alu.rotateRight(this.register.load(REGISTER.A)),
+                    (flags) => this.storeCarry(flags)
+                );
+
+
+            case OPERATION.RAL:
+                return processAluResult(
+                    this.alu.rotateLeftThroughCarry(this.register.load(REGISTER.A), this.register.getCarry()),
+                    (flags) => this.storeCarry(flags)
+                );
+
+            case OPERATION.RAR:
+                return processAluResult(
+                    this.alu.rotateRightThroughCarry(this.register.load(REGISTER.A), this.register.getCarry()),
+                    (flags) => this.storeCarry(flags)
+                );
+
+
             case OPERATION.NOP:
             default:
                 return

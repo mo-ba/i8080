@@ -30,6 +30,71 @@ describe('fetch decode test', () => {
     });
 
 
+    it('should RLC', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x07);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.RLC};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should RRC', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x0f);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.RRC};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should RAL', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x17);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.RAL};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should RAR', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x1f);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.RAR};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should DAA', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x27);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DAA};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should CMA', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x2f);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.CMA};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should STC', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x37);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.STC};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should CMC', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x3f);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.CMC};
+        expect(actual).to.eql(expected);
+    });
+
+
     it('should mvi B <- 0xDA', () => {
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0x06);
@@ -131,7 +196,40 @@ describe('fetch decode test', () => {
         }
     });
 
-    it('should use proper register', () => {
+    it('should INX B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x03);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INX, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should INX D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x13);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INX, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+
+
+    it('should INX H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x23);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INX, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should INX SP', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x33);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INX, register: REGISTER.SP};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should alu operation', () => {
             let memAddress = toHighLow(0);
 
             for (let i = 0x80; i < 0xC0; i++) {
@@ -159,4 +257,70 @@ describe('fetch decode test', () => {
             }
         }
     );
+
+
+    it('should POP B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xc1);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.POP, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should POP D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xd1);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.POP, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should POP H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xe1);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.POP, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should POP PSW', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xf1);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.POP, register: REGISTER.PSW};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should PUSH B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xc5);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.PUSH, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should PUSH D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xd5);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.PUSH, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should PUSH H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xe5);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.PUSH, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should PUSH PSW', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0xf5);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.PUSH, register: REGISTER.PSW};
+        expect(actual).to.eql(expected);
+    });
+
 });

@@ -3,7 +3,7 @@ import {IMemory} from "../interface/memory";
 import {highLow} from "../util/high-low.function";
 import {expect} from "chai";
 
-describe('register test', () => {
+describe('memory test', () => {
 
     let memory: IMemory;
 

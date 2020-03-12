@@ -1,5 +1,5 @@
 export enum REGISTER {
-    B, C, D, E, H, L, M, A, PSW = 6,
+    B, C, D, E, H, L, M, A, PSW = 6, SP = 6,
 }
 
 export const registerList = [

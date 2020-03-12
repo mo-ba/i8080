@@ -5,6 +5,7 @@ import {OPERATION} from "../interface/operation/operation.types";
 import {OperationT} from "../interface/operation/operation.all";
 import {IFlags} from "../interface/flags";
 import {IncOrDecOperation} from "../interface/operation/arithmetic-logic.operation";
+import {BYTE_MAX} from "../util/bits";
 
 
 class Executor implements IExecutor {
@@ -19,9 +20,9 @@ class Executor implements IExecutor {
     }
 
     private storeSZAP(flags: IFlags) {
-        this.register.setSign(flags.sign)
-        this.register.setZero(flags.zero)
-        this.register.setAuxiliary(flags.aux)
+        this.register.setSign(flags.sign);
+        this.register.setZero(flags.zero);
+        this.register.setAuxiliary(flags.aux);
         this.register.setParity(flags.parity)
     }
 
@@ -42,6 +43,8 @@ class Executor implements IExecutor {
         };
 
         switch (op.type) {
+
+
             case OPERATION.MOV:
                 this.register.store(op.to, this.register.load(op.from));
                 return;
@@ -124,16 +127,29 @@ class Executor implements IExecutor {
                     this.alu.and(this.register.load(REGISTER.A), op.value),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.CMP:
-                return processAluResult(
-                    this.alu.cmp(this.register.load(REGISTER.A), this.register.load(op.register)),
-                    (flags) => this.storeAllFlags(flags)
-                );
+                this.storeAllFlags(this.alu.cmp(this.register.load(REGISTER.A), this.register.load(op.register)).flags)
+                return;
+
             case OPERATION.CPI:
+                this.storeAllFlags(this.alu.cmp(this.register.load(REGISTER.A), op.value).flags)
+                return;
+
+            case OPERATION.DAA:
                 return processAluResult(
-                    this.alu.cmp(this.register.load(REGISTER.A), op.value),
+                    this.alu.decimalAdjustAccumulator(this.register.load(REGISTER.A), this.register.getCarry(), this.register.getAuxiliary()),
                     (flags) => this.storeAllFlags(flags)
                 );
+            case OPERATION.CMC:
+                this.register.setCarry(!this.register.getCarry());
+                return;
+            case OPERATION.STC:
+                this.register.setCarry(true);
+                return;
+            case OPERATION.CMA:
+                this.register.store(REGISTER.A, this.register.load(REGISTER.A) ^ BYTE_MAX);
+                return;
             case OPERATION.INR:
                 return this.processIncOrDec(this.alu.increment(this.register.load(op.register)), op);
             case OPERATION.DCR:
@@ -147,7 +163,7 @@ class Executor implements IExecutor {
 
     private processIncOrDec(result: IAluResult, op: IncOrDecOperation) {
         this.storeSZAP(result.flags);
-        this.register.store(op.register, result.result)
+        this.register.store(op.register, result.result);
         return;
     }
 }

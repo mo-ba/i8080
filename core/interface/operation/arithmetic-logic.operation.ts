@@ -86,6 +86,50 @@ export interface Add16BitOperation extends RegisterOperation, Operation {
     readonly type: OPERATION.DAD;
 }
 
+export interface RotateArithmeticRightOperation extends Operation {
+    readonly type: OPERATION.RAR;
+}
+
+export interface RotateRightCarryOperation extends Operation {
+    readonly type: OPERATION.RRC;
+}
+
+export interface RotateArithmeticLeftOperation extends Operation {
+    readonly type: OPERATION.RAL;
+}
+
+export interface RotateLeftCarryOperation extends Operation {
+    readonly type: OPERATION.RLC;
+}
+
+export interface SetCarryOperation extends Operation {
+    readonly type: OPERATION.STC;
+}
+
+export interface ComplementCarryOperation extends Operation {
+    readonly type: OPERATION.CMC;
+}
+
+export interface ComplementAccumulatorOperation extends Operation {
+    readonly type: OPERATION.CMA;
+}
+
+export interface DecimalAdjustAccumulatorOperation extends Operation {
+    readonly type: OPERATION.DAA;
+}
+
+
+export type MiscAluOperation =
+    SetCarryOperation|
+    ComplementCarryOperation|
+    ComplementAccumulatorOperation|
+    DecimalAdjustAccumulatorOperation
+
+export type RotateOperation =
+    RotateArithmeticRightOperation |
+    RotateRightCarryOperation |
+    RotateArithmeticLeftOperation |
+    RotateLeftCarryOperation;
 
 export type LogicOperation =
     AnaOperation |
@@ -93,10 +137,11 @@ export type LogicOperation =
     OraOperation |
     AnaImmediateOperation |
     XraImmediateOperation |
-    OraImmediateOperation
+    OraImmediateOperation;
+
 export type IncOrDecOperation =
     IncrementRegisterOperation |
-    DecrementRegisterOperation
+    DecrementRegisterOperation;
 
 export type ArithmeticOperation =
     AddOperation |
@@ -111,6 +156,8 @@ export type ArithmeticOperation =
     CmpImmediateOperation ;
 
 export type ArithmeticLogicOperation =
+    MiscAluOperation |
+    RotateOperation |
     IncOrDecOperation |
     LogicOperation |
     ArithmeticOperation |

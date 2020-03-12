@@ -1,4 +1,14 @@
 export enum OPERATION {
+    DAA = 'DAA',
+    STC = 'STC',
+    CMC = 'CMC',
+    CMA = 'CMA',
+
+    RLC = 'RLC',
+    RAL = 'RAL',
+    RRC = 'RRC',
+    RAR = 'RAR',
+
     ADD = 'ADD',
     ADC = 'ADC',
     SUB = 'SUB',
@@ -30,7 +40,6 @@ export enum OPERATION {
     MVI = 'MVI',
     PUSH = 'PUSH',
     POP = 'POP',
-
 
 
     NOP = 'NOP',

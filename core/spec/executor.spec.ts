@@ -9,11 +9,14 @@ import {expect} from "chai";
 import {BYTE_MAX} from "../util/bits";
 import {calcParity, calcSign, calcZero} from "../util/flag.function";
 
+
+const binary = (s: string) => parseInt(s, 2);
+
 let executor: IExecutor;
 let register: IRegister;
 
 function rebuild() {
-    register = reg.build(mem.build())
+    register = reg.build(mem.build());
     executor = exec.build(register, alu.build());
 }
 
@@ -92,6 +95,75 @@ describe('exec', () => {
 
     });
 
+    describe('exec test logic', () => {
+
+        beforeEach(() => {
+            rebuild();
+        });
+        it('should or ', () => {
+
+            const a = binary('10010010');
+            const b = binary('10100110');
+            const r = binary('10110110');
+
+            register.store(REGISTER.A, a);
+            register.store(REGISTER.B, b);
+            executor.execute({type: OPERATION.ORA, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(r, [a, b, r].join());
+
+        });
+        it('should and ', () => {
+
+            const a = binary('10010010');
+            const b = binary('10100110');
+            const r = binary('10000010');
+            register.store(REGISTER.A, a);
+            register.store(REGISTER.B, b);
+            executor.execute({type: OPERATION.ANA, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(r, [a, b, r].join());
+        });
+
+        it('should xor ', () => {
+            const a = binary('10010010');
+            const b = binary('10100110');
+            const r = binary('00110100');
+            register.store(REGISTER.A, a);
+            register.store(REGISTER.B, b);
+            executor.execute({type: OPERATION.XRA, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(r, [a, b, r].join());
+        });
+        it('should or i', () => {
+
+            const a = binary('10010010');
+            const b = binary('10100110');
+            const r = binary('10110110');
+
+            register.store(REGISTER.A, a);
+            executor.execute({type: OPERATION.ORI, value: b});
+            expect(register.load(REGISTER.A)).to.eq(r, [a, b, r].join());
+
+        });
+        it('should and i', () => {
+
+            const a = binary('10010010');
+            const b = binary('10100110');
+            const r = binary('10000010');
+            register.store(REGISTER.A, a);
+            executor.execute({type: OPERATION.ANI, value: b});
+            expect(register.load(REGISTER.A)).to.eq(r, [a, b, r].join());
+        });
+
+        it('should xor i', () => {
+            const a = binary('10010010');
+            const b = binary('10100110');
+            const r = binary('00110100');
+            register.store(REGISTER.A, a);
+            executor.execute({type: OPERATION.XRI, value: b});
+            expect(register.load(REGISTER.A)).to.eq(r, [a, b, r].join());
+        });
+
+    });
+
     describe('exec test add', () => {
 
         beforeEach(() => {
@@ -145,6 +217,69 @@ describe('exec', () => {
             expect(register.getCarry()).to.eq(true);
             expect(register.getZero()).to.eq(true);
         });
+    });
+    describe('exec test sub', () => {
+
+        beforeEach(() => {
+            rebuild();
+        });
+
+        it('should CMP ', () => {
+            register.store(REGISTER.A, 42);
+            register.store(REGISTER.B, 41);
+            register.store(REGISTER.C, 42);
+            register.store(REGISTER.D, 43);
+            register.setCarry(true);
+            register.setZero(true);
+            {
+                executor.execute({type: OPERATION.CMP, register: REGISTER.B,});
+                expect(register.getCarry()).to.eq(false);
+                expect(register.getZero()).to.eq(false);
+            }
+            {
+                executor.execute({type: OPERATION.CMP, register: REGISTER.C,});
+                expect(register.getCarry()).to.eq(false);
+                expect(register.getZero()).to.eq(true);
+            }
+            {
+                executor.execute({type: OPERATION.CMP, register: REGISTER.D,});
+                expect(register.getCarry()).to.eq(true);
+                expect(register.getZero()).to.eq(false);
+            }
+            {
+                expect(register.load(REGISTER.A)).to.eq(42);
+                expect(register.load(REGISTER.B)).to.eq(41);
+                expect(register.load(REGISTER.C)).to.eq(42);
+                expect(register.load(REGISTER.D)).to.eq(43);
+            }
+
+
+        });
+        //
+        it('should CPI ', () => {
+            register.store(REGISTER.A, 42);
+            register.setCarry(true);
+            register.setZero(true);
+            {
+                executor.execute({type: OPERATION.CPI, value: 41});
+                expect(register.load(REGISTER.A)).to.eq(42);
+                expect(register.getCarry()).to.eq(false);
+                expect(register.getZero()).to.eq(false);
+            }
+            {
+                executor.execute({type: OPERATION.CPI, value: 42});
+                expect(register.load(REGISTER.A)).to.eq(42);
+                expect(register.getCarry()).to.eq(false);
+                expect(register.getZero()).to.eq(true);
+            }
+            {
+                executor.execute({type: OPERATION.CPI, value: 43});
+                expect(register.load(REGISTER.A)).to.eq(42);
+                expect(register.getCarry()).to.eq(true);
+                expect(register.getZero()).to.eq(false);
+            }
+        });
+
     });
     describe('exec test sub', () => {
 
@@ -285,6 +420,88 @@ describe('exec', () => {
             expect(register.getSign()).to.eq(calcSign(expected), expected + '');
         });
     });
+    describe('test alu-misc', () => {
+
+        beforeEach(() => {
+            rebuild();
+        });
+
+        it('should adjust decimal 17 + 17', () => {
+
+            register.store(REGISTER.A, 0x17);
+            register.store(REGISTER.B, 0x17);
+            executor.execute({type: OPERATION.ADD, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(0x2E);
+            executor.execute({type: OPERATION.DAA});
+            expect(register.load(REGISTER.A)).to.eq(0x34);
+            expect(register.getCarry()).to.eq(false);
+
+        });
+
+        it('should adjust decimal 71 + 71', () => {
+
+            register.store(REGISTER.A, 0x71);
+            register.store(REGISTER.B, 0x71);
+            executor.execute({type: OPERATION.ADD, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(226);
+            executor.execute({type: OPERATION.DAA});
+            expect(register.load(REGISTER.A)).to.eq(0x42);
+            expect(register.getCarry()).to.eq(true);
+
+        });
+        it('should adjust decimal 77 + 77', () => {
+
+            register.store(REGISTER.A, 0x77);
+            register.store(REGISTER.B, 0x77);
+            executor.execute({type: OPERATION.ADD, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(238);
+            executor.execute({type: OPERATION.DAA});
+            expect(register.load(REGISTER.A)).to.eq(0x54);
+            expect(register.getCarry()).to.eq(true);
+
+        });
+        it('should adjust decimal 11 + 11', () => {
+
+            register.store(REGISTER.A, 0x11);
+            register.store(REGISTER.B, 0x11);
+            executor.execute({type: OPERATION.ADD, register: REGISTER.B});
+            expect(register.load(REGISTER.A)).to.eq(0x22);
+            executor.execute({type: OPERATION.DAA});
+            expect(register.load(REGISTER.A)).to.eq(0x22);
+            expect(register.getCarry()).to.eq(false);
+
+        });
+
+    });
+    describe('test alu-misc', () => {
+
+        beforeEach(() => {
+            rebuild();
+        });
+
+        it('should calculate complement', () => {
+            const a = binary('10101001');
+            const b = binary('01010110');
+
+            register.store(REGISTER.A, a);
+            executor.execute({type: OPERATION.CMA});
+            expect(register.load(REGISTER.A)).to.eq(b);
+
+        });
+
+        it('should do carry flag operations', () => {
+            register.setCarry(false)
+            expect(register.getCarry()).to.eq(false);
+            executor.execute({type: OPERATION.CMC});
+            expect(register.getCarry()).to.eq(true);
+            executor.execute({type: OPERATION.CMC});
+            expect(register.getCarry()).to.eq(false);
+            executor.execute({type: OPERATION.STC});
+            expect(register.getCarry()).to.eq(true);
+
+        });
+    });
+
     describe('test stack', () => {
 
         beforeEach(() => {

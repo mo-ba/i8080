@@ -2,7 +2,7 @@ import {HighLow, IRegister, REGISTER} from "../interface/register";
 import {IMemory} from "../interface/memory";
 import {highLow, toHighLow} from "../util/high-low.function";
 import {BYTE_MAX} from "../util/bits";
-import {xDec, xInc} from "../util/arithmetic";
+import {xDecrement, xIncrement} from "../util/arithmetic";
 
 
 enum FLAG_INDEX {
@@ -53,14 +53,10 @@ class Register implements IRegister {
     private registers = Int8Array.of(0, 0, 0, 0, 0, 0, 0, 0);
     private flags = 0;
 
-    private readonly memory: IMemory;
-    
     private stackPointer: HighLow;
     private programCounter: HighLow;
 
-
-    constructor(memory: IMemory) {
-        this.memory = memory;
+    constructor(private readonly memory: IMemory) {
         this.reset();
     }
 
@@ -188,12 +184,12 @@ class Register implements IRegister {
     }
 
     private decrementStackPointer() {
-        this.stackPointer = xDec(this.stackPointer).result;
+        this.stackPointer = xDecrement(this.stackPointer);
         return this;
     }
 
     private incrementStackPointer() {
-        this.stackPointer = xInc(this.stackPointer).result;
+        this.stackPointer = xIncrement(this.stackPointer);
         return this;
     }
 

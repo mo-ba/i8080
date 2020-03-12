@@ -10,7 +10,7 @@ import {
     DECIMAL_MAX_DIGIT,
     NIBBLE_LENGTH, NIBBLE_MAX
 } from "../util/bits";
-import {xAdd, xDec, xInc} from "../util/arithmetic";
+import {xAddWithFlags, xDecrementWithFlags, xIncrementWithFlags} from "../util/arithmetic";
 import {HighLow} from "../interface/register";
 
 function calcFlags(a: number): {
@@ -115,15 +115,15 @@ class Alu implements IAlu {
 
 
     xAdd(a: HighLow, b: HighLow): IXAluResult {
-        return xAdd(a, b);
+        return xAddWithFlags(a, b);
     }
 
     xIncrement(a: HighLow): IXAluResult {
-        return xInc(a);
+        return xIncrementWithFlags(a);
     }
 
     xDecrement(a: HighLow): IXAluResult {
-        return xDec(a);
+        return xDecrementWithFlags(a);
     }
 
 

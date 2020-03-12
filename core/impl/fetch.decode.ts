@@ -2,14 +2,17 @@ import {IFetchDecode} from "../interface/fetch.decode";
 import {IMemory} from "../interface/memory";
 import {IRegister, REGISTER} from "../interface/register";
 import {OperationT} from "../interface/operation/operation.all";
-import {xInc} from "../util/arithmetic";
+import {xIncrement} from "../util/arithmetic";
 import {OPERATION} from "../interface/operation/operation.types";
 
 class FetchDecode implements IFetchDecode {
 
-    memory: IMemory;
-    register: IRegister;
 
+    constructor(
+        private readonly memory: IMemory,
+        private readonly register: IRegister,
+    ) {
+    }
 
     next(): OperationT {
         return this.decode(this.fetch())
@@ -21,13 +24,94 @@ class FetchDecode implements IFetchDecode {
 
     private getProgramCounter() {
         const counter = this.register.getProgramCounter();
-        this.register.setProgramCounter(xInc(counter).result);
+        this.register.setProgramCounter(xIncrement(counter));
         return counter;
     }
 
     private decode(opCode: number): OperationT {
+
         switch (opCode) {
 
+            case 0x03:
+                return {type: OPERATION.INX, register: REGISTER.B};
+            case 0x13:
+                return {type: OPERATION.INX, register: REGISTER.D};
+            case 0x23:
+                return {type: OPERATION.INX, register: REGISTER.H};
+            case 0x33:
+                return {type: OPERATION.INX, register: REGISTER.SP};
+
+            case 0x0b:
+                return {type: OPERATION.DCX, register: REGISTER.B};
+            case 0x1b:
+                return {type: OPERATION.DCX, register: REGISTER.D};
+            case 0x2b:
+                return {type: OPERATION.DCX, register: REGISTER.H};
+            case 0x3b:
+                return {type: OPERATION.DCX, register: REGISTER.SP};
+
+            case 0x09:
+                return {type: OPERATION.DAD, register: REGISTER.B};
+            case 0x19:
+                return {type: OPERATION.DAD, register: REGISTER.D};
+            case 0x29:
+                return {type: OPERATION.DAD, register: REGISTER.H};
+            case 0x39:
+                return {type: OPERATION.DAD, register: REGISTER.SP};
+
+            case 0x04:
+                return {type: OPERATION.INR, register: REGISTER.B};
+            case 0x0c:
+                return {type: OPERATION.INR, register: REGISTER.C};
+            case 0x14:
+                return {type: OPERATION.INR, register: REGISTER.D};
+            case 0x1c:
+                return {type: OPERATION.INR, register: REGISTER.E};
+            case 0x24:
+                return {type: OPERATION.INR, register: REGISTER.H};
+            case 0x2c:
+                return {type: OPERATION.INR, register: REGISTER.L};
+            case 0x34:
+                return {type: OPERATION.INR, register: REGISTER.M};
+            case 0x3c:
+                return {type: OPERATION.INR, register: REGISTER.A};
+
+            case 0x05:
+                return {type: OPERATION.DCR, register: REGISTER.B};
+            case 0x0d:
+                return {type: OPERATION.DCR, register: REGISTER.C};
+            case 0x15:
+                return {type: OPERATION.DCR, register: REGISTER.D};
+            case 0x1d:
+                return {type: OPERATION.DCR, register: REGISTER.E};
+            case 0x25:
+                return {type: OPERATION.DCR, register: REGISTER.H};
+            case 0x2d:
+                return {type: OPERATION.DCR, register: REGISTER.L};
+            case 0x35:
+                return {type: OPERATION.DCR, register: REGISTER.M};
+            case 0x3d:
+                return {type: OPERATION.DCR, register: REGISTER.A};
+
+
+            case 0x06:
+                return {type: OPERATION.MVI, to: REGISTER.B, value: this.fetch()};
+            case 0x0e:
+                return {type: OPERATION.MVI, to: REGISTER.C, value: this.fetch()};
+            case 0x16:
+                return {type: OPERATION.MVI, to: REGISTER.D, value: this.fetch()};
+            case 0x1e:
+                return {type: OPERATION.MVI, to: REGISTER.E, value: this.fetch()};
+            case 0x26:
+                return {type: OPERATION.MVI, to: REGISTER.H, value: this.fetch()};
+            case 0x2e:
+                return {type: OPERATION.MVI, to: REGISTER.L, value: this.fetch()};
+            case 0x36:
+                return {type: OPERATION.MVI, to: REGISTER.M, value: this.fetch()};
+            case 0x3e:
+                return {type: OPERATION.MVI, to: REGISTER.A, value: this.fetch()};
+
+// ----------------------------
             case 0x40:
                 return {type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.B};
             case 0x41:
@@ -165,22 +249,7 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.MOV, to: REGISTER.A, from: REGISTER.A};
 
 
-            case 0x06:
-                return {type: OPERATION.MVI, to: REGISTER.B, value: this.fetch()};
-            case 0x0e:
-                return {type: OPERATION.MVI, to: REGISTER.C, value: this.fetch()};
-            case 0x16:
-                return {type: OPERATION.MVI, to: REGISTER.D, value: this.fetch()};
-            case 0x1e:
-                return {type: OPERATION.MVI, to: REGISTER.E, value: this.fetch()};
-            case 0x26:
-                return {type: OPERATION.MVI, to: REGISTER.H, value: this.fetch()};
-            case 0x2e:
-                return {type: OPERATION.MVI, to: REGISTER.L, value: this.fetch()};
-            case 0x36:
-                return {type: OPERATION.MVI, to: REGISTER.M, value: this.fetch()};
-            case 0x3e:
-                return {type: OPERATION.MVI, to: REGISTER.A, value: this.fetch()};
+// ----------------------------
 
 
             case 0x80:
@@ -320,6 +389,7 @@ class FetchDecode implements IFetchDecode {
             case 0xbf:
                 return {type: OPERATION.CMP, register: REGISTER.A};
 
+// ----------------------------
 
             case 0xc6:
                 return {type: OPERATION.ADI, value: this.fetch()};
@@ -339,4 +409,11 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.CPI, value: this.fetch()};
         }
     }
+}
+
+export function build(
+    memory: IMemory,
+    register: IRegister
+): IFetchDecode {
+    return new FetchDecode(memory, register);
 }

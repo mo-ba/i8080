@@ -212,7 +212,7 @@ describe('alu test', () => {
     });
 
 
-    it('should xAdd', () => {
+    it('should xAddWithFlags', () => {
         for (let i = 0; i <= WORD_MAX; i += Math.floor(Math.random() * 5000)) {
             for (let j = 0; j <= WORD_MAX; j += Math.floor(Math.random() * 5000)) {
                 const result = alu.xAdd(toHighLow(i), toHighLow(j))
@@ -223,7 +223,7 @@ describe('alu test', () => {
             }
         }
     })
-    it('should xInc', () => {
+    it('should xIncrementWithFlags', () => {
 
 
         expect(toNumber(alu.xIncrement(toHighLow(WORD_MAX)).result)).to.eql(0)
@@ -240,7 +240,7 @@ describe('alu test', () => {
             expect(result.flags.carry).to.eql(false)
         }
     })
-    it('should xDec', () => {
+    it('should xDecrementWithFlags', () => {
 
         expect(toNumber(alu.xDecrement(toHighLow(0)).result)).to.eql(WORD_MAX)
         expect(alu.xDecrement(toHighLow(0)).flags.carry).to.eql(true)
@@ -253,7 +253,7 @@ describe('alu test', () => {
             const result = alu.xDecrement(toHighLow(i))
             const expected = i - 1
             expect(toNumber(result.result)).to.eql(expected & WORD_MAX)
-            expect(result.flags.carry).to.eql(false)
+            expect(result.flags.carry).to.be.eql(false)
 
 
         }

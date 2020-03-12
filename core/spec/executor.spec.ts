@@ -1,7 +1,7 @@
-import * as reg from "./register";
-import * as mem from "./memory";
-import * as alu from "./alu";
-import * as exec from "./executor";
+import * as reg from "../impl/register";
+import * as mem from "../impl/memory";
+import * as alu from "../impl/alu";
+import * as exec from "../impl/executor";
 import {IExecutor} from "../interface/executor";
 import {IRegister, REGISTER, registerList} from "../interface/register";
 import {OPERATION} from "../interface/operation/operation.types";

@@ -7,8 +7,8 @@ export const registerList = [
 ]
 
 export interface HighLow {
-    high: number;
-    low: number;
+    readonly high: number;
+    readonly low: number;
 }
 
 export interface IRegister {
@@ -54,13 +54,13 @@ export interface IRegister {
     getZero(): boolean;
 
 
-    getStackPointer(): HighLow;
+    getStackPointer(): HighLow
 
-    setStackPointer(value: HighLow): IRegister;
+    setStackPointer(stackPointer: HighLow): IRegister
 
+    getProgramCounter(): HighLow
 
-    getInstructionCounter(): HighLow;
+    setProgramCounter(programCounter: HighLow): IRegister
 
-    setInstructionCounter(value: HighLow): IRegister;
 
 }

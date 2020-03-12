@@ -1,8 +1,8 @@
 import 'mocha';
 import {expect} from 'chai';
 import {IRegister, REGISTER} from "../interface/register";
-import * as reg from "./register";
-import * as mem from "./memory";
+import * as reg from "../impl/register";
+import * as mem from "../impl/memory";
 import {highLow, toHighLow} from "../util/high-low.function";
 
 describe('register test', () => {

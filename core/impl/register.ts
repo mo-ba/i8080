@@ -54,6 +54,7 @@ class Register implements IRegister {
     private flags = 0;
 
     private readonly memory: IMemory;
+    
     private stackPointer: HighLow;
     private programCounter: HighLow;
 
@@ -142,23 +143,6 @@ class Register implements IRegister {
         return !!(this.flags & FLAG_BIT.Zero);
     }
 
-    getInstructionCounter(): HighLow {
-        return undefined;
-    }
-
-    getStackPointer(): HighLow {
-        return undefined;
-    }
-
-
-    setInstructionCounter(value: HighLow): IRegister {
-        return undefined;
-    }
-
-    setStackPointer(value: HighLow): IRegister {
-        return undefined;
-    }
-
 
     pop(): HighLow {
         const high = this.incrementStackPointer()
@@ -212,6 +196,26 @@ class Register implements IRegister {
         this.stackPointer = xInc(this.stackPointer).result;
         return this;
     }
+
+    getProgramCounter(): HighLow {
+        return this.programCounter;
+    }
+
+    getStackPointer(): HighLow {
+        return this.stackPointer;
+    }
+
+
+    setProgramCounter(value: HighLow): IRegister {
+        this.programCounter = value;
+        return this;
+    }
+
+    setStackPointer(stackPointer: HighLow): IRegister {
+        this.stackPointer = stackPointer
+        return this;
+    }
+
 }
 
 export function build(memory: IMemory): IRegister {

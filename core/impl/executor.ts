@@ -48,80 +48,97 @@ class Executor implements IExecutor {
             case OPERATION.MOV:
                 this.register.store(op.to, this.register.load(op.from));
                 return;
+
             case OPERATION.MVI:
                 this.register.store(op.to, op.value);
                 return;
+
             case OPERATION.PUSH:
                 this.register.push(this.register.loadX(op.register));
                 return;
+
             case OPERATION.POP:
                 this.register.storeX(op.register, this.register.pop());
                 return;
+
             case OPERATION.ADD:
                 return processAluResult(
                     this.alu.add(this.register.load(REGISTER.A), this.register.load(op.register)),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ADI:
                 return processAluResult(
                     this.alu.add(this.register.load(REGISTER.A), op.value),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ADC:
                 return processAluResult(
                     this.alu.adc(this.register.load(REGISTER.A), this.register.load(op.register), this.register.getCarry()),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ACI:
                 return processAluResult(
                     this.alu.adc(this.register.load(REGISTER.A), op.value, this.register.getCarry()),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.SUB:
                 return processAluResult(
                     this.alu.sub(this.register.load(REGISTER.A), this.register.load(op.register)),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.SUI:
                 return processAluResult(
                     this.alu.sub(this.register.load(REGISTER.A), op.value),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.SBB:
                 return processAluResult(
                     this.alu.sbb(this.register.load(REGISTER.A), this.register.load(op.register), this.register.getCarry()),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.SBI:
                 return processAluResult(
                     this.alu.sbb(this.register.load(REGISTER.A), op.value, this.register.getCarry()),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ORA:
                 return processAluResult(
                     this.alu.or(this.register.load(REGISTER.A), this.register.load(op.register)),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ORI:
                 return processAluResult(
                     this.alu.or(this.register.load(REGISTER.A), op.value),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.XRA:
                 return processAluResult(
                     this.alu.xor(this.register.load(REGISTER.A), this.register.load(op.register)),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.XRI:
                 return processAluResult(
                     this.alu.xor(this.register.load(REGISTER.A), op.value),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ANA:
                 return processAluResult(
                     this.alu.and(this.register.load(REGISTER.A), this.register.load(op.register)),
                     (flags) => this.storeAllFlags(flags)
                 );
+
             case OPERATION.ANI:
                 return processAluResult(
                     this.alu.and(this.register.load(REGISTER.A), op.value),
@@ -144,14 +161,18 @@ class Executor implements IExecutor {
             case OPERATION.CMC:
                 this.register.setCarry(!this.register.getCarry());
                 return;
+
             case OPERATION.STC:
                 this.register.setCarry(true);
                 return;
+
             case OPERATION.CMA:
                 this.register.store(REGISTER.A, this.register.load(REGISTER.A) ^ BYTE_MAX);
                 return;
+
             case OPERATION.INR:
                 return this.processIncOrDec(this.alu.increment(this.register.load(op.register)), op);
+
             case OPERATION.DCR:
                 return this.processIncOrDec(this.alu.decrement(this.register.load(op.register)), op);
 

@@ -197,6 +197,40 @@ describe('fetch decode test', () => {
         }
     });
 
+
+    it('should DAD B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x09);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DAD, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should DAD D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x19);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DAD, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+
+
+    it('should DAD H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x29);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DAD, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should DAD SP', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x39);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DAD, register: REGISTER.SP};
+        expect(actual).to.eql(expected);
+    });
+
     it('should INX B', () => {
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0x03);
@@ -230,34 +264,203 @@ describe('fetch decode test', () => {
         expect(actual).to.eql(expected);
     });
 
+
+    it('should DCX B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x0B);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCX, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should DCX D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x1B);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCX, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+
+
+    it('should DCX H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x2B);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCX, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+
+    it('should DCX SP', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x3B);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCX, register: REGISTER.SP};
+        expect(actual).to.eql(expected);
+    });
+
     it('should alu operation', () => {
-            let memAddress = toHighLow(0);
+        let memAddress = toHighLow(0);
 
-            for (let i = 0x80; i < 0xC0; i++) {
-                memory.store(memAddress, i);
-                memAddress = xIncrement(memAddress);
+        for (let i = 0x80; i < 0xC0; i++) {
+            memory.store(memAddress, i);
+            memAddress = xIncrement(memAddress);
 
-                const actual: RegisterOperation & OperationT = fetchDecode.next() as RegisterOperation & OperationT;
-                expect(actual.register).to.eql(i & 7);
+            const actual: RegisterOperation & OperationT = fetchDecode.next() as RegisterOperation & OperationT;
+            expect(actual.register).to.eql(i & 7);
 
-                function between(a: number, b: number, op: OPERATION) {
-                    const match = i >= a && i < b;
-                    if (match) expect(actual.type).to.eql(op);
-                    else expect(actual.type).not.to.eql(op);
-                }
-
-                between(0x80, 0x88, OPERATION.ADD);
-                between(0x88, 0x90, OPERATION.ADC);
-                between(0x90, 0x98, OPERATION.SUB);
-                between(0x98, 0xA0, OPERATION.SBB);
-                between(0xA0, 0xA8, OPERATION.ANA);
-                between(0xA8, 0xB0, OPERATION.XRA);
-                between(0xB0, 0xB8, OPERATION.ORA);
-                between(0xB8, 0xC0, OPERATION.CMP);
-
+            function between(a: number, b: number, op: OPERATION) {
+                const match = i >= a && i < b;
+                if (match) expect(actual.type).to.eql(op);
+                else expect(actual.type).not.to.eql(op);
             }
+
+            between(0x80, 0x88, OPERATION.ADD);
+            between(0x88, 0x90, OPERATION.ADC);
+            between(0x90, 0x98, OPERATION.SUB);
+            between(0x98, 0xA0, OPERATION.SBB);
+            between(0xA0, 0xA8, OPERATION.ANA);
+            between(0xA8, 0xB0, OPERATION.XRA);
+            between(0xB0, 0xB8, OPERATION.ORA);
+            between(0xB8, 0xC0, OPERATION.CMP);
+
         }
-    );
+    });
+
+
+});
+
+describe('increment', () => {
+
+
+    beforeEach(() => {
+        reset();
+    });
+
+
+    it('should INR B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x04);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR C', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x0c);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.C};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x14);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR E', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x1c);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.E};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x24);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR L', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x2c);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.L};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR M', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x34);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.M};
+        expect(actual).to.eql(expected);
+    });
+    it('should INR A', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x3c);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.INR, register: REGISTER.A};
+        expect(actual).to.eql(expected);
+    });
+
+
+});
+
+describe('decrement', () => {
+
+
+    beforeEach(() => {
+        reset();
+    });
+
+
+    it('should DCR B', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x05);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.B};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR C', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x0d);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.C};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR D', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x15);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.D};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR E', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x1d);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.E};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR H', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x25);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.H};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR L', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x2d);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.L};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR M', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x35);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.M};
+        expect(actual).to.eql(expected);
+    });
+    it('should DCR A', () => {
+        let memAddress = toHighLow(0);
+        memory.store(memAddress, 0x3d);
+        const actual = fetchDecode.next();
+        const expected: OperationT = {type: OPERATION.DCR, register: REGISTER.A};
+        expect(actual).to.eql(expected);
+    });
 
 
 });
@@ -408,96 +611,96 @@ describe('fetch decode jump', () => {
     });
 
     it('should JNZ', () => {
-        const addr = highLow(0, 4)
+        const addr = highLow(0, 4);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xc2);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JNZ, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JNC', () => {
-        const addr = highLow(22, 10)
+        const addr = highLow(22, 10);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xd2);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JNC, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JPO', () => {
-        const addr = highLow(23, 34)
+        const addr = highLow(23, 34);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xe2);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JPO, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JP', () => {
-        const addr = highLow(87, 56)
+        const addr = highLow(87, 56);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xf2);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JP, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JZ', () => {
-        const addr = highLow(33, 44)
+        const addr = highLow(33, 44);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xca);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JZ, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JC', () => {
-        const addr = highLow(23, 56)
+        const addr = highLow(23, 56);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xda);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JC, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JPE', () => {
-        const addr = highLow(65, 98)
+        const addr = highLow(65, 98);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xea);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JPE, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should JM', () => {
-        const addr = highLow(23, 56)
+        const addr = highLow(23, 56);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xfa);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.JM, position: addr};
@@ -507,20 +710,18 @@ describe('fetch decode jump', () => {
 });
 
 function printCX(XRMAP: { [p: number]: OperationT }) {
-    console.log(XRMAP)
     let string = '';
 
     function pad(type: string, pad: number) {
-        return type + ' '.repeat(pad-type.length);
+        return type + ' '.repeat(pad - type.length);
     }
 
     for (let i = 0; i < 16; i++) {
         for (let j = 0; j < 16; j++) {
-            const val = XRMAP[i * 16 + j]
-            string += val ? '| ' + pad(val.type, 4)  : '|     '
+            const val = XRMAP[i * 16 + j];
+            string += val ? '| ' + pad(val.type, 4) : '|     '
         }
-        // string += '|\n------------------------------------------------------------------------------------------------|\n'
-         string += '|\n'
+        string += '|\n'
     }
 
     console.log(string)
@@ -534,96 +735,96 @@ describe('fetch decode call', () => {
     });
 
     it('should CNZ', () => {
-        const addr = highLow(0, 4)
+        const addr = highLow(0, 4);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xc4);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CNZ, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CNC', () => {
-        const addr = highLow(22, 10)
+        const addr = highLow(22, 10);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xd4);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CNC, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CPO', () => {
-        const addr = highLow(23, 34)
+        const addr = highLow(23, 34);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xe4);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CPO, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CP', () => {
-        const addr = highLow(87, 56)
+        const addr = highLow(87, 56);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xf4);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CP, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CZ', () => {
-        const addr = highLow(33, 44)
+        const addr = highLow(33, 44);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xcc);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CZ, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CC', () => {
-        const addr = highLow(23, 56)
+        const addr = highLow(23, 56);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xdc);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CC, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CPE', () => {
-        const addr = highLow(65, 98)
+        const addr = highLow(65, 98);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xec);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CPE, position: addr};
         expect(actual).to.eql(expected);
     });
     it('should CM', () => {
-        const addr = highLow(23, 56)
+        const addr = highLow(23, 56);
         let memAddress = toHighLow(0);
         memory.store(memAddress, 0xfc);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.low);
-        memAddress = xIncrement(memAddress)
+        memAddress = xIncrement(memAddress);
         memory.store(memAddress, addr.high);
         const actual = fetchDecode.next();
         const expected: OperationT = {type: OPERATION.CM, position: addr};

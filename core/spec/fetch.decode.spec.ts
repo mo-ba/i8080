@@ -814,7 +814,7 @@ describe('fetch decode', () => {
             reset();
         });
 
-        it('should $$$', () => {
+        it('should _', () => {
             [0xc7,
                 0xd7,
                 0xe7,
@@ -832,7 +832,7 @@ describe('fetch decode', () => {
                 let memAddress = toHighLow(0);
                 memory.store(memAddress, val);
                 const actual = fetchDecode.next();
-                const expected: OperationT = {type: OPERATION.$$$};
+                const expected: OperationT = {type: OPERATION._};
                 expect(actual).to.eql(expected, val.toString(16));
             })
         })

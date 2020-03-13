@@ -69,7 +69,7 @@ class FetchDecode implements IFetchDecode {
             case 0xdb: // IN
             case 0xf3: // DI
             case 0xfb: // EI
-                return {type: OPERATION.$$$};
+                return {type: OPERATION._};
 
             case 0x07:
                 return {type: OPERATION.RLC};

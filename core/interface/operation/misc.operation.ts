@@ -7,7 +7,7 @@ export interface NoOperation extends Operation {
 }
 
 export interface NotImplementedOperation extends Operation {
-    readonly type: OPERATION.$$$
+    readonly type: OPERATION._
 }
 
 export interface HLTOperation extends Operation {

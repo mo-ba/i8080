@@ -1,5 +1,12 @@
 import {Operation} from "../operation";
 import {OPERATION} from "../operation.types";
+import {
+    JumpIfCarryOperation, JumpIfNegativeOperation,
+    JumpIfNotCarryOperation,
+    JumpIfNotZeroOperation, JumpIfParityEvenOperation, JumpIfParityOddOperation, JumpIfPositiveOperation,
+    JumpIfZeroOperation,
+    JumpOperation
+} from "./jump.operation";
 
 
 export interface ReturnOperation extends Operation {
@@ -44,3 +51,16 @@ export interface ReturnIfNegativeOperation extends Operation {
     readonly type: OPERATION.RM
 
 }
+
+export type BranchReturnOperation =
+    ReturnOperation |
+    ReturnIfNotZeroOperation |
+    ReturnIfZeroOperation |
+    ReturnIfNotCarryOperation |
+    ReturnIfCarryOperation |
+    ReturnIfParityOddOperation |
+    ReturnIfParityEvenOperation |
+    ReturnIfPositiveOperation |
+    ReturnIfNegativeOperation;
+
+

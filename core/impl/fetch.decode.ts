@@ -1,9 +1,13 @@
 import {IFetchDecode} from "../interface/fetch.decode";
 import {IMemory} from "../interface/memory";
-import {IRegister, REGISTER} from "../interface/register";
+import {HighLow, IRegister, REGISTER} from "../interface/register";
 import {OperationT} from "../interface/operation/operation.all";
 import {xIncrement} from "../util/arithmetic";
 import {OPERATION} from "../interface/operation/operation.types";
+
+
+export const XRMAP: { [n: number]: OperationT } = {}
+
 
 class FetchDecode implements IFetchDecode {
 
@@ -15,20 +19,33 @@ class FetchDecode implements IFetchDecode {
     }
 
     next(): OperationT {
-        return this.decode(this.fetch())
+
+        const opcode = this.fetch()
+
+        const op = this.decode(opcode)
+        XRMAP[opcode] = op;
+
+        return op
+
     }
 
-    private fetch() {
+    private fetch(): number {
         return this.memory.load(this.getProgramCounter());
     }
 
-    private getProgramCounter() {
+    private getProgramCounter(): HighLow {
         const counter = this.register.getProgramCounter();
         this.register.setProgramCounter(xIncrement(counter));
         return counter;
     }
 
+    private fetchWord(): HighLow {
+        return {low: this.fetch(), high: this.fetch()}
+    };
+
+
     private decode(opCode: number): OperationT {
+
 
         switch (opCode) {
 
@@ -443,6 +460,59 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.POP, register: REGISTER.PSW};
             case 0xf5:
                 return {type: OPERATION.PUSH, register: REGISTER.PSW};
+
+            case 0xc0:
+                return {type: OPERATION.RNZ};
+            case 0xc8:
+                return {type: OPERATION.RZ};
+            case 0xd0:
+                return {type: OPERATION.RNC};
+            case 0xd8:
+                return {type: OPERATION.RC};
+            case 0xe0:
+                return {type: OPERATION.RPO};
+            case 0xe8:
+                return {type: OPERATION.RPE};
+            case 0xf0:
+                return {type: OPERATION.RP};
+            case 0xf8:
+                return {type: OPERATION.RM};
+
+            case 0xc2:
+                return {type: OPERATION.JNZ, position: this.fetchWord()};
+            case 0xca:
+                return {type: OPERATION.JZ, position: this.fetchWord()};
+            case 0xd2:
+                return {type: OPERATION.JNC, position: this.fetchWord()};
+            case 0xda:
+                return {type: OPERATION.JC, position: this.fetchWord()};
+            case 0xe2:
+                return {type: OPERATION.JPO, position: this.fetchWord()};
+            case 0xea:
+                return {type: OPERATION.JPE, position: this.fetchWord()};
+            case 0xf2:
+                return {type: OPERATION.JP, position: this.fetchWord()};
+            case 0xfa:
+                return {type: OPERATION.JM, position: this.fetchWord()};
+
+            case 0xc4:
+                return {type: OPERATION.CNZ, position: this.fetchWord()};
+            case 0xcc:
+                return {type: OPERATION.CZ, position: this.fetchWord()};
+            case 0xd4:
+                return {type: OPERATION.CNC, position: this.fetchWord()};
+            case 0xdc:
+                return {type: OPERATION.CC, position: this.fetchWord()};
+            case 0xe4:
+                return {type: OPERATION.CPO, position: this.fetchWord()};
+            case 0xec:
+                return {type: OPERATION.CPE, position: this.fetchWord()};
+            case 0xf4:
+                return {type: OPERATION.CP, position: this.fetchWord()};
+            case 0xfc:
+                return {type: OPERATION.CM, position: this.fetchWord()};
+
+
         }
     }
 }

@@ -1,5 +1,6 @@
 import {HighLow} from "../../register";
 
-export interface BranchOperation {
+
+export interface BranchToOperation {
     position: HighLow
 }

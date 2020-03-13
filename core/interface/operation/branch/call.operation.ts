@@ -1,46 +1,59 @@
-import { Operation} from "../operation";
+import {Operation} from "../operation";
 import {OPERATION} from "../operation.types";
-import {BranchOperation} from "./branch.operation";
+import {BranchToOperation} from "./branch.operation";
 
 
-export interface CallOperation extends BranchOperation, Operation {
+export interface CallOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CALL
 }
 
-export interface CallIfNotZeroOperation extends BranchOperation, Operation {
+export interface CallIfNotZeroOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CNZ
 }
 
-export interface CallIfZeroOperation extends BranchOperation, Operation {
+export interface CallIfZeroOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CZ
 
 }
 
-export interface CallIfNotCarryOperation extends BranchOperation, Operation {
+export interface CallIfNotCarryOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CNC
 
 }
 
-export interface CallIfCarryOperation extends BranchOperation, Operation {
+export interface CallIfCarryOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CC
 
 }
 
-export interface CallIfParityOddOperation extends BranchOperation, Operation {
+export interface CallIfParityOddOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CPO
 
 }
 
-export interface CallIfParityEvenOperation extends BranchOperation, Operation {
+export interface CallIfParityEvenOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CPE
 }
 
-export interface CallIfPositiveOperation extends BranchOperation, Operation {
+export interface CallIfPositiveOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CP
 
 }
 
-export interface CallIfNegativeOperation extends BranchOperation, Operation {
+export interface CallIfNegativeOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.CM
 
 }
+
+export type BranchCallOperation =
+    CallOperation |
+    CallIfNotZeroOperation |
+    CallIfZeroOperation |
+    CallIfNotCarryOperation |
+    CallIfCarryOperation |
+    CallIfParityOddOperation |
+    CallIfParityEvenOperation |
+    CallIfPositiveOperation |
+    CallIfNegativeOperation;
+
+

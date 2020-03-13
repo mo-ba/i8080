@@ -1,7 +1,11 @@
-import {WORD_MAX} from "./bits";
-import {xAddWithFlags, xDecrement, xDecrementWithFlags, xIncrement, xIncrementWithFlags} from "./arithmetic";
-import {toHighLow, toNumber} from "./high-low.function";
+import {WORD_MAX} from "../util/bits";
+import {xAddWithFlags, xDecrement, xDecrementWithFlags, xIncrement, xIncrementWithFlags} from "../util/arithmetic";
 import {expect} from "chai";
+
+import {HighLowFN} from "../util/high-low.function";
+
+const toHighLow = HighLowFN.toHighLow;
+const toNumber = HighLowFN.toNumber;
 
 describe('flag test', () => {
     it('should xAddWithFlags', () => {

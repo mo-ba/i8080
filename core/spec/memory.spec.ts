@@ -1,8 +1,9 @@
 import * as mem from "../impl/memory";
 import {IMemory} from "../interface/memory";
-import {highLow} from "../util/high-low.function";
+import {HighLowFN} from "../util/high-low.function";
 import {expect} from "chai";
 
+const highLow = HighLowFN.highLow;
 describe('memory test', () => {
 
     let memory: IMemory;

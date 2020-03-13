@@ -3,7 +3,11 @@ import {expect} from 'chai';
 import {IRegister, REGISTER} from "../interface/register";
 import * as reg from "../impl/register";
 import * as mem from "../impl/memory";
-import {highLow, toHighLow} from "../util/high-low.function";
+import {HighLowFN} from "../util/high-low.function";
+
+const toHighLow = HighLowFN.toHighLow;
+const highLow = HighLowFN.highLow;
+
 
 describe('register test', () => {
 

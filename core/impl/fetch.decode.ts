@@ -21,10 +21,8 @@ class FetchDecode implements IFetchDecode {
     next(): OperationT {
 
         const opcode = this.fetch()
-
         const op = this.decode(opcode)
         XRMAP[opcode] = op;
-
         return op
 
     }
@@ -48,6 +46,30 @@ class FetchDecode implements IFetchDecode {
 
 
         switch (opCode) {
+
+            case 0x00:
+            case 0x10:
+            case 0x20:
+            case 0x30:
+            case 0x08:
+            case 0x18:
+            case 0x28:
+            case 0x38:
+                return {type: OPERATION.NOP};
+
+            case 0xc7: // RST
+            case 0xd7: // RST
+            case 0xe7: // RST
+            case 0xf7: // RST
+            case 0xcf: // RST
+            case 0xdf: // RST
+            case 0xef: // RST
+            case 0xff: // RST
+            case 0xd3: // OUT
+            case 0xdb: // IN
+            case 0xf3: // DI
+            case 0xfb: // EI
+                return {type: OPERATION.$$$};
 
             case 0x07:
                 return {type: OPERATION.RLC};
@@ -75,6 +97,35 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.INX, register: REGISTER.H};
             case 0x33:
                 return {type: OPERATION.INX, register: REGISTER.SP};
+
+            case 0x01:
+                return {type: OPERATION.LXI, register: REGISTER.B, value: this.fetchWord()};
+            case 0x11:
+                return {type: OPERATION.LXI, register: REGISTER.D, value: this.fetchWord()};
+            case 0x21:
+                return {type: OPERATION.LXI, register: REGISTER.H, value: this.fetchWord()};
+            case 0x31:
+                return {type: OPERATION.LXI, register: REGISTER.SP, value: this.fetchWord()};
+
+
+            case 0x02:
+                return {type: OPERATION.STAX, register: REGISTER.B,};
+            case 0x12:
+                return {type: OPERATION.STAX, register: REGISTER.D};
+            case 0x22:
+                return {type: OPERATION.SHLD, value: this.fetchWord()};
+            case 0x32:
+                return {type: OPERATION.STA, value: this.fetchWord()};
+
+
+            case 0x0a:
+                return {type: OPERATION.LDAX, register: REGISTER.B,};
+            case 0x1a:
+                return {type: OPERATION.LDAX, register: REGISTER.D};
+            case 0x2a:
+                return {type: OPERATION.LHLD, value: this.fetchWord()};
+            case 0x3a:
+                return {type: OPERATION.LDA, value: this.fetchWord()};
 
             case 0x0b:
                 return {type: OPERATION.DCX, register: REGISTER.B};
@@ -262,7 +313,7 @@ class FetchDecode implements IFetchDecode {
             case 0x75:
                 return {type: OPERATION.MOV, to: REGISTER.M, from: REGISTER.L};
             case 0x76:
-                return {type: OPERATION.MOV, to: REGISTER.M, from: REGISTER.M};
+                return {type: OPERATION.HLT};
             case 0x77:
                 return {type: OPERATION.MOV, to: REGISTER.M, from: REGISTER.A};
 
@@ -478,6 +529,10 @@ class FetchDecode implements IFetchDecode {
             case 0xf8:
                 return {type: OPERATION.RM};
 
+            case 0xc9:
+            case 0xd9:
+                return {type: OPERATION.RET};
+
             case 0xc2:
                 return {type: OPERATION.JNZ, position: this.fetchWord()};
             case 0xca:
@@ -494,6 +549,13 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.JP, position: this.fetchWord()};
             case 0xfa:
                 return {type: OPERATION.JM, position: this.fetchWord()};
+
+            case 0xc3:
+            case 0xcb:
+                return {type: OPERATION.JMP, position: this.fetchWord()};
+            case 0xe9:
+                return {type: OPERATION.PCHL};
+
 
             case 0xc4:
                 return {type: OPERATION.CNZ, position: this.fetchWord()};
@@ -513,6 +575,19 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.CM, position: this.fetchWord()};
 
 
+            case 0xe3:
+                return {type: OPERATION.XTHL};
+            case 0xf9:
+                return {type: OPERATION.SPHL};
+            case 0xeb:
+                return {type: OPERATION.XCHG};
+
+
+            case 0xcd:
+            case 0xdd:
+            case 0xed:
+            case 0xfd:
+                return {type: OPERATION.CALL, position: this.fetchWord()};
         }
     }
 }

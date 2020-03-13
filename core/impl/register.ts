@@ -1,9 +1,12 @@
 import {HighLow, IRegister, REGISTER} from "../interface/register";
 import {IMemory} from "../interface/memory";
-import {highLow, toHighLow} from "../util/high-low.function";
 import {BYTE_MAX} from "../util/bits";
 import {xDecrement, xIncrement} from "../util/arithmetic";
 
+import {HighLowFN} from "../util/high-low.function";
+
+const toHighLow = HighLowFN.toHighLow;
+const highLow = HighLowFN.highLow;
 
 enum FLAG_INDEX {
     Carry,      // - Carry Flag

@@ -1,7 +1,10 @@
 import {HighLow} from "../interface/register";
 import {IMemory} from "../interface/memory";
 import {BYTE_MAX, WORD_CARY_BIT} from "../util/bits";
-import {toNumber} from "../util/high-low.function";
+
+import {HighLowFN} from "../util/high-low.function";
+
+const toNumber = HighLowFN.toNumber;
 
 export class Memory implements IMemory {
 

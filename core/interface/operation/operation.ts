@@ -1,4 +1,4 @@
-import {REGISTER} from "../register";
+import {HighLow, REGISTER} from "../register";
 import {OPERATION} from "./operation.types";
 
 
@@ -8,6 +8,9 @@ export interface Operation {
 
 export interface ImmediateValueOperation {
     value: number;
+}
+export interface ImmediateHighLowValueOperation {
+    value: HighLow;
 }
 
 export interface StoreToOperation {

@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {calcParity, calcSign, calcZero} from "./flag.function";
+import {calcParity, calcSign, calcZero} from "../util/flag.function";
 
 describe('flag test', () => {
     it('should calcParity', () => {

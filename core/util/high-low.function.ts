@@ -1,14 +1,18 @@
 import {HighLow} from "../interface/register";
-import {BYTE_MAX, BYTE_LENGTH} from "./bits";
+import {BYTE_LENGTH, BYTE_MAX} from "./bits";
 
-export function highLow(high: number, low: number): HighLow {
-    return {high, low}
-}
+export abstract class HighLowFN {
 
-export function toHighLow(int16: number): HighLow {
-    return highLow(int16 >> BYTE_LENGTH & BYTE_MAX, int16 & BYTE_MAX,)
-}
+    public static highLow(high: number, low: number): HighLow {
+        return {high, low};
+    }
 
-export function toNumber(highLow: HighLow): number {
-    return highLow.high << BYTE_LENGTH | highLow.low
+    public static toHighLow(int16: number): HighLow {
+        return HighLowFN.highLow(int16 >> BYTE_LENGTH & BYTE_MAX, int16 & BYTE_MAX);
+    }
+
+    public static toNumber(highLow: HighLow): number {
+        return highLow.high << BYTE_LENGTH | highLow.low;
+    }
+
 }

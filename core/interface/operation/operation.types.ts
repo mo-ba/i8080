@@ -35,6 +35,19 @@ export enum OPERATION {
     DAD = 'DAD',
     INX = 'INX',
     DCX = 'DCX',
+    LXI = 'LXI',
+    LDAX = 'LDAX',
+    LDA = 'LDA',
+    STAX = 'STAX',
+    STA = 'STA',
+    SHLD = 'SHLD',
+    LHLD = 'LHLD',
+
+    XTHL = 'XTHL',
+    SPHL = 'SPHL',
+    XCHG = 'XCHG',
+
+    PCHL = 'PCHL',
 
     MOV = 'MOV',
     MVI = 'MVI',
@@ -75,4 +88,7 @@ export enum OPERATION {
     CPE = 'CPE',   //Call Parity Even
     CP = 'CP',     //Call Positive
     CM = 'CM',     //Call Negative
+
+
+    $$$ = '$$$',
 }

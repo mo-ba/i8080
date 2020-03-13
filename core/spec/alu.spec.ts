@@ -4,7 +4,10 @@ import {build} from "../impl/alu";
 import {IAlu} from "../interface/alu";
 import {IFlags} from "../interface/flags";
 import {WORD_MAX} from "../util/bits";
-import {toHighLow, toNumber} from "../util/high-low.function";
+import {HighLowFN} from "../util/high-low.function";
+
+const toHighLow = HighLowFN.toHighLow;
+const toNumber = HighLowFN.toNumber;
 
 const binary = (s: string) => parseInt(s, 2);
 

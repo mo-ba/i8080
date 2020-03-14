@@ -84,7 +84,7 @@ export enum OPERATION {
     CZ = 'CZ',     //Call Zero
     CNC = 'CNC',   //Call NOT Carry
     CC = 'CC',     //Call Carry
-    CPO = 'JPO',   //Jump Parity Odd
+    CPO = 'CPO',   //Jump Parity Odd
     CPE = 'CPE',   //Call Parity Even
     CP = 'CP',     //Call Positive
     CM = 'CM',     //Call Negative

@@ -37,10 +37,10 @@ enum PATTERN {
 }
 
 const map16bitRead: { [addr: number]: (reg: Int8Array, flag: number) => HighLow } = {
-    [REGISTER.PSW]: (r: Int8Array, flags: number) => ({high: r[REGISTER.A], low: flags,}),
-    [REGISTER.B]: (r: Int8Array) => ({high: r[REGISTER.B], low: r[REGISTER.C],}),
-    [REGISTER.D]: (r: Int8Array) => ({high: r[REGISTER.D], low: r[REGISTER.E],}),
-    [REGISTER.H]: (r: Int8Array) => ({high: r[REGISTER.H], low: r[REGISTER.L],}),
+    [REGISTER.PSW]: (r: Int8Array, flags: number) => ({high: r[REGISTER.A]& BYTE_MAX, low: flags,}),
+    [REGISTER.B]: (r: Int8Array) => ({high: r[REGISTER.B]& BYTE_MAX, low: r[REGISTER.C]& BYTE_MAX,}),
+    [REGISTER.D]: (r: Int8Array) => ({high: r[REGISTER.D]& BYTE_MAX, low: r[REGISTER.E]& BYTE_MAX,}),
+    [REGISTER.H]: (r: Int8Array) => ({high: r[REGISTER.H]& BYTE_MAX, low: r[REGISTER.L]& BYTE_MAX,}),
 };
 
 const map16bitStore: { [addr: number]: (reg: Register, values: HighLow) => Register } = {

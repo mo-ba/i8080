@@ -159,6 +159,25 @@ class Register implements IRegister {
 
     }
 
+    getProgramCounter(): HighLow {
+        return this.programCounter;
+    }
+
+    getStackPointer(): HighLow {
+        return this.stackPointer;
+    }
+
+
+    setProgramCounter(value: HighLow): IRegister {
+        this.programCounter = value;
+        return this;
+    }
+
+    setStackPointer(stackPointer: HighLow): IRegister {
+        this.stackPointer = stackPointer
+        return this;
+    }
+
     private reset() {
         this.stackPointer = toHighLow(0xffff);
         this.programCounter = toHighLow(0);
@@ -196,24 +215,6 @@ class Register implements IRegister {
         return this;
     }
 
-    getProgramCounter(): HighLow {
-        return this.programCounter;
-    }
-
-    getStackPointer(): HighLow {
-        return this.stackPointer;
-    }
-
-
-    setProgramCounter(value: HighLow): IRegister {
-        this.programCounter = value;
-        return this;
-    }
-
-    setStackPointer(stackPointer: HighLow): IRegister {
-        this.stackPointer = stackPointer
-        return this;
-    }
 
 }
 

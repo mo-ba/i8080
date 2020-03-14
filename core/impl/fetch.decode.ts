@@ -1,6 +1,6 @@
 import {IFetchDecode} from "../interface/fetch.decode";
 import {IMemory} from "../interface/memory";
-import {HighLow, IRegister, REGISTER} from "../interface/register";
+import {HighLow, IHasProgramCounter, IRegister, REGISTER} from "../interface/register";
 import {OperationT} from "../interface/operation/operation.all";
 import {xIncrement} from "../util/arithmetic";
 import {OPERATION} from "../interface/operation/operation.types";
@@ -14,7 +14,7 @@ class FetchDecode implements IFetchDecode {
 
     constructor(
         private readonly memory: IMemory,
-        private readonly register: IRegister,
+        private readonly register: IHasProgramCounter,
     ) {
     }
 

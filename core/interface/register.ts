@@ -11,7 +11,14 @@ export interface HighLow {
     readonly low: number;
 }
 
-export interface IRegister {
+export interface IHasProgramCounter {
+
+    getProgramCounter(): HighLow
+
+    setProgramCounter(programCounter: HighLow): IRegister
+}
+
+export interface IRegister extends IHasProgramCounter {
 
     load(address: REGISTER): number;
 
@@ -57,10 +64,6 @@ export interface IRegister {
     getStackPointer(): HighLow
 
     setStackPointer(stackPointer: HighLow): IRegister
-
-    getProgramCounter(): HighLow
-
-    setProgramCounter(programCounter: HighLow): IRegister
 
 
 }

@@ -4,7 +4,8 @@ export enum REGISTER {
 
 export const registerList = [
     REGISTER.B, REGISTER.C, REGISTER.D, REGISTER.E, REGISTER.H, REGISTER.L, REGISTER.M, REGISTER.A
-]
+];
+
 
 export interface HighLow {
     readonly high: number;
@@ -59,6 +60,10 @@ export interface IRegister extends IHasProgramCounter {
     setZero(value: boolean): IRegister;
 
     getZero(): boolean;
+
+    setStopped(value: boolean): IRegister;
+
+    getStopped(): boolean;
 
 
     getStackPointer(): HighLow

@@ -37,10 +37,10 @@ enum PATTERN {
 }
 
 const map16bitRead: { [addr: number]: (reg: Int8Array, flag: number) => HighLow } = {
-    [REGISTER.PSW]: (r: Int8Array, flags: number) => ({high: r[REGISTER.A]& BYTE_MAX, low: flags,}),
-    [REGISTER.B]: (r: Int8Array) => ({high: r[REGISTER.B]& BYTE_MAX, low: r[REGISTER.C]& BYTE_MAX,}),
-    [REGISTER.D]: (r: Int8Array) => ({high: r[REGISTER.D]& BYTE_MAX, low: r[REGISTER.E]& BYTE_MAX,}),
-    [REGISTER.H]: (r: Int8Array) => ({high: r[REGISTER.H]& BYTE_MAX, low: r[REGISTER.L]& BYTE_MAX,}),
+    [REGISTER.PSW]: (r: Int8Array, flags: number) => ({high: r[REGISTER.A] & BYTE_MAX, low: flags,}),
+    [REGISTER.B]: (r: Int8Array) => ({high: r[REGISTER.B] & BYTE_MAX, low: r[REGISTER.C] & BYTE_MAX,}),
+    [REGISTER.D]: (r: Int8Array) => ({high: r[REGISTER.D] & BYTE_MAX, low: r[REGISTER.E] & BYTE_MAX,}),
+    [REGISTER.H]: (r: Int8Array) => ({high: r[REGISTER.H] & BYTE_MAX, low: r[REGISTER.L] & BYTE_MAX,}),
 };
 
 const map16bitStore: { [addr: number]: (reg: Register, values: HighLow) => Register } = {
@@ -58,6 +58,7 @@ class Register implements IRegister {
 
     private stackPointer: HighLow;
     private programCounter: HighLow;
+    private isStopped: boolean;
 
     constructor(private readonly memory: IMemory) {
         this.reset();
@@ -144,18 +145,19 @@ class Register implements IRegister {
 
 
     pop(): HighLow {
-        const high = this.incrementStackPointer()
-            .loadMemory(this.stackPointer);
         const low = this.incrementStackPointer()
+            .loadMemory(this.stackPointer);
+        const high = this.incrementStackPointer()
             .loadMemory(this.stackPointer);
         return {high, low};
     }
 
     push(value: HighLow): IRegister {
-        return this.storeMemory(this.stackPointer, value.low)
-            .decrementStackPointer()
+        return this
             .storeMemory(this.stackPointer, value.high)
-            .decrementStackPointer();
+            .decrementStackPointer()
+            .storeMemory(this.stackPointer, value.low)
+            .decrementStackPointer()
 
     }
 
@@ -177,6 +179,16 @@ class Register implements IRegister {
         this.stackPointer = stackPointer
         return this;
     }
+
+    getStopped(): boolean {
+        return this.isStopped;
+    }
+
+    setStopped(value: boolean): IRegister {
+        this.isStopped = value;
+        return this;
+    }
+
 
     private reset() {
         this.stackPointer = toHighLow(0xffff);

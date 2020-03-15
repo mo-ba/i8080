@@ -38,7 +38,10 @@ class FetchDecode implements IFetchDecode {
     }
 
     private fetchWord(): HighLow {
-        return {low: this.fetch(), high: this.fetch()}
+        const low = this.fetch()
+        const high = this.fetch()
+
+        return {low, high}
     };
 
 

@@ -408,6 +408,10 @@ class Execute implements IExecute {
                 return;
 
 
+            case OPERATION.HLT:
+                this.register.setStopped(true)
+                return;
+
             case OPERATION.NOP:
             default:
                 return

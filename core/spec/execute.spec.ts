@@ -523,6 +523,13 @@ describe('exec', () => {
             });
         });
 
+        it('HLT', () => {
+            testRandomSZAPFlags(() => {
+                executor.execute({type: OPERATION.HLT});
+                expect(register.getStopped()).to.eq(true);
+            });
+        });
+
     });
     describe('jumps', () => {
 
@@ -1484,27 +1491,27 @@ describe('exec', () => {
         it('fibonacci', () => {
             executor.execute({type: OPERATION.MVI, value: 1, to: REGISTER.A});
             executor.execute({type: OPERATION.MVI, value: 1, to: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
             expect(register.load(REGISTER.A)).to.eq(1)
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.C, to: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
             expect(register.load(REGISTER.A)).to.eq(2)
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.C, to: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
             expect(register.load(REGISTER.A)).to.eq(3)
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.C, to: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
             expect(register.load(REGISTER.A)).to.eq(5)
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.C, to: REGISTER.B});
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
 
             expect(register.load(REGISTER.A)).to.eq(8)
 

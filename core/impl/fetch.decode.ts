@@ -28,7 +28,8 @@ class FetchDecode implements IFetchDecode {
     }
 
     private fetch(): number {
-        return this.memory.load(this.getProgramCounter());
+        const val = this.memory.load(this.getProgramCounter())
+        return val;
     }
 
     private getProgramCounter(): HighLow {

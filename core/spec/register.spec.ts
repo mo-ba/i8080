@@ -1,8 +1,8 @@
 import 'mocha';
 import {expect} from 'chai';
 import {IRegister, REGISTER} from "../interface/register";
-import * as reg from "../impl/register";
-import * as mem from "../impl/memory";
+import * as reg from "../cpu/register";
+import * as mem from "../cpu/memory";
 import {HighLowFN} from "../util/high-low.function";
 
 const toHighLow = HighLowFN.toHighLow;

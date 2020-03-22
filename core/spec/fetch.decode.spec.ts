@@ -1,8 +1,8 @@
 import {IMemory} from "../interface/memory";
-import * as mem from "../impl/memory";
-import * as reg from "../impl/register";
-import * as fd from "../impl/fetch.decode";
-import {XRMAP} from "../impl/fetch.decode";
+import * as mem from "../cpu/memory";
+import * as reg from "../cpu/register";
+import * as fd from "../cpu/fetch.decode";
+import {XRMAP} from "../cpu/fetch.decode";
 import {IRegister, REGISTER} from "../interface/register";
 import {IFetchDecode} from "../interface/fetch.decode";
 import {xIncrement} from "../util/arithmetic";

@@ -13,6 +13,7 @@
     "node_modules/**",
     "**/*.d.ts",
     "**/*.spec.ts",
+    "**/*.gram.ts",
     "**/*.test.ts"
   ],
   "sourceMap": true,

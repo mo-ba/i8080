@@ -1,8 +1,8 @@
 import 'mocha';
 import {expect} from 'chai';
 
-import {build as memBuild} from "../impl/memory";
-import {build as processorBuild} from "../impl/processor";
+import {build as memBuild} from "../cpu/memory";
+import {build as processorBuild} from "../cpu/processor";
 import {IMemory} from "../interface/memory";
 import {IProcessor} from "../interface/processor";
 import {HighLowFN} from "../util/high-low.function";

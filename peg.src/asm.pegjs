@@ -1,8 +1,20 @@
-START = __* e:(EXP/EXP_COMMENT)* {return e}
+START = __* e:(EXP/EXP_COMMENT/EXP_LABEL)* {return e}
 
 EXP_COMMENT = _* 
     label:LABEL_DEFINITION? _* 
     comment:COMMENT __* {
+        return {
+            label,
+            operation:null,
+            comment,
+            location:location()
+        }
+    }
+
+
+EXP_LABEL = _* 
+    label:LABEL_DEFINITION _* 
+    comment:COMMENT? __* {
         return {
             label,
             operation:null,

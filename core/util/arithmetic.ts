@@ -1,7 +1,7 @@
 import {HighLow} from "../interface/register";
 import {IXAluResult} from "../interface/alu";
 import {WORD_MAX} from "./bits";
-import {NO_FLAGS} from "../impl/flags";
+import {NO_FLAGS} from "../cpu/flags";
 
 import {HighLowFN} from "./high-low.function";
 

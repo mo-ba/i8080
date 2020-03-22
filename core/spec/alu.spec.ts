@@ -1,6 +1,6 @@
 import 'mocha';
 import {expect} from 'chai';
-import {build} from "../impl/alu";
+import {build} from "../cpu/alu";
 import {IAlu} from "../interface/alu";
 import {IFlags} from "../interface/flags";
 import {WORD_MAX} from "../util/bits";

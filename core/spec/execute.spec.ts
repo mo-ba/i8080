@@ -1,8 +1,8 @@
-import * as reg from "../impl/register";
-import * as mem from "../impl/memory";
-import * as alu from "../impl/alu";
-import * as exec from "../impl/execute";
-import {XCMAP} from "../impl/execute";
+import * as reg from "../cpu/register";
+import * as mem from "../cpu/memory";
+import * as alu from "../cpu/alu";
+import * as exec from "../cpu/execute";
+import {XCMAP} from "../cpu/execute";
 import {IExecute} from "../interface/execute";
 import {HighLow, IRegister, REGISTER, registerList} from "../interface/register";
 import {OPERATION} from "../interface/operation/operation.types";

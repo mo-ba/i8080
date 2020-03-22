@@ -1,20 +1,73 @@
 import {Parser} from "./parser";
+import {expect} from "chai";
 
 const child_process = require('child_process');
 
-describe('flag test', () => {
+describe('Parser test', () => {
 
     before(() => {
         child_process.execSync('npm run build:parser')
     })
 
-    it('should xAddWithFlags', () => {
-        new Parser().parse(`HELLO: MVI a,   4   ; foo bar%
+    it('should parse 1', () => {
+        const result = new Parser().parse(`HELLO: MVI a,   4   ; foo bar%
         `)
-        new Parser().parse(` MVI   a, 4, 64H`)
-        new Parser().parse(` RAR
+        expect(result).to.eql(
+            [
+                {
+                    "comment": " foo bar%", "label": "HELLO", "location": {
+                        "end": {"column": 9, "line": 2, "offset": 39},
+                        "start": {"column": 1, "line": 1, "offset": 0}
+                    },
+                    "operation": {
+                        "code": "MVI", "operands": ["a", 4]
+                    }
+                }
+            ]);
+    })
+
+    it('should parse 2', () => {
+        const result = new Parser().parse(` MVI   a, 4, 64H`)
+
+        expect(result).to.eql(
+            [{
+                "label": null,
+                "operation": {"code": "MVI", "operands": ["a", 4, 100]},
+                "comment": null,
+                "location": {
+                    "start": {"offset": 1, "line": 1, "column": 2},
+                    "end": {"offset": 16, "line": 1, "column": 17}
+                }
+            }]
+        );
+    })
+
+    it('should parse 3', () => {
+        const result = new Parser().parse(` RAR
         HELLO: MVI   a, 4, 64`)
-        new Parser().parse(`
+        expect(result).to.eql(
+            [{
+                "label": null,
+                "operation": {"code": "RAR", "operands": null},
+                "comment": null,
+                "location": {
+                    "start": {"offset": 1, "line": 1, "column": 2},
+                    "end": {"offset": 13, "line": 2, "column": 9}
+                }
+            }, {
+                "label": "HELLO",
+                "operation": {"code": "MVI", "operands": ["a", 4, 64]},
+                "comment": null,
+                "location": {
+                    "start": {"offset": 13, "line": 2, "column": 9},
+                    "end": {"offset": 34, "line": 2, "column": 30}
+                }
+            }]
+        );
+    })
+
+    it('should parse 4', () => {
+        const result = new Parser().parse(`
         RAR
         HELLO: MVI   a, 1, 64
         HELLO: MVI   b, 2
@@ -25,5 +78,62 @@ describe('flag test', () => {
          
          
         HELLO: MVI   e, 5, 64H`)
+        expect(result).to.eql([{
+                "label": null,
+                "operation": {"code": "RAR", "operands": null},
+                "comment": null,
+                "location": {"start": {"offset": 9, "line": 2, "column": 9},
+                    "end": {"offset": 21, "line": 3, "column": 9}}
+            }, {
+                "label": "HELLO",
+                "operation": {"code": "MVI", "operands": ["a", 1, 64]},
+                "comment": null,
+                "location": {"start": {"offset": 21, "line": 3, "column": 9},
+                    "end": {"offset": 51, "line": 4, "column": 9}}
+            }, {
+                "label": "HELLO",
+                "operation": {"code": "MVI", "operands": ["b", 2]},
+                "comment": null,
+                "location": {
+                    "start": {"offset": 51, "line": 4, "column": 9},
+                    "end": {"offset": 84, "line": 5, "column": 16}
+                }
+            }, {
+                "label": null,
+                "operation": {"code": "MVI", "operands": ["c"]},
+                "comment": null,
+                "location": {
+                    "start": {"offset": 84, "line": 5, "column": 16},
+                    "end": {"offset": 100, "line": 6, "column": 9}
+                }
+            }, {
+                "label": "HELLO",
+                "operation": {"code": "MVI", "operands": ["d", 4]},
+                "comment": " foo bar%",
+                "location": {
+                    "start": {"offset": 100, "line": 6, "column": 9},
+                    "end": {"offset": 140, "line": 7, "column": 10}
+                }
+            }, {
+                "label": null,
+                "operation": null,
+                "comment": " foo bar% !?$§&|<<>>[](){}",
+                "location": {
+                    "start": {"offset": 140, "line": 7, "column": 10},
+                    "end": {"offset": 206, "line": 11, "column": 9}
+                }
+            }, {
+                "label": "HELLO",
+                "operation": {"code": "MVI", "operands": ["e", 5, 100]},
+                "comment": null,
+                "location": {
+                    "start": {"offset": 206, "line": 11, "column": 9},
+                    "end": {"offset": 228, "line": 11, "column": 31}
+                }
+            }]
+        );
     })
+
+
 })
+

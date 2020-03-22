@@ -1,4 +1,4 @@
-import * as mem from "../impl/memory";
+import * as mem from "../cpu/memory";
 import {IMemory} from "../interface/memory";
 import {HighLowFN} from "../util/high-low.function";
 import {expect} from "chai";

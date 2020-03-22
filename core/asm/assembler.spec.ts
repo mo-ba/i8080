@@ -1567,21 +1567,21 @@ describe('Assembler test', () => {
     })
     it('should assemble fib', () => {
         const assembled = assembler.assemble(`
-            MVI A,1
-            MVI B,1
-            MVI D,5
-                     
-            LOOP:  
-            MOV C,A
-            ADD B 
-            MOV B,C
-            DCR D
-            JNZ LOOP
-            
-            PUSH PSW
-            HLT
-           
-        `)
+MVI A,1
+MVI B,1
+MVI D,5
+         
+LOOP:  
+MOV C,A
+ADD B 
+MOV B,C
+DCR D
+JNZ LOOP
+
+PUSH PSW
+HLT
+`
+        );
 
         const program = [
             0x3e, 0x01,         // a = 1

@@ -143,38 +143,6 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         return [0x01 + (reg << 4), ...lowHigh(assertNumericValue(operands[1]))];
     }
 
-    function getCodeSTAX(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeHalfRegisterPairOperation(0x02, operands, symbolMap)
-    }
-
-    function getCodeLDAX(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeHalfRegisterPairOperation(0x0a, operands, symbolMap)
-    }
-
-    function getCodeSHLD(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0x22, operands, symbolMap);
-    }
-
-    function getCodeSTA(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0x32, operands, symbolMap);
-    }
-
-    function getCodeLHLD(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0x2a, operands, symbolMap);
-    }
-
-    function getCodeLDA(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0x3a, operands, symbolMap);
-    }
-
-    function getCodeDAD(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterPairOperation(0x09, operands, symbolMap)
-    }
-
-    function getCodeINX(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterPairOperation(0x03, operands, symbolMap)
-    }
-
     function getCodePOP(operands: AsmOperands, symbolMap: SymbolMap): number[] {
         return getCodeRegisterPairOperation(0xc1, operands, symbolMap)
     }
@@ -183,20 +151,6 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         return getCodeRegisterPairOperation(0xc5, operands, symbolMap)
     }
 
-
-    function getCodeDCX(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterPairOperation(0x0b, operands, symbolMap)
-
-    }
-
-    function getCodeINR(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterOperation(0x04, operands, symbolMap)
-    }
-
-    function getCodeDCR(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterOperation(0x05, operands, symbolMap)
-
-    }
 
     function getCodeMVI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
         assertOperandCount(operands, 2);
@@ -221,111 +175,6 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         return [code + reg];
     }
 
-    function getCodeJNZ(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xc2, operands, symbolMap);
-    }
-
-    function getCodeJNC(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xd2, operands, symbolMap);
-    }
-
-    function getCodeJPO(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xe2, operands, symbolMap);
-    }
-
-    function getCodeJP(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xf2, operands, symbolMap);
-    }
-
-    function getCodeJMP(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xc3, operands, symbolMap);
-    }
-
-    function getCodeJZ(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xca, operands, symbolMap);
-    }
-
-    function getCodeJC(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xda, operands, symbolMap);
-    }
-
-    function getCodeJPE(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xea, operands, symbolMap);
-    }
-
-    function getCodeJM(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xfa, operands, symbolMap);
-    }
-
-    function getCodeCNZ(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xc4, operands, symbolMap);
-    }
-
-    function getCodeCNC(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xd4, operands, symbolMap);
-    }
-
-    function getCodeCPO(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xe4, operands, symbolMap);
-    }
-
-    function getCodeCP(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xf4, operands, symbolMap);
-    }
-
-    function getCodeCZ(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xcc, operands, symbolMap);
-    }
-
-    function getCodeCC(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xdc, operands, symbolMap);
-    }
-
-    function getCodeCPE(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xec, operands, symbolMap);
-    }
-
-    function getCodeCM(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xfc, operands, symbolMap);
-    }
-
-    function getCodeCALL(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateWord(0xcd, operands, symbolMap);
-    }
-
-    function getCodeADI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xc6, operands, symbolMap);
-    }
-
-    function getCodeSUI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xd6, operands, symbolMap);
-    }
-
-    function getCodeANI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xe6, operands, symbolMap);
-    }
-
-    function getCodeORI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xf6, operands, symbolMap);
-    }
-
-
-    function getCodeACI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xce, operands, symbolMap);
-    }
-
-    function getCodeSBI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xde, operands, symbolMap);
-    }
-
-    function getCodeXRI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xee, operands, symbolMap);
-    }
-
-    function getCodeCPI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeImmediateByte(0xfe, operands, symbolMap);
-    }
-
 
     switch (operation.code) {
         case OPERATION.NOP:
@@ -333,17 +182,17 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         case OPERATION.LXI:
             return getCodeLXI(operation.operands, symbolMap);
         case OPERATION.STAX:
-            return getCodeSTAX(operation.operands, symbolMap);
+            return getCodeHalfRegisterPairOperation(0x02, operation.operands, symbolMap);
         case OPERATION.SHLD:
-            return getCodeSHLD(operation.operands, symbolMap);
+            return getCodeImmediateWord(0x22, operation.operands, symbolMap);
         case OPERATION.STA:
-            return getCodeSTA(operation.operands, symbolMap);
+            return getCodeImmediateWord(0x32, operation.operands, symbolMap);
         case OPERATION.INX:
-            return getCodeINX(operation.operands, symbolMap);
+            return getCodeRegisterPairOperation(0x03, operation.operands, symbolMap);
         case OPERATION.INR:
-            return getCodeINR(operation.operands, symbolMap);
+            return getCodeRegisterOperation(0x04, operation.operands, symbolMap);
         case OPERATION.DCR:
-            return getCodeDCR(operation.operands, symbolMap);
+            return getCodeRegisterOperation(0x05, operation.operands, symbolMap);
         case OPERATION.MVI:
             return getCodeMVI(operation.operands, symbolMap);
         case OPERATION.RLC:
@@ -355,15 +204,16 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         case OPERATION.STC:
             return singleValue(0x37);
         case OPERATION.DAD:
-            return getCodeDAD(operation.operands, symbolMap);
+            return getCodeRegisterPairOperation(0x09, operation.operands, symbolMap);
         case OPERATION.LDAX:
-            return getCodeLDAX(operation.operands, symbolMap);
+            return getCodeHalfRegisterPairOperation(0x0a, operation.operands, symbolMap);
         case OPERATION.LHLD:
-            return getCodeLHLD(operation.operands, symbolMap);
+            return getCodeImmediateWord(0x2a, operation.operands, symbolMap);
         case OPERATION.LDA:
-            return getCodeLDA(operation.operands, symbolMap);
+            return getCodeImmediateWord(0x3a, operation.operands, symbolMap);
         case OPERATION.DCX:
-            return getCodeDCX(operation.operands, symbolMap);
+            return getCodeRegisterPairOperation(0x0b,operation.operands, symbolMap);
+
         case OPERATION.RRC:
             return singleValue(0x0f);
         case OPERATION.RAR:
@@ -407,40 +257,71 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
             return getCodePOP(operation.operands, symbolMap);
 
         case OPERATION.JNZ:
-            return getCodeJNZ(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xc2, operation.operands, symbolMap);
         case OPERATION.JNC:
-            return getCodeJNC(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xd2, operation.operands, symbolMap);
         case OPERATION.JPO:
-            return getCodeJPO(operation.operands, symbolMap);
-        case OPERATION.JMP:
-            return getCodeJMP(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xe2, operation.operands, symbolMap);
         case OPERATION.JP:
-            return getCodeJP(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xf2, operation.operands, symbolMap);
+
+        case OPERATION.JZ:
+            return getCodeImmediateWord(0xca, operation.operands, symbolMap);
+        case OPERATION.JC:
+            return getCodeImmediateWord(0xda, operation.operands, symbolMap);
+        case OPERATION.JPE:
+            return getCodeImmediateWord(0xea, operation.operands, symbolMap);
+        case OPERATION.JM:
+            return getCodeImmediateWord(0xfa, operation.operands, symbolMap);
+        case OPERATION.JMP:
+            return getCodeImmediateWord(0xc3, operation.operands, symbolMap);
+
 
         case OPERATION.XTHL:
             return singleValue(0xe3);
 
         case OPERATION.CNZ:
-            return getCodeCNZ(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xc4, operation.operands, symbolMap);
         case OPERATION.CNC:
-            return getCodeCNC(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xd4, operation.operands, symbolMap);
         case OPERATION.CPO:
-            return getCodeCPO(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xe4, operation.operands, symbolMap);
         case OPERATION.CP:
-            return getCodeCP(operation.operands, symbolMap);
+            return getCodeImmediateWord(0xf4, operation.operands, symbolMap);
+
+        case OPERATION.CZ:
+            return getCodeImmediateWord(0xcc, operation.operands, symbolMap);
+        case OPERATION.CC:
+            return getCodeImmediateWord(0xdc, operation.operands, symbolMap);
+        case OPERATION.CPE:
+            return getCodeImmediateWord(0xec, operation.operands, symbolMap);
+        case OPERATION.CM:
+            return getCodeImmediateWord(0xfc, operation.operands, symbolMap);
+        case OPERATION.CALL:
+            return getCodeImmediateWord(0xcd, operation.operands, symbolMap);
+
+
 
         case OPERATION.PUSH:
             return getCodePUSH(operation.operands, symbolMap);
 
         case OPERATION.ADI:
-            return getCodeADI(operation.operands, symbolMap);
+            return getCodeImmediateByte(0xc6, operation.operands, symbolMap);
         case OPERATION.SUI:
-            return getCodeSUI(operation.operands, symbolMap);
+            return getCodeImmediateByte(0xd6, operation.operands, symbolMap);
         case OPERATION.ANI:
-            return getCodeANI(operation.operands, symbolMap);
+            return getCodeImmediateByte(0xe6, operation.operands, symbolMap);
         case OPERATION.ORI:
-            return getCodeORI(operation.operands, symbolMap);
+            return getCodeImmediateByte(0xf6, operation.operands, symbolMap);
 
+        case OPERATION.ACI:
+            return getCodeImmediateByte(0xce, operation.operands, symbolMap);
+        case OPERATION.SBI:
+            return getCodeImmediateByte(0xde, operation.operands, symbolMap);
+        case OPERATION.XRI:
+            return getCodeImmediateByte(0xee, operation.operands, symbolMap);
+        case OPERATION.CPI:
+            return getCodeImmediateByte(0xfe, operation.operands, symbolMap);
 
         case OPERATION.RZ:
             return singleValue(0xc8);
@@ -457,39 +338,9 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         case OPERATION.SPHL:
             return singleValue(0xf9);
 
-
-        case OPERATION.JZ:
-            return getCodeJZ(operation.operands, symbolMap);
-        case OPERATION.JC:
-            return getCodeJC(operation.operands, symbolMap);
-        case OPERATION.JPE:
-            return getCodeJPE(operation.operands, symbolMap);
-        case OPERATION.JM:
-            return getCodeJM(operation.operands, symbolMap);
-
         case OPERATION.XCHG:
             return singleValue(0xeb);
 
-
-        case OPERATION.CZ:
-            return getCodeCZ(operation.operands, symbolMap);
-        case OPERATION.CC:
-            return getCodeCC(operation.operands, symbolMap);
-        case OPERATION.CPE:
-            return getCodeCPE(operation.operands, symbolMap);
-        case OPERATION.CM:
-            return getCodeCM(operation.operands, symbolMap);
-        case OPERATION.CALL:
-            return getCodeCALL(operation.operands, symbolMap);
-
-        case OPERATION.ACI:
-            return getCodeACI(operation.operands, symbolMap);
-        case OPERATION.SBI:
-            return getCodeSBI(operation.operands, symbolMap);
-        case OPERATION.XRI:
-            return getCodeXRI(operation.operands, symbolMap);
-        case OPERATION.CPI:
-            return getCodeCPI(operation.operands, symbolMap);
     }
 
 

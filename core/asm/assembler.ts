@@ -1,5 +1,5 @@
 import {Parser} from "./parser";
-import {AsmOperand, AsmOperands, AsmOperation, Lines, SymbolMap} from "./interface";
+import {AsmOperand, AsmOperation, Lines, SymbolMap} from "./interface";
 import {OPERATION} from "../interface/operation/operation.types";
 import {HighLowFN} from "../util/high-low.function";
 
@@ -45,15 +45,10 @@ export function buildSymbolMap(lines: Lines) {
 
 export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[] {
 
-    function singleValue(value: number): number[] {
-        if (!operation.operands) {
-            return [value];
-        }
-        assertOperandCount(operation.operands, 0);
-        return [value];
-    }
+    const operands = operation.operands;
 
-    function assertOperandCount(operands: AsmOperands, count: number) {
+
+    function assertOperandCount(count: number) {
         if (operands.length !== count) {
             throw new Error('operand count not ' + count + ' (' + operands.length + ' given)')
         }
@@ -75,24 +70,24 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         return value
     }
 
-    function resolveSymbol(symbolMap: SymbolMap, operand: AsmOperand): AsmOperand {
+    function resolveSymbol(operand: AsmOperand): AsmOperand {
         const value = symbolMap[operand];
         if (value !== undefined) {
-            return resolveSymbol(symbolMap, value)
+            return resolveSymbol(value)
         }
         return operand;
     }
 
-    function getRegisterPair(operand: AsmOperand, symbolMap: SymbolMap) {
-        const symbol = resolveSymbol(symbolMap, operand);
+    function getRegisterPair(operand: AsmOperand) {
+        const symbol = resolveSymbol(operand);
         if (+symbol & 1) {
             throw new Error('invalid value')
         }
         return assertNumericValue(symbol) >> 1
     }
 
-    function getRegister(operand: AsmOperand, symbolMap: SymbolMap) {
-        return assertValueBetween(assertNumericValue(resolveSymbol(symbolMap, operand)), 0, 7);
+    function getRegister(operand: AsmOperand) {
+        return assertValueBetween(assertNumericValue(resolveSymbol(operand)), 0, 7);
     }
 
     function lowHigh(number: number): number[] {
@@ -105,243 +100,177 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
         return assertValueBetween(number, 0, 0xff);
     }
 
-    function getCodeRegisterOperation(code: number, operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 1);
-        const reg = getRegister(operands[0], symbolMap);
+    function getCodeSingleValue(value: number): number[] {
+        if (!operands) {
+            return [value];
+        }
+        assertOperandCount(0);
+        return [value];
+    }
+
+    function getCodeRegisterOperation(code: number): number[] {
+        assertOperandCount(1);
+        const reg = getRegister(operands[0]);
         return [code + (reg << 3)];
 
     }
 
-    function getCodeRegisterPairOperation(code: number, operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 1);
-        const reg = assertValueBetween(getRegisterPair(operands[0], symbolMap), 0, 3);
+    function getCodeRegisterPairOperation(code: number): number[] {
+        assertOperandCount(1);
+        const reg = assertValueBetween(getRegisterPair(operands[0]), 0, 3);
         return [code + (reg << 4)];
 
     }
 
-    function getCodeHalfRegisterPairOperation(code: number, operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 1);
-        const reg = assertValueBetween(getRegisterPair(operands[0], symbolMap), 0, 1);
+    function getCodeHalfRegisterPairOperation(code: number): number[] {
+        assertOperandCount(1);
+        const reg = assertValueBetween(getRegisterPair(operands[0]), 0, 1);
         return [code + (reg << 4)];
 
     }
 
-    function getCodeImmediateWord(code: number, operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 1);
-        return [code, ...lowHigh(assertNumericValue(resolveSymbol(symbolMap, operands[0])))];
+    function getCodeImmediateWord(code: number): number[] {
+        assertOperandCount(1);
+        return [code, ...lowHigh(assertNumericValue(resolveSymbol(operands[0])))];
     }
 
-    function getCodeImmediateByte(code: number, operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 1);
-        return [code, value(assertNumericValue(resolveSymbol(symbolMap, operands[0])))];
+    function getCodeImmediateByte(code: number): number[] {
+        assertOperandCount(1);
+        return [code, value(assertNumericValue(resolveSymbol(operands[0])))];
     }
 
 
-    function getCodeLXI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 2);
-        const reg = assertValueBetween(getRegisterPair(operands[0], symbolMap), 0, 3);
+    function getCodeLXI(): number[] {
+        assertOperandCount(2);
+        const reg = assertValueBetween(getRegisterPair(operands[0]), 0, 3);
         return [0x01 + (reg << 4), ...lowHigh(assertNumericValue(operands[1]))];
     }
 
-    function getCodePOP(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterPairOperation(0xc1, operands, symbolMap)
+    function getCodePOP(): number[] {
+        return getCodeRegisterPairOperation(0xc1)
     }
 
-    function getCodePUSH(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        return getCodeRegisterPairOperation(0xc5, operands, symbolMap)
+    function getCodePUSH(): number[] {
+        return getCodeRegisterPairOperation(0xc5)
     }
 
 
-    function getCodeMVI(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 2);
-        const reg = getRegister(operands[0], symbolMap);
+    function getCodeMVI(): number[] {
+        assertOperandCount(2);
+        const reg = getRegister(operands[0]);
         return [0x06 + (reg << 3), assertValueBetween(assertNumericValue(operands[1]), 0, 0xff)];
     }
 
 
-    function getCodeMOV(operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 2);
-        const reg0 = getRegister(operands[0], symbolMap);
-        const reg1 = getRegister(operands[1], symbolMap);
+    function getCodeMOV(): number[] {
+        assertOperandCount(2);
+        const reg0 = getRegister(operands[0]);
+        const reg1 = getRegister(operands[1]);
         if (reg0 === 6 && reg1 === 6) {
             throw new Error('invalid operation');
         }
         return [0x40 + reg1 + (reg0 << 3)];
     }
 
-    function getCodeAluA(code: number, operands: AsmOperands, symbolMap: SymbolMap): number[] {
-        assertOperandCount(operands, 1);
-        const reg = getRegister(operands[0], symbolMap);
+    function getCodeAluA(code: number): number[] {
+        assertOperandCount(1);
+        const reg = getRegister(operands[0]);
         return [code + reg];
     }
 
 
-    switch (operation.code) {
-        case OPERATION.NOP:
-            return singleValue(0x00);
-        case OPERATION.LXI:
-            return getCodeLXI(operation.operands, symbolMap);
-        case OPERATION.STAX:
-            return getCodeHalfRegisterPairOperation(0x02, operation.operands, symbolMap);
-        case OPERATION.SHLD:
-            return getCodeImmediateWord(0x22, operation.operands, symbolMap);
-        case OPERATION.STA:
-            return getCodeImmediateWord(0x32, operation.operands, symbolMap);
-        case OPERATION.INX:
-            return getCodeRegisterPairOperation(0x03, operation.operands, symbolMap);
-        case OPERATION.INR:
-            return getCodeRegisterOperation(0x04, operation.operands, symbolMap);
-        case OPERATION.DCR:
-            return getCodeRegisterOperation(0x05, operation.operands, symbolMap);
-        case OPERATION.MVI:
-            return getCodeMVI(operation.operands, symbolMap);
-        case OPERATION.RLC:
-            return singleValue(0x07);
-        case OPERATION.RAL:
-            return singleValue(0x17);
-        case OPERATION.DAA:
-            return singleValue(0x27);
-        case OPERATION.STC:
-            return singleValue(0x37);
-        case OPERATION.DAD:
-            return getCodeRegisterPairOperation(0x09, operation.operands, symbolMap);
-        case OPERATION.LDAX:
-            return getCodeHalfRegisterPairOperation(0x0a, operation.operands, symbolMap);
-        case OPERATION.LHLD:
-            return getCodeImmediateWord(0x2a, operation.operands, symbolMap);
-        case OPERATION.LDA:
-            return getCodeImmediateWord(0x3a, operation.operands, symbolMap);
-        case OPERATION.DCX:
-            return getCodeRegisterPairOperation(0x0b,operation.operands, symbolMap);
+    const map: { [code: string]: () => number[] } = {
+        [OPERATION.NOP]: () => getCodeSingleValue(0x00),
+        [OPERATION.LXI]: () => getCodeLXI(),
 
-        case OPERATION.RRC:
-            return singleValue(0x0f);
-        case OPERATION.RAR:
-            return singleValue(0x1f);
-        case OPERATION.CMA:
-            return singleValue(0x2f);
-        case OPERATION.CMC:
-            return singleValue(0x3f);
-        // -------------
-        case OPERATION.MOV:
-            return getCodeMOV(operation.operands, symbolMap);
-        case OPERATION.HLT:
-            return singleValue(0x76);
-        // -------------
-        case OPERATION.ADD:
-            return getCodeAluA(0x80, operation.operands, symbolMap);
-        case OPERATION.ADC:
-            return getCodeAluA(0x88, operation.operands, symbolMap);
-        case OPERATION.SUB:
-            return getCodeAluA(0x90, operation.operands, symbolMap);
-        case OPERATION.SBB:
-            return getCodeAluA(0x98, operation.operands, symbolMap);
-        case OPERATION.ANA:
-            return getCodeAluA(0xa0, operation.operands, symbolMap);
-        case OPERATION.XRA:
-            return getCodeAluA(0xa8, operation.operands, symbolMap);
-        case OPERATION.ORA:
-            return getCodeAluA(0xb0, operation.operands, symbolMap);
-        case OPERATION.CMP:
-            return getCodeAluA(0xb8, operation.operands, symbolMap);
-        // -------------
-        case OPERATION.RNZ:
-            return singleValue(0xc0);
-        case OPERATION.RNC:
-            return singleValue(0xd0);
-        case OPERATION.RPO:
-            return singleValue(0xe0);
-        case OPERATION.RP:
-            return singleValue(0xf0);
-        case OPERATION.POP:
-            return getCodePOP(operation.operands, symbolMap);
+        [OPERATION.STAX]: () => getCodeHalfRegisterPairOperation(0x02),
+        [OPERATION.LDAX]: () => getCodeHalfRegisterPairOperation(0x0a),
+        [OPERATION.SHLD]: () => getCodeImmediateWord(0x22),
+        [OPERATION.LHLD]: () => getCodeImmediateWord(0x2a),
+        [OPERATION.STA]: () => getCodeImmediateWord(0x32),
+        [OPERATION.LDA]: () => getCodeImmediateWord(0x3a),
 
-        case OPERATION.JNZ:
-            return getCodeImmediateWord(0xc2, operation.operands, symbolMap);
-        case OPERATION.JNC:
-            return getCodeImmediateWord(0xd2, operation.operands, symbolMap);
-        case OPERATION.JPO:
-            return getCodeImmediateWord(0xe2, operation.operands, symbolMap);
-        case OPERATION.JP:
-            return getCodeImmediateWord(0xf2, operation.operands, symbolMap);
+        [OPERATION.INX]: () => getCodeRegisterPairOperation(0x03),
+        [OPERATION.DAD]: () => getCodeRegisterPairOperation(0x09),
+        [OPERATION.DCX]: () => getCodeRegisterPairOperation(0x0b),
 
-        case OPERATION.JZ:
-            return getCodeImmediateWord(0xca, operation.operands, symbolMap);
-        case OPERATION.JC:
-            return getCodeImmediateWord(0xda, operation.operands, symbolMap);
-        case OPERATION.JPE:
-            return getCodeImmediateWord(0xea, operation.operands, symbolMap);
-        case OPERATION.JM:
-            return getCodeImmediateWord(0xfa, operation.operands, symbolMap);
-        case OPERATION.JMP:
-            return getCodeImmediateWord(0xc3, operation.operands, symbolMap);
+        [OPERATION.INR]: () => getCodeRegisterOperation(0x04),
+        [OPERATION.DCR]: () => getCodeRegisterOperation(0x05),
+
+        [OPERATION.RLC]: () => getCodeSingleValue(0x07),
+        [OPERATION.RAL]: () => getCodeSingleValue(0x17),
+        [OPERATION.DAA]: () => getCodeSingleValue(0x27),
+        [OPERATION.STC]: () => getCodeSingleValue(0x37),
+        [OPERATION.RRC]: () => getCodeSingleValue(0x0f),
+        [OPERATION.RAR]: () => getCodeSingleValue(0x1f),
+        [OPERATION.CMA]: () => getCodeSingleValue(0x2f),
+        [OPERATION.CMC]: () => getCodeSingleValue(0x3f),
 
 
-        case OPERATION.XTHL:
-            return singleValue(0xe3);
+        [OPERATION.MVI]: () => getCodeMVI(),
+        [OPERATION.MOV]: () => getCodeMOV(),
+        [OPERATION.HLT]: () => getCodeSingleValue(0x76),
 
-        case OPERATION.CNZ:
-            return getCodeImmediateWord(0xc4, operation.operands, symbolMap);
-        case OPERATION.CNC:
-            return getCodeImmediateWord(0xd4, operation.operands, symbolMap);
-        case OPERATION.CPO:
-            return getCodeImmediateWord(0xe4, operation.operands, symbolMap);
-        case OPERATION.CP:
-            return getCodeImmediateWord(0xf4, operation.operands, symbolMap);
+        [OPERATION.ADD]: () => getCodeAluA(0x80),
+        [OPERATION.ADC]: () => getCodeAluA(0x88),
+        [OPERATION.SUB]: () => getCodeAluA(0x90),
+        [OPERATION.SBB]: () => getCodeAluA(0x98),
+        [OPERATION.ANA]: () => getCodeAluA(0xa0),
+        [OPERATION.XRA]: () => getCodeAluA(0xa8),
+        [OPERATION.ORA]: () => getCodeAluA(0xb0),
+        [OPERATION.CMP]: () => getCodeAluA(0xb8),
 
-        case OPERATION.CZ:
-            return getCodeImmediateWord(0xcc, operation.operands, symbolMap);
-        case OPERATION.CC:
-            return getCodeImmediateWord(0xdc, operation.operands, symbolMap);
-        case OPERATION.CPE:
-            return getCodeImmediateWord(0xec, operation.operands, symbolMap);
-        case OPERATION.CM:
-            return getCodeImmediateWord(0xfc, operation.operands, symbolMap);
-        case OPERATION.CALL:
-            return getCodeImmediateWord(0xcd, operation.operands, symbolMap);
+        [OPERATION.ADI]: () => getCodeImmediateByte(0xc6),
+        [OPERATION.SUI]: () => getCodeImmediateByte(0xd6),
+        [OPERATION.ANI]: () => getCodeImmediateByte(0xe6),
+        [OPERATION.ORI]: () => getCodeImmediateByte(0xf6),
+        [OPERATION.ACI]: () => getCodeImmediateByte(0xce),
+        [OPERATION.SBI]: () => getCodeImmediateByte(0xde),
+        [OPERATION.XRI]: () => getCodeImmediateByte(0xee),
+        [OPERATION.CPI]: () => getCodeImmediateByte(0xfe),
+
+        [OPERATION.PUSH]: () => getCodePUSH(),
+        [OPERATION.POP]: () => getCodePOP(),
+
+        [OPERATION.RNZ]: () => getCodeSingleValue(0xc0),
+        [OPERATION.RNC]: () => getCodeSingleValue(0xd0),
+        [OPERATION.RPO]: () => getCodeSingleValue(0xe0),
+        [OPERATION.RP]: () => getCodeSingleValue(0xf0),
+        [OPERATION.RZ]: () => getCodeSingleValue(0xc8),
+        [OPERATION.RC]: () => getCodeSingleValue(0xd8),
+        [OPERATION.RPE]: () => getCodeSingleValue(0xe8),
+        [OPERATION.RM]: () => getCodeSingleValue(0xf8),
+        [OPERATION.RET]: () => getCodeSingleValue(0xc9),
+
+        [OPERATION.JNZ]: () => getCodeImmediateWord(0xc2),
+        [OPERATION.JNC]: () => getCodeImmediateWord(0xd2),
+        [OPERATION.JPO]: () => getCodeImmediateWord(0xe2),
+        [OPERATION.JP]: () => getCodeImmediateWord(0xf2),
+        [OPERATION.JZ]: () => getCodeImmediateWord(0xca),
+        [OPERATION.JC]: () => getCodeImmediateWord(0xda),
+        [OPERATION.JPE]: () => getCodeImmediateWord(0xea),
+        [OPERATION.JM]: () => getCodeImmediateWord(0xfa),
+        [OPERATION.JMP]: () => getCodeImmediateWord(0xc3),
 
 
+        [OPERATION.CNZ]: () => getCodeImmediateWord(0xc4),
+        [OPERATION.CNC]: () => getCodeImmediateWord(0xd4),
+        [OPERATION.CPO]: () => getCodeImmediateWord(0xe4),
+        [OPERATION.CP]: () => getCodeImmediateWord(0xf4),
+        [OPERATION.CZ]: () => getCodeImmediateWord(0xcc),
+        [OPERATION.CC]: () => getCodeImmediateWord(0xdc),
+        [OPERATION.CPE]: () => getCodeImmediateWord(0xec),
+        [OPERATION.CM]: () => getCodeImmediateWord(0xfc),
+        [OPERATION.CALL]: () => getCodeImmediateWord(0xcd),
 
-        case OPERATION.PUSH:
-            return getCodePUSH(operation.operands, symbolMap);
+        [OPERATION.PCHL]: () => getCodeSingleValue(0xe9),
+        [OPERATION.SPHL]: () => getCodeSingleValue(0xf9),
+        [OPERATION.XCHG]: () => getCodeSingleValue(0xeb),
+        [OPERATION.XTHL]: () => getCodeSingleValue(0xe3),
 
-        case OPERATION.ADI:
-            return getCodeImmediateByte(0xc6, operation.operands, symbolMap);
-        case OPERATION.SUI:
-            return getCodeImmediateByte(0xd6, operation.operands, symbolMap);
-        case OPERATION.ANI:
-            return getCodeImmediateByte(0xe6, operation.operands, symbolMap);
-        case OPERATION.ORI:
-            return getCodeImmediateByte(0xf6, operation.operands, symbolMap);
 
-        case OPERATION.ACI:
-            return getCodeImmediateByte(0xce, operation.operands, symbolMap);
-        case OPERATION.SBI:
-            return getCodeImmediateByte(0xde, operation.operands, symbolMap);
-        case OPERATION.XRI:
-            return getCodeImmediateByte(0xee, operation.operands, symbolMap);
-        case OPERATION.CPI:
-            return getCodeImmediateByte(0xfe, operation.operands, symbolMap);
-
-        case OPERATION.RZ:
-            return singleValue(0xc8);
-        case OPERATION.RC:
-            return singleValue(0xd8);
-        case OPERATION.RPE:
-            return singleValue(0xe8);
-        case OPERATION.RM:
-            return singleValue(0xf8);
-        case OPERATION.RET:
-            return singleValue(0xc9);
-        case OPERATION.PCHL:
-            return singleValue(0xe9);
-        case OPERATION.SPHL:
-            return singleValue(0xf9);
-
-        case OPERATION.XCHG:
-            return singleValue(0xeb);
-
-    }
+    };
+    return map[operation.code]()
 
 
 }
@@ -353,11 +282,8 @@ export class Assembler {
     }
 
     public assemble(src: string): number[] {
-
         const lines = this.parser.parse(src);
-
         const symbolMap = buildSymbolMap(lines);
-
         const code: number[] = [];
         for (const line of lines) {
             if (line.operation) {

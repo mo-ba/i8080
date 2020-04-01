@@ -1,10 +1,9 @@
 import 'mocha';
 import {expect} from 'chai';
-import {build} from "../cpu/alu";
-import {IAlu} from "../interface/alu";
-import {IFlags} from "../interface/flags";
-import {WORD_MAX} from "../util/bits";
-import {HighLowFN} from "../util/high-low.function";
+
+import {buildAlu} from "../cpu";
+import {IAlu, IFlags} from "../interface";
+import {HighLowFN, WORD_MAX} from "../util";
 
 const toHighLow = HighLowFN.toHighLow;
 const toNumber = HighLowFN.toNumber;
@@ -29,7 +28,7 @@ describe('alu test', () => {
     let alu: IAlu;
 
     beforeEach(() => {
-        alu = build();
+        alu = buildAlu();
     });
 
     it('should add', () => {

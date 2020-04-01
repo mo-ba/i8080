@@ -1,9 +1,9 @@
 import 'mocha';
 import {expect} from 'chai';
-import {IRegister, REGISTER} from "../interface/register";
-import * as reg from "../cpu/register";
-import * as mem from "../cpu/memory";
-import {HighLowFN} from "../util/high-low.function";
+
+import {IRegister, REGISTER} from "../interface";
+import {HighLowFN} from "../util";
+import {buildMemory, buildRegister} from "../cpu";
 
 const toHighLow = HighLowFN.toHighLow;
 const highLow = HighLowFN.highLow;
@@ -14,7 +14,7 @@ describe('register test', () => {
     let register: IRegister;
 
     beforeEach(() => {
-        register = reg.build(mem.build());
+        register = buildRegister(buildMemory());
     });
 
     const expectFalse = (...flags: boolean[]): void => flags.forEach(f => expect(f).to.eq(false));

@@ -4,7 +4,7 @@ const {watch} = require('gulp');
 
 function pegjs(cb) {
     console.log('run')
-    run('npm run build:parser').exec('', ()=>{
+    run('npm run build.parser').exec('', ()=>{
         cb()
         console.log('done')
     });

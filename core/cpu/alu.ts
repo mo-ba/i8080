@@ -1,18 +1,21 @@
-import {IAlu, IAluResult, IXAluResult} from "../interface/alu";
-import {calcParity, calcSign, calcZero} from "../util/flag.function";
-import {NO_FLAGS} from "./flags";
+import {HighLow, IAlu, IAluResult, IXAluResult} from "../interface";
 import {
     AUX_BIT,
     BYTE_CARRY_BIT,
     BYTE_HIGH_BITS,
     BYTE_MAX,
+    calcParity,
+    calcSign,
+    calcZero,
     DECIMAL_ADJUST,
     DECIMAL_MAX_DIGIT,
     NIBBLE_LENGTH,
-    NIBBLE_MAX
-} from "../util/bits";
-import {xAddWithFlags, xDecrementWithFlags, xIncrementWithFlags} from "../util/arithmetic";
-import {HighLow} from "../interface/register";
+    NIBBLE_MAX,
+    xAddWithFlags,
+    xDecrementWithFlags,
+    xIncrementWithFlags
+} from "../util";
+import {NO_FLAGS} from "./flags";
 
 function calcFlags(a: number): {
     zero: boolean;
@@ -163,6 +166,6 @@ class Alu implements IAlu {
 
 }
 
-export function build(): IAlu {
+export function buildAlu(): IAlu {
     return new Alu()
 }

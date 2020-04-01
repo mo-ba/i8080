@@ -6,7 +6,7 @@ const child_process = require('child_process');
 describe('Parser test', () => {
 
     before(() => {
-        child_process.execSync('npm run build:parser')
+        child_process.execSync('npm run build.parser')
     })
 
     it('should parse 1', () => {

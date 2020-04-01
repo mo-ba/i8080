@@ -7,7 +7,7 @@
     "test.asm": "npm run build:parser; cross-env TS_NODE_FILES=true mocha --exit --require ts-node/register --colors core/asm/**/*.spec.ts",
     "test": "npm run build:parser; cross-env TS_NODE_FILES=true mocha --exit --require ts-node/register --colors core/**/*.spec.ts",
     "coverage": "nyc npm run test",
-    "build:parser": "pegjs --plugin ./node_modules/ts-pegjs -o core/asm/asm.gram.ts  peg.src/asm.pegjs"
+    "build.parser": "pegjs --plugin ./node_modules/ts-pegjs -o core/asm/asm.gram.ts  peg.src/asm.pegjs"
   },
   "keywords": [],
   "author": "",

@@ -1,14 +1,19 @@
-import {IExecute} from "../interface/execute";
-import {HighLow, IRegister, REGISTER} from "../interface/register";
-import {IAlu, IAluResult, IXAluResult} from "../interface/alu";
-import {OPERATION} from "../interface/operation/operation.types";
-import {OperationT} from "../interface/operation/operation.all";
-import {IFlags} from "../interface/flags";
-import {IncOrDecOperation} from "../interface/operation/arithmetic-logic.operation";
-import {BYTE_MAX} from "../util/bits";
-import {IMemory} from "../interface/memory";
-import {xIncrement} from "../util/arithmetic";
-import {BranchToOperation} from "../interface/operation/branch/branch.operation";
+import {
+    BranchToOperation,
+    HighLow,
+    IAlu,
+    IAluResult,
+    IExecute,
+    IFlags,
+    IMemory,
+    IncOrDecOperation,
+    IRegister,
+    IXAluResult,
+    OPERATION,
+    OperationT,
+    REGISTER
+} from "../interface";
+import {BYTE_MAX, xIncrement} from "../util";
 
 export const XCMAP: { [n: string]: number } = {};
 for (let o in OPERATION) {
@@ -499,6 +504,6 @@ class Execute implements IExecute {
     }
 }
 
-export function build(register: IRegister, alu: IAlu, memory: IMemory): IExecute {
+export function buildExecute(register: IRegister, alu: IAlu, memory: IMemory): IExecute {
     return new Execute(register, alu, memory)
 }

@@ -1,17 +1,9 @@
-import {IMemory} from "../interface/memory";
-import * as mem from "../cpu/memory";
-import * as reg from "../cpu/register";
-import * as fd from "../cpu/fetch.decode";
-import {XRMAP} from "../cpu/fetch.decode";
-import {IRegister, REGISTER} from "../interface/register";
-import {IFetchDecode} from "../interface/fetch.decode";
-import {xIncrement} from "../util/arithmetic";
-import {OperationT} from "../interface/operation/operation.all";
-import {OPERATION} from "../interface/operation/operation.types";
+import 'mocha';
 import {expect} from "chai";
-import {RegisterOperation} from "../interface/operation/operation";
 
-import {HighLowFN} from "../util/high-low.function";
+import {IFetchDecode, IMemory, IRegister, OPERATION, OperationT, REGISTER, RegisterOperation} from "../interface";
+import {buildFetch, buildMemory, buildRegister, XRMAP} from "../cpu";
+import {HighLowFN, xIncrement} from "../util";
 
 const toHighLow = HighLowFN.toHighLow;
 const highLow = HighLowFN.highLow;
@@ -40,9 +32,10 @@ function printCX(XRMAP: { [p: number]: OperationT }) {
 }
 
 function reset() {
-    memory = mem.build();
-    register = reg.build(memory);
-    fetchDecode = fd.build(memory, register);
+    memory = buildMemory();
+    register = buildRegister(memory);
+    fetchDecode = buildFetch(memory, register);
+
 }
 
 describe('fetch decode', () => {

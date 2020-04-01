@@ -18,10 +18,15 @@ export function buildSymbolMap(lines: Lines) {
     function getSize(code: string): number {
 
         const size: { [code: string]: number } = {
-            LXI: 3, MVI: 2, SHLD: 3, LHLD: 3, STA: 3, LDA: 3, JNZ: 3, JMP: 3, CNZ: 3, ADI: 2, JZ: 3, CZ: 3,
-            CALL: 3, ACI: 2, JNC: 3, OUT: 2, CNC: 3, SUI: 2, JC: 3, IN: 2, CC: 3, SBI: 2, JPO: 3, CPO: 3,
-            ANI: 2, JPE: 3, CPE: 3, XRI: 2, JP: 3, CP: 3, ORI: 2, JM: 3, CM: 3, CPI: 2
-        };
+                [OPERATION.XRI]: 2, [OPERATION.ORI]: 2, [OPERATION.SUI]: 2, [OPERATION.JM]: 3, [OPERATION.ANI]: 2,
+                [OPERATION.MVI]: 2, [OPERATION.ADI]: 2, [OPERATION.ACI]: 2, [OPERATION.CPI]: 2, [OPERATION.SBI]: 2,
+                [OPERATION.LXI]: 3, [OPERATION.JP]: 3, [OPERATION.SHLD]: 3, [OPERATION.LHLD]: 3, [OPERATION.STA]: 3,
+                [OPERATION.LDA]: 3, [OPERATION.JNZ]: 3, [OPERATION.JMP]: 3, [OPERATION.CNZ]: 3, [OPERATION.CP]: 3,
+                [OPERATION.JZ]: 3, [OPERATION.CZ]: 3, [OPERATION.CALL]: 3, [OPERATION.JNC]: 3, [OPERATION.CPE]: 3,
+                [OPERATION.CNC]: 3, [OPERATION.JC]: 3, [OPERATION.CC]: 3, [OPERATION.JPE]: 3, [OPERATION.CPO]: 3,
+                [OPERATION.JPO]: 3, [OPERATION.CM]: 3,
+            }
+        ;
         return size[code] || 1
     }
 

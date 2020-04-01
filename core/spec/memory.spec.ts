@@ -1,7 +1,9 @@
-import * as mem from "../cpu/memory";
-import {IMemory} from "../interface/memory";
-import {HighLowFN} from "../util/high-low.function";
+import 'mocha';
 import {expect} from "chai";
+
+import {IMemory} from "../interface";
+import {HighLowFN} from "../util";
+import {buildMemory} from "../cpu";
 
 const highLow = HighLowFN.highLow;
 describe('memory test', () => {
@@ -9,7 +11,7 @@ describe('memory test', () => {
     let memory: IMemory;
 
     beforeEach(() => {
-        memory = mem.build();
+        memory = buildMemory();
     });
 
 

@@ -1,11 +1,9 @@
 import 'mocha';
 import {expect} from 'chai';
 
-import {build as memBuild} from "../cpu/memory";
-import {build as processorBuild} from "../cpu/processor";
-import {IMemory} from "../interface/memory";
-import {IProcessor} from "../interface/processor";
-import {HighLowFN} from "../util/high-low.function";
+import {buildMemory, buildProcessor} from "../cpu";
+import {IMemory, IProcessor} from "../interface";
+import {HighLowFN} from "../util";
 
 let memory: IMemory;
 let processor: IProcessor;
@@ -13,8 +11,8 @@ let processor: IProcessor;
 describe('processor test', () => {
 
     beforeEach(() => {
-        memory = memBuild();
-        processor = processorBuild(memory)
+        memory = buildMemory();
+        processor = buildProcessor(memory)
     });
 
     it('should stop', () => {

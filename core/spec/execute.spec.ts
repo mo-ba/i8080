@@ -1,20 +1,12 @@
-import * as reg from "../cpu/register";
-import * as mem from "../cpu/memory";
-import * as alu from "../cpu/alu";
-import * as exec from "../cpu/execute";
-import {XCMAP} from "../cpu/execute";
-import {IExecute} from "../interface/execute";
-import {HighLow, IRegister, REGISTER, registerList} from "../interface/register";
-import {OPERATION} from "../interface/operation/operation.types";
+import 'mocha';
 import {expect} from "chai";
-import {BYTE_MAX} from "../util/bits";
-import {calcParity, calcSign, calcZero} from "../util/flag.function";
-import {HighLowFN} from "../util/high-low.function";
-import {IMemory} from "../interface/memory";
-import {xDecrement, xIncrement} from "../util/arithmetic";
 
-const toHighLow = HighLowFN.toHighLow
-const highLow = HighLowFN.highLow
+import {buildAlu, buildExecute, buildMemory, buildRegister, XCMAP} from "../cpu";
+import {HighLow, IExecute, IMemory, IRegister, OPERATION, REGISTER, registerList} from "../interface";
+import {BYTE_MAX, calcParity, calcSign, calcZero, HighLowFN, xDecrement, xIncrement} from "../util";
+
+const toHighLow = HighLowFN.toHighLow;
+const highLow = HighLowFN.highLow;
 
 const binary = (s: string) => parseInt(s, 2);
 
@@ -27,14 +19,14 @@ function randomFlag(): boolean {
 }
 
 function testRandomSZAPFlags(it: () => void) {
-    const zero = randomFlag()
-    register.setZero(zero)
-    const aux = randomFlag()
-    register.setAuxiliary(aux)
-    const parity = randomFlag()
-    register.setParity(parity)
-    const sign = randomFlag()
-    register.setSign(sign)
+    const zero = randomFlag();
+    register.setZero(zero);
+    const aux = randomFlag();
+    register.setAuxiliary(aux);
+    const parity = randomFlag();
+    register.setParity(parity);
+    const sign = randomFlag();
+    register.setSign(sign);
 
     it();
     expect(register.getZero()).to.eq(zero);
@@ -44,16 +36,16 @@ function testRandomSZAPFlags(it: () => void) {
 }
 
 function testRandomFlags(it: () => void) {
-    const carry = randomFlag()
-    register.setCarry(carry)
+    const carry = randomFlag();
+    register.setCarry(carry);
     testRandomSZAPFlags(it);
     expect(register.getCarry()).to.eq(carry);
 }
 
 function rebuild() {
-    memory = mem.build();
-    register = reg.build(memory);
-    executor = exec.build(register, alu.build(), memory);
+    memory = buildMemory();
+    register = buildRegister(memory);
+    executor = buildExecute(register, buildAlu(), memory);
 }
 
 describe('exec', () => {
@@ -539,8 +531,8 @@ describe('exec', () => {
 
         it('should PCHL', () => {
 
-            const position = highLow(23, 45)
-            register.storeX(REGISTER.H, position)
+            const position = highLow(23, 45);
+            register.storeX(REGISTER.H, position);
             executor.execute({type: OPERATION.PCHL});
             expect(register.getProgramCounter()).to.eql(position);
 
@@ -548,7 +540,7 @@ describe('exec', () => {
         });
         it('should JMP', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             executor.execute({type: OPERATION.JMP, position});
             expect(register.getProgramCounter()).to.eql(position);
 
@@ -556,7 +548,7 @@ describe('exec', () => {
         });
         it('should JNZ', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setZero(true);
             executor.execute({type: OPERATION.JNZ, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -567,7 +559,7 @@ describe('exec', () => {
         });
         it('should JZ', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setZero(false);
             executor.execute({type: OPERATION.JZ, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -578,7 +570,7 @@ describe('exec', () => {
         });
         it('should JNC', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setCarry(true);
             executor.execute({type: OPERATION.JNC, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -589,7 +581,7 @@ describe('exec', () => {
         });
         it('should JC', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setCarry(false);
             executor.execute({type: OPERATION.JC, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -599,7 +591,7 @@ describe('exec', () => {
 
         });
         it('should JPO', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setParity(false);
             executor.execute({type: OPERATION.JPO, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -610,7 +602,7 @@ describe('exec', () => {
         });
 
         it('should JPE', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setParity(true);
             executor.execute({type: OPERATION.JPE, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -620,7 +612,7 @@ describe('exec', () => {
 
         });
         it('should JM', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setSign(false);
             executor.execute({type: OPERATION.JM, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -631,7 +623,7 @@ describe('exec', () => {
         });
 
         it('should JP', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             register.setSign(true);
             executor.execute({type: OPERATION.JP, position});
             expect(register.getProgramCounter()).to.eql(toHighLow(0));
@@ -674,7 +666,7 @@ describe('exec', () => {
         it('should CNZ', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setZero(true);
                 executor.execute({type: OPERATION.CNZ, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -688,7 +680,7 @@ describe('exec', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
 
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setZero(false);
                 executor.execute({type: OPERATION.CZ, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -701,7 +693,7 @@ describe('exec', () => {
         it('should CNC', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setCarry(true);
                 executor.execute({type: OPERATION.CNC, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -715,7 +707,7 @@ describe('exec', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
 
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setCarry(false);
                 executor.execute({type: OPERATION.CC, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -728,7 +720,7 @@ describe('exec', () => {
         it('should CPO', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setParity(false);
                 executor.execute({type: OPERATION.CPO, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -742,7 +734,7 @@ describe('exec', () => {
         it('should CPE', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setParity(true);
                 executor.execute({type: OPERATION.CPE, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -755,7 +747,7 @@ describe('exec', () => {
         it('should CM', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setSign(false);
                 executor.execute({type: OPERATION.CM, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -769,7 +761,7 @@ describe('exec', () => {
         it('should CP', () => {
             const initialPosition = highLow(12, 34);
             checkCall(initialPosition, () => {
-                const position = highLow(23, 45)
+                const position = highLow(23, 45);
                 register.setSign(true);
                 executor.execute({type: OPERATION.CP, position});
                 expect(register.getProgramCounter()).to.eql(initialPosition);
@@ -789,7 +781,7 @@ describe('exec', () => {
 
         it('should RET', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             executor.execute({type: OPERATION.RET});
             expect(register.getProgramCounter()).to.eql(position);
@@ -798,7 +790,7 @@ describe('exec', () => {
         });
         it('should RNZ', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             expect(register.push(position));
             register.setZero(true);
@@ -811,7 +803,7 @@ describe('exec', () => {
         });
         it('should RZ', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setZero(false);
             executor.execute({type: OPERATION.RZ});
@@ -823,7 +815,7 @@ describe('exec', () => {
         });
         it('should RNC', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setCarry(true);
             executor.execute({type: OPERATION.RNC});
@@ -835,7 +827,7 @@ describe('exec', () => {
         });
         it('should RC', () => {
 
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setCarry(false);
             executor.execute({type: OPERATION.RC});
@@ -846,7 +838,7 @@ describe('exec', () => {
 
         });
         it('should RPO', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setParity(false);
             executor.execute({type: OPERATION.RPO});
@@ -858,7 +850,7 @@ describe('exec', () => {
         });
 
         it('should RPE', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setParity(true);
             executor.execute({type: OPERATION.RPE});
@@ -869,7 +861,7 @@ describe('exec', () => {
 
         });
         it('should RM', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setSign(false);
             executor.execute({type: OPERATION.RM});
@@ -881,7 +873,7 @@ describe('exec', () => {
         });
 
         it('should RP', () => {
-            const position = highLow(23, 45)
+            const position = highLow(23, 45);
             expect(register.push(position));
             register.setSign(true);
             executor.execute({type: OPERATION.RP});
@@ -1244,10 +1236,10 @@ describe('exec', () => {
 
         it('should LDAX B', () => {
             testRandomFlags(() => {
-                const addr = toHighLow(1465)
+                const addr = toHighLow(1465);
                 const val = 42;
-                memory.store(addr, val)
-                register.storeX(REGISTER.B, addr)
+                memory.store(addr, val);
+                register.storeX(REGISTER.B, addr);
                 executor.execute({type: OPERATION.LDAX, register: REGISTER.B});
                 expect(register.load(REGISTER.A)).to.eql(val);
             });
@@ -1255,19 +1247,19 @@ describe('exec', () => {
 
         it('should LDAX D', () => {
             testRandomFlags(() => {
-                const addr = toHighLow(1465)
+                const addr = toHighLow(1465);
                 const val = 42;
-                memory.store(addr, val)
-                register.storeX(REGISTER.D, addr)
+                memory.store(addr, val);
+                register.storeX(REGISTER.D, addr);
                 executor.execute({type: OPERATION.LDAX, register: REGISTER.D});
                 expect(register.load(REGISTER.A)).to.eql(val);
             });
         });
         it('should LDA', () => {
             testRandomFlags(() => {
-                const addr = toHighLow(1465)
+                const addr = toHighLow(1465);
                 const val = 42;
-                memory.store(addr, val)
+                memory.store(addr, val);
                 executor.execute({type: OPERATION.LDA, value: addr});
                 expect(register.load(REGISTER.A)).to.eql(val);
             });
@@ -1276,10 +1268,10 @@ describe('exec', () => {
 
         it('should STAX B', () => {
             testRandomFlags(() => {
-                const addr = toHighLow(1465)
+                const addr = toHighLow(1465);
                 const val = 42;
-                register.store(REGISTER.A, val)
-                register.storeX(REGISTER.B, addr)
+                register.store(REGISTER.A, val);
+                register.storeX(REGISTER.B, addr);
                 executor.execute({type: OPERATION.STAX, register: REGISTER.B});
                 expect(memory.load(addr)).to.eql(val);
             });
@@ -1288,10 +1280,10 @@ describe('exec', () => {
 
         it('should STAX D', () => {
             testRandomFlags(() => {
-                const addr = toHighLow(1465)
+                const addr = toHighLow(1465);
                 const val = 42;
-                register.store(REGISTER.A, val)
-                register.storeX(REGISTER.D, addr)
+                register.store(REGISTER.A, val);
+                register.storeX(REGISTER.D, addr);
                 executor.execute({type: OPERATION.STAX, register: REGISTER.D});
                 expect(memory.load(addr)).to.eql(val);
             });
@@ -1299,9 +1291,9 @@ describe('exec', () => {
 
         it('should STA', () => {
             testRandomFlags(() => {
-                const addr = toHighLow(1465)
+                const addr = toHighLow(1465);
                 const val = 42;
-                register.store(REGISTER.A, val)
+                register.store(REGISTER.A, val);
                 executor.execute({type: OPERATION.STA, value: addr});
                 expect(memory.load(addr)).to.eql(val);
             });
@@ -1309,10 +1301,10 @@ describe('exec', () => {
 
         it('should SHLD', () => {
             testRandomFlags(() => {
-                const addrA = highLow(0x1, 0x0A)
-                const addrB = highLow(0x1, 0x0B)
-                const val = highLow(0xae, 0x29)
-                register.storeX(REGISTER.H, val)
+                const addrA = highLow(0x1, 0x0A);
+                const addrB = highLow(0x1, 0x0B);
+                const val = highLow(0xae, 0x29);
+                register.storeX(REGISTER.H, val);
                 executor.execute({type: OPERATION.SHLD, value: addrA});
                 expect(memory.load(addrA)).to.eql(val.low);
                 expect(memory.load(addrB)).to.eql(val.high);
@@ -1322,9 +1314,9 @@ describe('exec', () => {
 
         it('should LHLD', () => {
             testRandomFlags(() => {
-                const addrA = highLow(0x1, 0x0A)
-                const addrB = highLow(0x1, 0x0B)
-                const val = highLow(0xae, 0x29)
+                const addrA = highLow(0x1, 0x0A);
+                const addrB = highLow(0x1, 0x0B);
+                const val = highLow(0xae, 0x29);
 
                 memory.store(addrA, val.low);
                 memory.store(addrB, val.high);
@@ -1336,8 +1328,8 @@ describe('exec', () => {
         it('should SPHL', () => {
             testRandomFlags(() => {
 
-                const val = highLow(0xae, 0x29)
-                register.storeX(REGISTER.H, val)
+                const val = highLow(0xae, 0x29);
+                register.storeX(REGISTER.H, val);
                 executor.execute({type: OPERATION.SPHL});
                 expect(register.loadX(REGISTER.H)).to.eql(val);
                 expect(register.getStackPointer()).to.eql(val);
@@ -1345,10 +1337,10 @@ describe('exec', () => {
         });
         it('should XCHG', () => {
 
-            const valA = highLow(0xae, 0x29)
-            const valB = highLow(0xf5, 0x34)
-            register.storeX(REGISTER.D, valA)
-            register.storeX(REGISTER.H, valB)
+            const valA = highLow(0xae, 0x29);
+            const valB = highLow(0xf5, 0x34);
+            register.storeX(REGISTER.D, valA);
+            register.storeX(REGISTER.H, valB);
             executor.execute({type: OPERATION.XCHG});
             expect(register.loadX(REGISTER.H)).to.eql(valA);
             expect(register.loadX(REGISTER.D)).to.eql(valB);
@@ -1359,16 +1351,16 @@ describe('exec', () => {
         it('should XTHL', () => {
             testRandomFlags(() => {
 
-                const valA = highLow(0xae, 0x29)
-                const valB = highLow(0xae, 0x29)
-                const addressA = highLow(0x43, 0x45)
-                const addressB = highLow(0x43, 0x46)
+                const valA = highLow(0xae, 0x29);
+                const valB = highLow(0xae, 0x29);
+                const addressA = highLow(0x43, 0x45);
+                const addressB = highLow(0x43, 0x46);
 
                 memory.store(addressA, valA.low);
                 memory.store(addressB, valA.high);
 
-                register.setStackPointer(addressA)
-                register.storeX(REGISTER.H, valB)
+                register.setStackPointer(addressA);
+                register.storeX(REGISTER.H, valB);
                 executor.execute({type: OPERATION.XTHL});
 
 
@@ -1492,26 +1484,26 @@ describe('exec', () => {
             executor.execute({type: OPERATION.MVI, value: 1, to: REGISTER.A});
             executor.execute({type: OPERATION.MVI, value: 1, to: REGISTER.B});
             executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
-            expect(register.load(REGISTER.A)).to.eq(1)
+            expect(register.load(REGISTER.A)).to.eq(1);
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
             executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
-            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
-            expect(register.load(REGISTER.A)).to.eq(2)
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
+            expect(register.load(REGISTER.A)).to.eq(2);
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
             executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
-            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
-            expect(register.load(REGISTER.A)).to.eq(3)
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
+            expect(register.load(REGISTER.A)).to.eq(3);
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
             executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
-            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
-            expect(register.load(REGISTER.A)).to.eq(5)
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
+            expect(register.load(REGISTER.A)).to.eq(5);
 
             executor.execute({type: OPERATION.ADD, register: REGISTER.B});
             executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
-            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A });
+            executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
 
             expect(register.load(REGISTER.A)).to.eq(8)
 
@@ -1524,8 +1516,8 @@ describe('exec', () => {
             rebuild();
         });
         it('summary', () => {
-            const missing = Object.entries(XCMAP).filter(([k, v]) => !v).map(([k, v]) => [v, k,])
-            console.log(missing)
+            const missing = Object.entries(XCMAP).filter(([k, v]) => !v).map(([k, v]) => [v, k,]);
+            console.log(missing);
             console.log(missing.length + ' of ' + Object.entries(XCMAP).length + ' missing')
         });
     });

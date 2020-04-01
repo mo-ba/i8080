@@ -1,9 +1,14 @@
-import {IFetchDecode} from "../interface/fetch.decode";
-import {IMemory} from "../interface/memory";
-import {HighLow, IHasProgramCounter, IRegister, REGISTER} from "../interface/register";
-import {OperationT} from "../interface/operation/operation.all";
-import {xIncrement} from "../util/arithmetic";
-import {OPERATION} from "../interface/operation/operation.types";
+import {
+    HighLow,
+    IFetchDecode,
+    IHasProgramCounter,
+    IMemory,
+    IRegister,
+    OPERATION,
+    OperationT,
+    REGISTER
+} from "../interface";
+import {xIncrement} from "../util";
 
 
 export const XRMAP: { [n: number]: OperationT } = {}
@@ -596,7 +601,7 @@ class FetchDecode implements IFetchDecode {
     }
 }
 
-export function build(
+export function buildFetch(
     memory: IMemory,
     register: IRegister
 ): IFetchDecode {

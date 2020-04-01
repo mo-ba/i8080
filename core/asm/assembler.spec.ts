@@ -12,7 +12,7 @@ describe('Assembler test', () => {
     const assembler = new Assembler(parser);
 
     before(() => {
-        child_process.execSync('npm run build:parser')
+        child_process.execSync('npm run build.parser')
     });
 
     it('should build symbol map', () => {

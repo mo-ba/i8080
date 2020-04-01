@@ -1,6 +1,7 @@
+import 'mocha';
 import {expect} from "chai";
-import {WORD_CARY_BIT} from "../util/bits";
-import {HighLowFN} from "../util/high-low.function";
+
+import {HighLowFN, WORD_CARY_BIT} from "../util";
 
 const toHighLow = HighLowFN.toHighLow;
 const toNumber = HighLowFN.toNumber;
@@ -14,4 +15,4 @@ describe('highLow test', () => {
 
 
     })
-})
+});

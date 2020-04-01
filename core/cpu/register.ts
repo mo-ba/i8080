@@ -1,9 +1,5 @@
-import {HighLow, IRegister, REGISTER} from "../interface/register";
-import {IMemory} from "../interface/memory";
-import {BYTE_MAX} from "../util/bits";
-import {xDecrement, xIncrement} from "../util/arithmetic";
-
-import {HighLowFN} from "../util/high-low.function";
+import {HighLow, IMemory, IRegister, REGISTER} from "../interface";
+import {BYTE_MAX, HighLowFN, xDecrement, xIncrement} from "../util";
 
 const toHighLow = HighLowFN.toHighLow;
 const highLow = HighLowFN.highLow;
@@ -230,6 +226,6 @@ class Register implements IRegister {
 
 }
 
-export function build(memory: IMemory): IRegister {
+export function buildRegister(memory: IMemory): IRegister {
     return new Register(memory);
 }

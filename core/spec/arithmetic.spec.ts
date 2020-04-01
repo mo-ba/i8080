@@ -1,8 +1,15 @@
-import {WORD_MAX} from "../util/bits";
-import {xAddWithFlags, xDecrement, xDecrementWithFlags, xIncrement, xIncrementWithFlags} from "../util/arithmetic";
+import 'mocha';
 import {expect} from "chai";
 
-import {HighLowFN} from "../util/high-low.function";
+import {
+    HighLowFN,
+    WORD_MAX,
+    xAddWithFlags,
+    xDecrement,
+    xDecrementWithFlags,
+    xIncrement,
+    xIncrementWithFlags
+} from "../util";
 
 const toHighLow = HighLowFN.toHighLow;
 const toNumber = HighLowFN.toNumber;

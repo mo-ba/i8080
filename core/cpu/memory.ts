@@ -1,12 +1,10 @@
-import {HighLow} from "../interface/register";
-import {IMemory} from "../interface/memory";
-import {BYTE_CARRY_BIT, BYTE_MAX,WORD_CARY_BIT} from "../util/bits";
-import {HighLowFN} from "../util/high-low.function";
+import {HighLow, IMemory} from "../interface";
+import {BYTE_MAX, HighLowFN, WORD_CARY_BIT} from "../util";
 
 
 export class Memory implements IMemory {
 
-    private readonly data= new Int8Array(WORD_CARY_BIT)
+    private readonly data = new Int8Array(WORD_CARY_BIT)
 
     constructor() {
         // this.data = new Array(BYTE_CARRY_BIT)
@@ -25,6 +23,6 @@ export class Memory implements IMemory {
 
 }
 
-export function build(): IMemory {
+export function buildMemory(): IMemory {
     return new Memory();
 }

@@ -25,7 +25,7 @@ describe('processor test', () => {
         const program = [
             0x3e, 0x01,         // a = 1
             0x06, 0x01,         // b = 1
-            0x16, 0x05,         // d = 4
+            0x16, 0x05,         // d = 5
 
             // LOOP:
             0x4f,               // c = a

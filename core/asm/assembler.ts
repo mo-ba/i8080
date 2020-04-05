@@ -50,7 +50,7 @@ export function buildSymbolMap(lines: Lines) {
 
 export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[] {
 
-    const operands = operation.operands;
+    const operands = operation.operands || [];
 
 
     function assertOperandCount(count: number) {

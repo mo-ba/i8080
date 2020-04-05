@@ -11,6 +11,7 @@
       "dom"
     ],
     "allowJs": true,
+    "strict": true,
     "preserveConstEnums": true
   },
   "exclude": [

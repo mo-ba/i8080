@@ -56,30 +56,6 @@ class FetchDecode implements IFetchDecode {
 
         switch (opCode) {
 
-            case 0x00:
-            case 0x10:
-            case 0x20:
-            case 0x30:
-            case 0x08:
-            case 0x18:
-            case 0x28:
-            case 0x38:
-                return {type: OPERATION.NOP};
-
-            case 0xc7: // RST
-            case 0xd7: // RST
-            case 0xe7: // RST
-            case 0xf7: // RST
-            case 0xcf: // RST
-            case 0xdf: // RST
-            case 0xef: // RST
-            case 0xff: // RST
-            case 0xd3: // OUT
-            case 0xdb: // IN
-            case 0xf3: // DI
-            case 0xfb: // EI
-                return {type: OPERATION._};
-
             case 0x07:
                 return {type: OPERATION.RLC};
             case 0x0f:
@@ -206,7 +182,6 @@ class FetchDecode implements IFetchDecode {
             case 0x3e:
                 return {type: OPERATION.MVI, to: REGISTER.A, value: this.fetch()};
 
-// ----------------------------
             case 0x40:
                 return {type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.B};
             case 0x41:
@@ -342,9 +317,6 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.MOV, to: REGISTER.A, from: REGISTER.M};
             case 0x7f:
                 return {type: OPERATION.MOV, to: REGISTER.A, from: REGISTER.A};
-
-
-// ----------------------------
 
 
             case 0x80:
@@ -484,7 +456,6 @@ class FetchDecode implements IFetchDecode {
             case 0xbf:
                 return {type: OPERATION.CMP, register: REGISTER.A};
 
-// ----------------------------
 
             case 0xc6:
                 return {type: OPERATION.ADI, value: this.fetch()};
@@ -597,6 +568,34 @@ class FetchDecode implements IFetchDecode {
             case 0xed:
             case 0xfd:
                 return {type: OPERATION.CALL, position: this.fetchWord()};
+
+
+            case 0xc7: // RST
+            case 0xd7: // RST
+            case 0xe7: // RST
+            case 0xf7: // RST
+            case 0xcf: // RST
+            case 0xdf: // RST
+            case 0xef: // RST
+            case 0xff: // RST
+            case 0xd3: // OUT
+            case 0xdb: // IN
+            case 0xf3: // DI
+            case 0xfb: // EI
+                console.error('opCode ' + opCode.toString(16) + ' not supported')
+                return {type: OPERATION._};
+
+
+            case 0x00:
+            case 0x10:
+            case 0x20:
+            case 0x30:
+            case 0x08:
+            case 0x18:
+            case 0x28:
+            case 0x38:
+            default:
+                return {type: OPERATION.NOP};
         }
     }
 }

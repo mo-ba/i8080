@@ -54,10 +54,11 @@ class Register implements IRegister {
 
     private stackPointer: HighLow;
     private programCounter: HighLow;
-    private isStopped: boolean;
+    private isStopped = false;
 
     constructor(private readonly memory: IMemory) {
-        this.reset();
+        this.stackPointer = toHighLow(0xffff);
+        this.programCounter = toHighLow(0);
     }
 
 
@@ -183,12 +184,6 @@ class Register implements IRegister {
     setStopped(value: boolean): IRegister {
         this.isStopped = value;
         return this;
-    }
-
-
-    private reset() {
-        this.stackPointer = toHighLow(0xffff);
-        this.programCounter = toHighLow(0);
     }
 
     private loadMemory(address: HighLow) {

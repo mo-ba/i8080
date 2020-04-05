@@ -1,4 +1,4 @@
-import {calcParity, calcSign, calcZero} from "../util";
+import {calcParity, calcSign, calcZero} from "./index";
 
 describe('flag test', () => {
     it('should calcParity', () => {

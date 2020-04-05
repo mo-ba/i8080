@@ -1,4 +1,4 @@
-import {IDecode, IExecute, IMemory, IProcessor, IRegister} from "../interface";
+import {IDecode, IExecute, IProcessor, IRegister} from "../interface";
 import {IFetch} from "../interface/fetch";
 
 
@@ -12,8 +12,8 @@ export class Processor implements IProcessor {
     }
 
     next() {
-        const code =this.fetch.fetch();
-        const instruction =this.decode.decode(code);
+        const code = this.fetch.fetch();
+        const instruction = this.decode.decode(code);
         this.execute.execute(instruction);
     }
 

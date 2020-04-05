@@ -1,14 +1,22 @@
-import {IRegister, REGISTER} from "../interface";
-import {highLow, toHighLow} from "../util";
-import {Memory, Register} from "../cpu";
+import {IRegister, REGISTER} from "../core/interface";
+import {highLow, toHighLow} from "../core/util";
+import {async, TestBed} from "@angular/core/testing";
+import {TOKEN} from "../app/cpu/tokens";
+import {CpuModule} from "../app/cpu/cpu.module";
 
 
 describe('register test', () => {
 
     let register: IRegister;
-
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                CpuModule
+            ],
+        }).compileComponents();
+    }));
     beforeEach(() => {
-        register = new Register(new Memory());
+        register = TestBed.get(TOKEN.REGISTER);
     });
 
     const expectFalse = (...flags: boolean[]): void => flags.forEach(f => expect(f).toEqual(false));

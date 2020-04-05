@@ -1,6 +1,5 @@
-import {IWord, IMemory, IRegister, REGISTER} from "../interface";
+import {IMemory, IRegister, IWord, REGISTER} from "../interface";
 import {BYTE_MAX, highLow, toHighLow, xDecrement, xIncrement} from "../util";
-
 
 
 enum FLAG_INDEX {

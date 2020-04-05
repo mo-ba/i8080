@@ -1,4 +1,4 @@
-import {toHighLow, toNumber, WORD_CARY_BIT} from "../util";
+import {toHighLow, toNumber, WORD_CARY_BIT} from "./index";
 
 
 describe('highLow test', () => {

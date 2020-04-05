@@ -1,7 +1,9 @@
-import {IDecode, IMemory, IRegister, OPERATION, OperationT, REGISTER, RegisterOperation} from "../interface";
-import {Decode, Fetch, Memory, Register} from "../cpu";
-import {highLow, toHighLow, xIncrement} from "../util";
-import {IFetch} from "../interface/fetch";
+import {IDecode, IMemory, IRegister, OPERATION, OperationT, REGISTER, RegisterOperation} from "../core/interface";
+import {highLow, toHighLow, xIncrement} from "../core/util";
+import {IFetch} from "../core/interface/fetch";
+import {async, TestBed} from "@angular/core/testing";
+import {CpuModule} from "../app/cpu/cpu.module";
+import {TOKEN} from "../app/cpu/tokens";
 
 let memory: IMemory;
 let register: IRegister;
@@ -10,20 +12,26 @@ let fetch: IFetch;
 
 
 function reset() {
-    memory = new Memory();
-    register = new Register(memory);
-    fetch = new Fetch(memory, register);
-    decode = new Decode(fetch);
+    memory = TestBed.get(TOKEN.MEMORY);
+    register = TestBed.get(TOKEN.REGISTER);
+    fetch = TestBed.get(TOKEN.FETCH);
+    decode = TestBed.get(TOKEN.DECODE);
 
 }
 
 describe('fetch decode', () => {
-    describe('fetch decode test', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                CpuModule
+            ],
+        }).compileComponents();
+    }));
 
-
-        beforeEach(() => {
-            reset();
-        });
+    beforeEach(() => {
+        reset();
+    });
+    describe('- alu ROTATE', () => {
 
 
         it('should RLC', () => {
@@ -58,6 +66,8 @@ describe('fetch decode', () => {
             expect(actual).toEqual(expected);
         });
 
+    });
+    describe('- alu accumulator', () => {
         it('should DAA', () => {
             let memAddress = toHighLow(0);
             memory.store(memAddress, 0x27);
@@ -74,6 +84,8 @@ describe('fetch decode', () => {
             expect(actual).toEqual(expected);
         });
 
+    });
+    describe('- alu flag', () => {
         it('should STC', () => {
             let memAddress = toHighLow(0);
             memory.store(memAddress, 0x37);
@@ -93,10 +105,7 @@ describe('fetch decode', () => {
 
     });
 
-    describe('mvi', () => {
-        beforeEach(() => {
-            reset();
-        });
+    describe('- mvi', () => {
 
         it('should mvi B <- 0xDA', () => {
             let memAddress = toHighLow(0);
@@ -170,11 +179,7 @@ describe('fetch decode', () => {
         });
 
     });
-
-    describe('mov', () => {
-        beforeEach(() => {
-            reset();
-        });
+    describe('- mov', () => {
 
         it('should mov C <- D', () => {
             let memAddress = toHighLow(0);
@@ -213,11 +218,7 @@ describe('fetch decode', () => {
 
 
     });
-
-    describe('nop', () => {
-        beforeEach(() => {
-            reset();
-        });
+    describe('- nop', () => {
 
         it('should nop', () => {
             let memAddress = toHighLow(0);
@@ -243,10 +244,8 @@ describe('fetch decode', () => {
 
     });
 
-    describe('16bit', () => {
-        beforeEach(() => {
-            reset();
-        });
+    describe('- 16bit', () => {
+
 
         it('should DAD B', () => {
             let memAddress = toHighLow(0);
@@ -350,10 +349,8 @@ describe('fetch decode', () => {
 
     });
 
-    describe('alu', () => {
-        beforeEach(() => {
-            reset();
-        });
+    describe('- alu general', () => {
+
 
         it('should alu operation', () => {
             let memAddress = toHighLow(0);
@@ -454,12 +451,7 @@ describe('fetch decode', () => {
 
     });
 
-    describe('increment', () => {
-
-
-        beforeEach(() => {
-            reset();
-        });
+    describe('- increment', () => {
 
 
         it('should INR B', () => {
@@ -522,12 +514,7 @@ describe('fetch decode', () => {
 
     });
 
-    describe('decrement', () => {
-
-
-        beforeEach(() => {
-            reset();
-        });
+    describe('- decrement', () => {
 
 
         it('should DCR B', () => {
@@ -590,12 +577,7 @@ describe('fetch decode', () => {
 
     });
 
-    describe('fetch decode stack', () => {
-
-
-        beforeEach(() => {
-            reset();
-        });
+    describe('- stack', () => {
 
         it('should POP B', () => {
             let memAddress = toHighLow(0);
@@ -662,12 +644,8 @@ describe('fetch decode', () => {
         });
     });
 
-    describe('LDA(X) STA(X)', () => {
+    describe('- LDA(X) & STA(X)', () => {
 
-
-        beforeEach(() => {
-            reset();
-        });
 
         it('should STAX B', () => {
             let memAddress = toHighLow(0);
@@ -779,44 +757,24 @@ describe('fetch decode', () => {
 
     });
 
-    describe('not implemented', () => {
+    describe('- not implemented', () => {
 
+        [0xc7, 0xd7, 0xe7, 0xf7, 0xcf, 0xdf, 0xef, 0xff, 0xd3, 0xdb, 0xf3, 0xfb,]
+            .forEach(val => {
+                it('should _', () => {
 
-        beforeEach(() => {
-            reset();
-        });
-
-        it('should _', () => {
-            [0xc7,
-                0xd7,
-                0xe7,
-                0xf7,
-                0xcf,
-                0xdf,
-                0xef,
-                0xff,
-                0xd3,
-                0xdb,
-                0xf3,
-                0xfb,
-            ].forEach(val => {
-                reset();
-                let memAddress = toHighLow(0);
-                memory.store(memAddress, val);
-                const actual = decode.decode(fetch.fetch());
-                const expected: OperationT = {type: OPERATION._};
-                expect(actual).toEqual(expected, val.toString(16));
+                    reset();
+                    let memAddress = toHighLow(0);
+                    memory.store(memAddress, val);
+                    const actual = decode.decode(fetch.fetch());
+                    const expected: OperationT = {type: OPERATION._};
+                    expect(actual).toEqual(expected, val.toString(16));
+                })
             })
-        })
 
     });
 
-    describe('LXI Load Register Pair Immediate', () => {
-
-
-        beforeEach(() => {
-            reset();
-        });
+    describe('- LXI Load Register Pair Immediate', () => {
 
 
         it('should LXI B', () => {
@@ -874,11 +832,7 @@ describe('fetch decode', () => {
     });
 
 
-    describe('fetch decode return', () => {
-
-        beforeEach(() => {
-            reset();
-        });
+    describe('- return', () => {
 
         it('should RNZ', () => {
             let memAddress = toHighLow(0);
@@ -952,13 +906,8 @@ describe('fetch decode', () => {
         });
 
     });
+    describe('- jump', () => {
 
-    describe('fetch decode jump', () => {
-
-
-        beforeEach(() => {
-            reset();
-        });
 
         it('should JNZ', () => {
             const addr = highLow(0, 4);
@@ -1090,14 +1039,7 @@ describe('fetch decode', () => {
         });
 
     });
-
-
-    describe('fetch decode call', () => {
-
-
-        beforeEach(() => {
-            reset();
-        });
+    describe('- call', () => {
 
         it('should CNZ', () => {
             const addr = highLow(0, 4);
@@ -1196,28 +1138,24 @@ describe('fetch decode', () => {
             expect(actual).toEqual(expected);
 
         });
+        [0xcd, 0xdd, 0xed, 0xfd,]
+            .forEach(val => {
 
-        it('should call', () => {
-            [
-                0xcd,
-                0xdd,
-                0xed,
-                0xfd,
-            ].forEach(val => {
-                reset();
-                let memAddress = toHighLow(0);
-                memory.store(memAddress, val);
-                const addr = highLow(23, 56);
-                memAddress = xIncrement(memAddress);
-                memory.store(memAddress, addr.low);
-                memAddress = xIncrement(memAddress);
-                memory.store(memAddress, addr.high);
-                const actual = decode.decode(fetch.fetch());
-                const expected: OperationT = {type: OPERATION.CALL, position: addr};
-                expect(actual).toEqual(expected);
-            })
+                it('- should call: 0x' + val.toString(), () => {
+                    let memAddress = toHighLow(0);
+                    memory.store(memAddress, val);
+                    const addr = highLow(23, 56);
+                    memAddress = xIncrement(memAddress);
+                    memory.store(memAddress, addr.low);
+                    memAddress = xIncrement(memAddress);
+                    memory.store(memAddress, addr.high);
+                    const actual = decode.decode(fetch.fetch());
+                    const expected: OperationT = {type: OPERATION.CALL, position: addr};
+                    expect(actual).toEqual(expected);
+                    console.log({actual, expected})
+                })
 
-        });
+            });
 
     });
 });

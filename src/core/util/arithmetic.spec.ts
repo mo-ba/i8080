@@ -1,12 +1,13 @@
 import {
-    toHighLow, toNumber,
+    toHighLow,
+    toNumber,
     WORD_MAX,
     xAddWithFlags,
     xDecrement,
     xDecrementWithFlags,
     xIncrement,
     xIncrementWithFlags
-} from "../util";
+} from "./index";
 
 
 describe('flag test', () => {

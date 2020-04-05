@@ -1,19 +1,24 @@
-import {Alu, Decode, Execute, Fetch, Memory, Processor, Register} from "../cpu";
-import {IMemory, IProcessor} from "../interface";
-import {toHighLow} from "../util";
+import {IMemory, IProcessor} from "../core/interface";
+import {toHighLow} from "../core/util";
+import {async, TestBed} from "@angular/core/testing";
+import {CpuModule} from "../app/cpu/cpu.module";
+import {TOKEN} from "../app/cpu/tokens";
 
 let memory: IMemory;
 let processor: IProcessor;
 
 describe('processor test', () => {
-
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                CpuModule
+            ],
+        }).compileComponents();
+    }));
     beforeEach(() => {
-        memory = new Memory();
-        const register = new Register(memory);
-        const fetch = new Fetch(memory, register);
-        const decode = new Decode(fetch);
-        const execute = new Execute(register, new Alu(), memory);
-        processor = new Processor(register, execute, decode, fetch)
+
+        memory = TestBed.get(TOKEN.MEMORY);
+        processor = TestBed.get(TOKEN.PROCESSOR);
     });
 
     it('should stop', () => {

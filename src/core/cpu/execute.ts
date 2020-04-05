@@ -1,6 +1,5 @@
 import {
     BranchToOperation,
-    IWord,
     IAlu,
     IAluResult,
     IExecute,
@@ -8,6 +7,7 @@ import {
     IMemory,
     IncOrDecOperation,
     IRegister,
+    IWord,
     IXAluResult,
     OPERATION,
     OperationT,

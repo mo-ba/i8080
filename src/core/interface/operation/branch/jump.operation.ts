@@ -45,6 +45,7 @@ export interface JumpIfNegativeOperation extends BranchToOperation, Operation {
     readonly type: OPERATION.JM
 
 }
+
 export interface LoadProgramCounterOperation extends Operation {
     readonly type: OPERATION.PCHL
 

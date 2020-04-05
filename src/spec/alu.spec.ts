@@ -1,6 +1,6 @@
-import {IAlu, IFlags} from "../interface";
-import {toHighLow, toNumber, WORD_MAX} from "../util";
-import {Alu} from "../cpu";
+import {IAlu, IFlags} from "../core/interface";
+import {toHighLow, toNumber, WORD_MAX} from "../core/util";
+import {Alu} from "../core/cpu";
 
 
 const binary = (s: string) => parseInt(s, 2);

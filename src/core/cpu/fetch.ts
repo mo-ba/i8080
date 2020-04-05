@@ -1,4 +1,4 @@
-import {IWord, IProgramCounter, IMemory} from "../interface";
+import {IMemory, IProgramCounter, IWord} from "../interface";
 import {xIncrement} from "../util";
 import {IFetch} from "../interface/fetch";
 
@@ -6,7 +6,7 @@ import {IFetch} from "../interface/fetch";
 export class Fetch implements IFetch {
     constructor(
         private readonly memory: IMemory,
-        private readonly register: IProgramCounter,
+        private readonly programCounter: IProgramCounter,
     ) {
     }
 
@@ -23,8 +23,8 @@ export class Fetch implements IFetch {
 
 
     private getProgramCounter(): IWord {
-        const counter = this.register.getProgramCounter();
-        this.register.setProgramCounter(xIncrement(counter));
+        const counter = this.programCounter.getProgramCounter();
+        this.programCounter.setProgramCounter(xIncrement(counter));
         return counter;
     }
 }

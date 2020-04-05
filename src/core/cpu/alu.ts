@@ -1,4 +1,4 @@
-import {IWord, IAlu, IAluResult, IXAluResult} from "../interface";
+import {IAlu, IAluResult, IWord, IXAluResult} from "../interface";
 import {
     AUX_BIT,
     BYTE_CARRY_BIT,

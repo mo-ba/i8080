@@ -120,9 +120,9 @@ export interface DecimalAdjustAccumulatorOperation extends Operation {
 
 
 export type MiscAluOperation =
-    SetCarryOperation|
-    ComplementCarryOperation|
-    ComplementAccumulatorOperation|
+    SetCarryOperation |
+    ComplementCarryOperation |
+    ComplementAccumulatorOperation |
     DecimalAdjustAccumulatorOperation
 
 export type RotateOperation =

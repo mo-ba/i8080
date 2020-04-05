@@ -1,6 +1,9 @@
-import {Alu, Execute, Memory, Register} from "../cpu";
-import {IWord, IExecute, IMemory, IRegister, OPERATION, REGISTER, registerList} from "../interface";
-import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from "../util";
+import {Alu, Execute, Memory, Register} from "../core/cpu";
+import {IExecute, IMemory, IRegister, IWord, OPERATION, REGISTER, registerList} from "../core/interface";
+import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from "../core/util";
+import {async, TestBed} from "@angular/core/testing";
+import {CpuModule} from "../app/cpu/cpu.module";
+import {TOKEN} from "../app/cpu/tokens";
 
 
 const binary = (s: string) => parseInt(s, 2);
@@ -44,11 +47,24 @@ function rebuild() {
 }
 
 describe('exec', () => {
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                CpuModule
+            ],
+        }).compileComponents();
+    }));
+
+    beforeEach(() => {
+
+        memory = TestBed.get(TOKEN.MEMORY);
+        register = TestBed.get(TOKEN.REGISTER);
+        executor = TestBed.get(TOKEN.EXECUTE);
+
+    });
     describe('exec test move', () => {
 
-        beforeEach(() => {
-            rebuild()
-        });
 
         it('should move immediate', () => {
             executor.execute({type: OPERATION.MVI, to: REGISTER.A, value: 42});
@@ -120,9 +136,7 @@ describe('exec', () => {
 
     describe('exec test logic', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
+
         it('should or ', () => {
 
             const a = binary('10010010');
@@ -189,9 +203,6 @@ describe('exec', () => {
 
     describe('exec test add', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('should add ', () => {
             register.store(REGISTER.A, 42);
@@ -243,9 +254,6 @@ describe('exec', () => {
     });
     describe('exec test sub', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('should CMP ', () => {
             register.store(REGISTER.A, 42);
@@ -306,9 +314,6 @@ describe('exec', () => {
     });
     describe('exec test sub', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('should sub ', () => {
             register.store(REGISTER.A, 42);
@@ -362,9 +367,7 @@ describe('exec', () => {
     });
     describe('exec test sub', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
+
         it('should inr 127', () => {
             const num = 127;
             const reg = REGISTER.B;
@@ -445,9 +448,6 @@ describe('exec', () => {
     });
     describe('test alu-misc', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('should adjust decimal 17 + 17', () => {
 
@@ -498,9 +498,6 @@ describe('exec', () => {
     });
     describe('test misc', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('NOP', () => {
             testRandomSZAPFlags(() => {
@@ -520,9 +517,6 @@ describe('exec', () => {
     });
     describe('jumps', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('should PCHL', () => {
 
@@ -629,10 +623,6 @@ describe('exec', () => {
         });
     });
     describe('call', () => {
-
-        beforeEach(() => {
-            rebuild();
-        });
 
 
         function checkCall(initialPosition: IWord, call: () => void) {
@@ -769,10 +759,6 @@ describe('exec', () => {
     });
     describe('return', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
-
 
         it('should RET', () => {
 
@@ -881,9 +867,6 @@ describe('exec', () => {
     });
     describe('test alu-misc', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
 
         it('should calculate complement', () => {
             const a = binary('10101001');
@@ -910,9 +893,7 @@ describe('exec', () => {
 
     describe('test rotation left', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
+
         it('should rotate left 10001001', () => {
             const a = binary('10001001');
             const b = binary('00010011');
@@ -988,9 +969,7 @@ describe('exec', () => {
     });
     describe('test rotation right', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
+
         it('should rotate right 10001001', () => {
             const a = binary('10001001');
             const b = binary('11000100');
@@ -1066,10 +1045,6 @@ describe('exec', () => {
     });
 
     describe('test 16bit', () => {
-
-        beforeEach(() => {
-            rebuild();
-        });
 
 
         it('should DAD B', () => {
@@ -1378,10 +1353,6 @@ describe('exec', () => {
 
     describe('test stack', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
-
 
         it('should push B and pop D', () => {
 
@@ -1472,9 +1443,7 @@ describe('exec', () => {
     });
     describe('mini program', () => {
 
-        beforeEach(() => {
-            rebuild();
-        });
+
         it('fibonacci', () => {
             executor.execute({type: OPERATION.MVI, value: 1, to: REGISTER.A});
             executor.execute({type: OPERATION.MVI, value: 1, to: REGISTER.B});

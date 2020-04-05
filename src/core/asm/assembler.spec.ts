@@ -3,7 +3,6 @@ import {Assembler, buildSymbolMap, getCode, registerSymbolMap} from "./assembler
 import {OPERATION} from "../interface";
 
 
-
 describe('Assembler test', () => {
 
     const parser = new Parser();

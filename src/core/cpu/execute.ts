@@ -16,7 +16,7 @@ import {
 import {BYTE_MAX, xIncrement} from "../util";
 
 
-class Execute implements IExecute {
+export class Execute implements IExecute {
 
 
     constructor(private readonly register: IRegister,
@@ -442,8 +442,4 @@ class Execute implements IExecute {
         this.register.store(op.register, result.result);
         return;
     }
-}
-
-export function buildExecute(register: IRegister, alu: IAlu, memory: IMemory): IExecute {
-    return new Execute(register, alu, memory)
 }

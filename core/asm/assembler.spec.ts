@@ -1,7 +1,7 @@
 import {Parser} from "./parser";
 import {Assembler, buildSymbolMap, getCode, registerSymbolMap} from "./assembler";
 import {expect} from 'chai';
-import {OPERATION} from "../interface/operation/operation.types";
+import {OPERATION} from "../interface";
 
 const child_process = require('child_process');
 

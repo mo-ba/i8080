@@ -1,6 +1,3 @@
-import 'mocha';
-import {expect} from "chai";
-
 import {IMemory} from "../interface";
 import {HighLowFN} from "../util";
 import {buildMemory} from "../cpu";
@@ -19,13 +16,13 @@ describe('memory test', () => {
         memory.store(highLow(0, 0), 128);
         memory.store(highLow(0, 1), 0);
         memory.store(highLow(1, 1), 255);
-        expect(memory.load(highLow(0, 0))).to.eq(128);
-        expect(memory.load(highLow(0, 1))).to.eq(0);
-        expect(memory.load(highLow(1, 1))).to.eq(255);
+        expect(memory.load(highLow(0, 0))).toEqual(128);
+        expect(memory.load(highLow(0, 1))).toEqual(0);
+        expect(memory.load(highLow(1, 1))).toEqual(255);
         memory.store(highLow(0, 0), 127);
-        expect(memory.load(highLow(0, 0))).to.eq(127);
-        expect(memory.load(highLow(0, 1))).to.eq(0);
-        expect(memory.load(highLow(1, 1))).to.eq(255);
+        expect(memory.load(highLow(0, 0))).toEqual(127);
+        expect(memory.load(highLow(0, 1))).toEqual(0);
+        expect(memory.load(highLow(1, 1))).toEqual(255);
 
     });
 

@@ -15,11 +15,6 @@ import {
 } from "../interface";
 import {BYTE_MAX, xIncrement} from "../util";
 
-export const XCMAP: { [n: string]: number } = {};
-for (let o in OPERATION) {
-    XCMAP[o] = 0
-}
-
 
 class Execute implements IExecute {
 
@@ -51,7 +46,6 @@ class Execute implements IExecute {
             this.register.store(REGISTER.A, result.result);
             flags(result.flags)
         };
-        XCMAP[op.type]++;
 
         switch (op.type) {
             case OPERATION.MOV:

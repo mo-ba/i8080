@@ -1,6 +1,3 @@
-import 'mocha';
-import {expect} from 'chai';
-
 import {buildMemory, buildProcessor} from "../cpu";
 import {IMemory, IProcessor} from "../interface";
 import {HighLowFN} from "../util";
@@ -17,11 +14,11 @@ describe('processor test', () => {
 
     it('should stop', () => {
         memory.store(HighLowFN.toHighLow(0), 0x7e)
-        expect(processor.getStopped()).to.not.eq(true);
+        expect(processor.getStopped()).not.toEqual(true);
     })
     it('should fibonacci', () => {
-        expect(memory).to.not.eq(null);
-        expect(processor).to.not.eq(null);
+        expect(memory).not.toEqual(null);
+        expect(processor).not.toEqual(null);
         const program = [
             0x3e, 0x01,         // a = 1
             0x06, 0x01,         // b = 1
@@ -45,12 +42,12 @@ describe('processor test', () => {
         }
         while (!processor.getStopped()) processor.next()
 
-        expect(memory.load(HighLowFN.toHighLow(0xffff))).to.eq(13);
+        expect(memory.load(HighLowFN.toHighLow(0xffff))).toEqual(13);
 
     });
     it('should multiply', () => {
-        expect(memory).to.not.eq(null);
-        expect(processor).to.not.eq(null);
+        expect(memory).not.toEqual(null);
+        expect(processor).not.toEqual(null);
         const program = [
             // 21 * 19 = 399 = 256 + 143
             0x0e, 0x15,         // c = 21
@@ -90,8 +87,8 @@ describe('processor test', () => {
             processor.next()
         }
 
-        expect(memory.load(HighLowFN.toHighLow(0xfffe))).to.eq(143);
-        expect(memory.load(HighLowFN.toHighLow(0xffff))).to.eq(1);
+        expect(memory.load(HighLowFN.toHighLow(0xfffe))).toEqual(143);
+        expect(memory.load(HighLowFN.toHighLow(0xffff))).toEqual(1);
 
     });
 });

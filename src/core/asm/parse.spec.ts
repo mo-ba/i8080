@@ -1,18 +1,13 @@
 import {Parser} from "./parser";
-import {expect} from "chai";
+import {OPERATION} from "../interface/operation";
 
-const child_process = require('child_process');
 
 describe('Parser test', () => {
-
-    before(() => {
-        child_process.execSync('npm run build.parser')
-    })
 
     it('should parse 1', () => {
         const result = new Parser().parse(`HELLO: MVI a,   4   ; foo bar%
         `)
-        expect(result).to.eql(
+        expect(result).toEqual(
             [
                 {
                     "comment": " foo bar%", "label": "HELLO", "location": {
@@ -20,7 +15,7 @@ describe('Parser test', () => {
                         "start": {"column": 1, "line": 1, "offset": 0}
                     },
                     "operation": {
-                        "code": "MVI", "operands": ["a", 4]
+                        "code": OPERATION.MVI, "operands": ["a", 4]
                     }
                 }
             ]);
@@ -28,11 +23,10 @@ describe('Parser test', () => {
 
     it('should parse 2', () => {
         const result = new Parser().parse(` MVI   a, 4, 64H`)
-
-        expect(result).to.eql(
+        expect(result).toEqual(
             [{
                 "label": null,
-                "operation": {"code": "MVI", "operands": ["a", 4, 100]},
+                "operation": {"code": OPERATION.MVI, "operands": ["a", 4, 100]},
                 "comment": null,
                 "location": {
                     "start": {"offset": 1, "line": 1, "column": 2},
@@ -45,10 +39,10 @@ describe('Parser test', () => {
     it('should parse 3', () => {
         const result = new Parser().parse(` RAR
         HELLO: MVI   a, 4, 64`)
-        expect(result).to.eql(
+        expect(result).toEqual(
             [{
                 "label": null,
-                "operation": {"code": "RAR", "operands": null},
+                "operation": {"code": OPERATION.RAR, "operands": null},
                 "comment": null,
                 "location": {
                     "start": {"offset": 1, "line": 1, "column": 2},
@@ -56,7 +50,7 @@ describe('Parser test', () => {
                 }
             }, {
                 "label": "HELLO",
-                "operation": {"code": "MVI", "operands": ["a", 4, 64]},
+                "operation": {"code": OPERATION.MVI, "operands": ["a", 4, 64]},
                 "comment": null,
                 "location": {
                     "start": {"offset": 13, "line": 2, "column": 9},
@@ -78,21 +72,25 @@ describe('Parser test', () => {
          
          
         HELLO: MVI   e, 5, 64H`)
-        expect(result).to.eql([{
+        expect(result).toEqual([{
                 "label": null,
-                "operation": {"code": "RAR", "operands": null},
+                "operation": {"code": OPERATION.RAR, "operands": null},
                 "comment": null,
-                "location": {"start": {"offset": 9, "line": 2, "column": 9},
-                    "end": {"offset": 21, "line": 3, "column": 9}}
+                "location": {
+                    "start": {"offset": 9, "line": 2, "column": 9},
+                    "end": {"offset": 21, "line": 3, "column": 9}
+                }
             }, {
                 "label": "HELLO",
-                "operation": {"code": "MVI", "operands": ["a", 1, 64]},
+                "operation": {"code": OPERATION.MVI, "operands": ["a", 1, 64]},
                 "comment": null,
-                "location": {"start": {"offset": 21, "line": 3, "column": 9},
-                    "end": {"offset": 51, "line": 4, "column": 9}}
+                "location": {
+                    "start": {"offset": 21, "line": 3, "column": 9},
+                    "end": {"offset": 51, "line": 4, "column": 9}
+                }
             }, {
                 "label": "HELLO",
-                "operation": {"code": "MVI", "operands": ["b", 2]},
+                "operation": {"code": OPERATION.MVI, "operands": ["b", 2]},
                 "comment": null,
                 "location": {
                     "start": {"offset": 51, "line": 4, "column": 9},
@@ -100,7 +98,7 @@ describe('Parser test', () => {
                 }
             }, {
                 "label": null,
-                "operation": {"code": "MVI", "operands": ["c"]},
+                "operation": {"code": OPERATION.MVI, "operands": ["c"]},
                 "comment": null,
                 "location": {
                     "start": {"offset": 84, "line": 5, "column": 16},
@@ -108,7 +106,7 @@ describe('Parser test', () => {
                 }
             }, {
                 "label": "HELLO",
-                "operation": {"code": "MVI", "operands": ["d", 4]},
+                "operation": {"code": OPERATION.MVI, "operands": ["d", 4]},
                 "comment": " foo bar%",
                 "location": {
                     "start": {"offset": 100, "line": 6, "column": 9},
@@ -124,7 +122,7 @@ describe('Parser test', () => {
                 }
             }, {
                 "label": "HELLO",
-                "operation": {"code": "MVI", "operands": ["e", 5, 100]},
+                "operation": {"code": OPERATION.MVI, "operands": ["e", 5, 100]},
                 "comment": null,
                 "location": {
                     "start": {"offset": 206, "line": 11, "column": 9},

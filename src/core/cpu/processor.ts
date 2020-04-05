@@ -1,22 +1,20 @@
-import {IExecute, IFetchDecode, IMemory, IProcessor, IRegister} from "../interface";
-import {Register} from "./register";
-import {FetchDecode} from "./fetch.decode";
-import {Alu} from "./alu";
-import {Execute} from "./execute";
+import {IDecode, IExecute, IMemory, IProcessor, IRegister} from "../interface";
+import {IFetch} from "../interface/fetch";
 
 
 export class Processor implements IProcessor {
     constructor(
-        private readonly memory: IMemory,
         private readonly register: IRegister,
         private readonly execute: IExecute,
-        private readonly fetchDecode: IFetchDecode,
+        private readonly decode: IDecode,
+        private readonly fetch: IFetch,
     ) {
     }
 
     next() {
-        const op = this.fetchDecode.next()
-        this.execute.execute(op);
+        const code =this.fetch.fetch();
+        const instruction =this.decode.decode(code);
+        this.execute.execute(instruction);
     }
 
     getStopped(): boolean {

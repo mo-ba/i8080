@@ -1,51 +1,14 @@
-import {
-    HighLow,
-    IFetchDecode,
-    IHasProgramCounter,
-    IMemory,
-    IRegister,
-    OPERATION,
-    OperationT,
-    REGISTER
-} from "../interface";
-import {xIncrement} from "../util";
+import {IDecode, OPERATION, OperationT, REGISTER} from "../interface";
+import {IFetch} from "../interface/fetch";
 
 
+export class Decode implements IDecode {
 
-export class FetchDecode implements IFetchDecode {
 
-
-    constructor(
-        private readonly memory: IMemory,
-        private readonly register: IHasProgramCounter,
-    ) {
+    constructor(private readonly fetch: IFetch) {
     }
 
-    next(): OperationT {
-
-        return this.decode(this.fetch())
-
-    }
-
-    private fetch(): number {
-        return this.memory.load(this.getProgramCounter());
-    }
-
-    private getProgramCounter(): HighLow {
-        const counter = this.register.getProgramCounter();
-        this.register.setProgramCounter(xIncrement(counter));
-        return counter;
-    }
-
-    private fetchWord(): HighLow {
-        const low = this.fetch()
-        const high = this.fetch()
-
-        return {low, high}
-    };
-
-
-    private decode(opCode: number): OperationT {
+    public decode(opCode: number): OperationT {
 
 
         switch (opCode) {
@@ -78,13 +41,13 @@ export class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.INX, register: REGISTER.SP};
 
             case 0x01:
-                return {type: OPERATION.LXI, register: REGISTER.B, value: this.fetchWord()};
+                return {type: OPERATION.LXI, register: REGISTER.B, value: this.fetch.fetchWord()};
             case 0x11:
-                return {type: OPERATION.LXI, register: REGISTER.D, value: this.fetchWord()};
+                return {type: OPERATION.LXI, register: REGISTER.D, value: this.fetch.fetchWord()};
             case 0x21:
-                return {type: OPERATION.LXI, register: REGISTER.H, value: this.fetchWord()};
+                return {type: OPERATION.LXI, register: REGISTER.H, value: this.fetch.fetchWord()};
             case 0x31:
-                return {type: OPERATION.LXI, register: REGISTER.SP, value: this.fetchWord()};
+                return {type: OPERATION.LXI, register: REGISTER.SP, value: this.fetch.fetchWord()};
 
 
             case 0x02:
@@ -92,9 +55,9 @@ export class FetchDecode implements IFetchDecode {
             case 0x12:
                 return {type: OPERATION.STAX, register: REGISTER.D};
             case 0x22:
-                return {type: OPERATION.SHLD, value: this.fetchWord()};
+                return {type: OPERATION.SHLD, value: this.fetch.fetchWord()};
             case 0x32:
-                return {type: OPERATION.STA, value: this.fetchWord()};
+                return {type: OPERATION.STA, value: this.fetch.fetchWord()};
 
 
             case 0x0a:
@@ -102,9 +65,9 @@ export class FetchDecode implements IFetchDecode {
             case 0x1a:
                 return {type: OPERATION.LDAX, register: REGISTER.D};
             case 0x2a:
-                return {type: OPERATION.LHLD, value: this.fetchWord()};
+                return {type: OPERATION.LHLD, value: this.fetch.fetchWord()};
             case 0x3a:
-                return {type: OPERATION.LDA, value: this.fetchWord()};
+                return {type: OPERATION.LDA, value: this.fetch.fetchWord()};
 
             case 0x0b:
                 return {type: OPERATION.DCX, register: REGISTER.B};
@@ -160,21 +123,21 @@ export class FetchDecode implements IFetchDecode {
 
 
             case 0x06:
-                return {type: OPERATION.MVI, to: REGISTER.B, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.B, value: this.fetch.fetch()};
             case 0x0e:
-                return {type: OPERATION.MVI, to: REGISTER.C, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.C, value: this.fetch.fetch()};
             case 0x16:
-                return {type: OPERATION.MVI, to: REGISTER.D, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.D, value: this.fetch.fetch()};
             case 0x1e:
-                return {type: OPERATION.MVI, to: REGISTER.E, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.E, value: this.fetch.fetch()};
             case 0x26:
-                return {type: OPERATION.MVI, to: REGISTER.H, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.H, value: this.fetch.fetch()};
             case 0x2e:
-                return {type: OPERATION.MVI, to: REGISTER.L, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.L, value: this.fetch.fetch()};
             case 0x36:
-                return {type: OPERATION.MVI, to: REGISTER.M, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.M, value: this.fetch.fetch()};
             case 0x3e:
-                return {type: OPERATION.MVI, to: REGISTER.A, value: this.fetch()};
+                return {type: OPERATION.MVI, to: REGISTER.A, value: this.fetch.fetch()};
 
             case 0x40:
                 return {type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.B};
@@ -452,21 +415,21 @@ export class FetchDecode implements IFetchDecode {
 
 
             case 0xc6:
-                return {type: OPERATION.ADI, value: this.fetch()};
+                return {type: OPERATION.ADI, value: this.fetch.fetch()};
             case 0xce:
-                return {type: OPERATION.ACI, value: this.fetch()};
+                return {type: OPERATION.ACI, value: this.fetch.fetch()};
             case 0xd6:
-                return {type: OPERATION.SUI, value: this.fetch()};
+                return {type: OPERATION.SUI, value: this.fetch.fetch()};
             case 0xde:
-                return {type: OPERATION.SBI, value: this.fetch()};
+                return {type: OPERATION.SBI, value: this.fetch.fetch()};
             case 0xe6:
-                return {type: OPERATION.ANI, value: this.fetch()};
+                return {type: OPERATION.ANI, value: this.fetch.fetch()};
             case 0xee:
-                return {type: OPERATION.XRI, value: this.fetch()};
+                return {type: OPERATION.XRI, value: this.fetch.fetch()};
             case 0xf6:
-                return {type: OPERATION.ORI, value: this.fetch()};
+                return {type: OPERATION.ORI, value: this.fetch.fetch()};
             case 0xfe:
-                return {type: OPERATION.CPI, value: this.fetch()};
+                return {type: OPERATION.CPI, value: this.fetch.fetch()};
 
 
             case 0xc1:
@@ -508,45 +471,45 @@ export class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.RET};
 
             case 0xc2:
-                return {type: OPERATION.JNZ, position: this.fetchWord()};
+                return {type: OPERATION.JNZ, position: this.fetch.fetchWord()};
             case 0xca:
-                return {type: OPERATION.JZ, position: this.fetchWord()};
+                return {type: OPERATION.JZ, position: this.fetch.fetchWord()};
             case 0xd2:
-                return {type: OPERATION.JNC, position: this.fetchWord()};
+                return {type: OPERATION.JNC, position: this.fetch.fetchWord()};
             case 0xda:
-                return {type: OPERATION.JC, position: this.fetchWord()};
+                return {type: OPERATION.JC, position: this.fetch.fetchWord()};
             case 0xe2:
-                return {type: OPERATION.JPO, position: this.fetchWord()};
+                return {type: OPERATION.JPO, position: this.fetch.fetchWord()};
             case 0xea:
-                return {type: OPERATION.JPE, position: this.fetchWord()};
+                return {type: OPERATION.JPE, position: this.fetch.fetchWord()};
             case 0xf2:
-                return {type: OPERATION.JP, position: this.fetchWord()};
+                return {type: OPERATION.JP, position: this.fetch.fetchWord()};
             case 0xfa:
-                return {type: OPERATION.JM, position: this.fetchWord()};
+                return {type: OPERATION.JM, position: this.fetch.fetchWord()};
 
             case 0xc3:
             case 0xcb:
-                return {type: OPERATION.JMP, position: this.fetchWord()};
+                return {type: OPERATION.JMP, position: this.fetch.fetchWord()};
             case 0xe9:
                 return {type: OPERATION.PCHL};
 
 
             case 0xc4:
-                return {type: OPERATION.CNZ, position: this.fetchWord()};
+                return {type: OPERATION.CNZ, position: this.fetch.fetchWord()};
             case 0xcc:
-                return {type: OPERATION.CZ, position: this.fetchWord()};
+                return {type: OPERATION.CZ, position: this.fetch.fetchWord()};
             case 0xd4:
-                return {type: OPERATION.CNC, position: this.fetchWord()};
+                return {type: OPERATION.CNC, position: this.fetch.fetchWord()};
             case 0xdc:
-                return {type: OPERATION.CC, position: this.fetchWord()};
+                return {type: OPERATION.CC, position: this.fetch.fetchWord()};
             case 0xe4:
-                return {type: OPERATION.CPO, position: this.fetchWord()};
+                return {type: OPERATION.CPO, position: this.fetch.fetchWord()};
             case 0xec:
-                return {type: OPERATION.CPE, position: this.fetchWord()};
+                return {type: OPERATION.CPE, position: this.fetch.fetchWord()};
             case 0xf4:
-                return {type: OPERATION.CP, position: this.fetchWord()};
+                return {type: OPERATION.CP, position: this.fetch.fetchWord()};
             case 0xfc:
-                return {type: OPERATION.CM, position: this.fetchWord()};
+                return {type: OPERATION.CM, position: this.fetch.fetchWord()};
 
 
             case 0xe3:
@@ -561,7 +524,7 @@ export class FetchDecode implements IFetchDecode {
             case 0xdd:
             case 0xed:
             case 0xfd:
-                return {type: OPERATION.CALL, position: this.fetchWord()};
+                return {type: OPERATION.CALL, position: this.fetch.fetchWord()};
 
 
             case 0xc7: // RST

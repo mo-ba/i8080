@@ -1,4 +1,4 @@
-import {Alu, Execute, FetchDecode, Memory, Processor, Register} from "../cpu";
+import {Alu, Decode, Execute, Fetch, Memory, Processor, Register} from "../cpu";
 import {IMemory, IProcessor} from "../interface";
 import {toHighLow} from "../util";
 
@@ -10,9 +10,10 @@ describe('processor test', () => {
     beforeEach(() => {
         memory = new Memory();
         const register = new Register(memory);
-        const fetchDecode = new FetchDecode(memory, register);
+        const fetch = new Fetch(memory, register);
+        const decode = new Decode(fetch);
         const execute = new Execute(register, new Alu(), memory);
-        processor = new Processor(memory, register, execute, fetchDecode)
+        processor = new Processor(register, execute, decode, fetch)
     });
 
     it('should stop', () => {

@@ -1,12 +1,9 @@
-import {HighLow} from "../interface";
-import {IXAluResult} from "../interface";
+import {HighLow, IXAluResult} from "../interface";
 import {WORD_MAX} from "./bits";
 import {NO_FLAGS} from "../cpu";
 
-import {HighLowFN} from "./high-low.function";
+import {toHighLow, toNumber} from "./high-low.function";
 
-const toHighLow = HighLowFN.toHighLow;
-const toNumber = HighLowFN.toNumber;
 
 export function xAdd(a: HighLow, b: HighLow): HighLow {
     const temp = toNumber(a) + toNumber(b)

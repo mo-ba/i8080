@@ -1,5 +1,5 @@
 import {
-    HighLowFN,
+    toHighLow, toNumber,
     WORD_MAX,
     xAddWithFlags,
     xDecrement,
@@ -8,8 +8,6 @@ import {
     xIncrementWithFlags
 } from "../util";
 
-const toHighLow = HighLowFN.toHighLow;
-const toNumber = HighLowFN.toNumber;
 
 describe('flag test', () => {
     it('should xAddWithFlags', () => {

@@ -1,7 +1,7 @@
 import {Parser} from "./parser";
 import {AsmOperand, AsmOperation, Lines, SymbolMap} from "./interface";
-import {OPERATION} from "../interface/operation/operation.types";
-import {HighLowFN} from "../util/high-low.function";
+import {OPERATION} from "../interface";
+import {toHighLow} from "../util";
 
 export const registerSymbolMap = {
     B: 0,
@@ -97,7 +97,7 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
 
     function lowHigh(number: number): number[] {
         assertValueBetween(number, 0, 0xffff);
-        const hl = HighLowFN.toHighLow(number);
+        const hl = toHighLow(number);
         return [hl.low, hl.high]
     }
 

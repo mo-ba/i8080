@@ -1,8 +1,7 @@
 import {HighLow, IMemory, IRegister, REGISTER} from "../interface";
-import {BYTE_MAX, HighLowFN, xDecrement, xIncrement} from "../util";
+import {BYTE_MAX, highLow, toHighLow, xDecrement, xIncrement} from "../util";
 
-const toHighLow = HighLowFN.toHighLow;
-const highLow = HighLowFN.highLow;
+
 
 enum FLAG_INDEX {
     Carry,      // - Carry Flag
@@ -47,7 +46,7 @@ const map16bitStore: { [addr: number]: (reg: Register, values: HighLow) => Regis
 };
 
 
-class Register implements IRegister {
+export class Register implements IRegister {
 
     private registers = Int8Array.of(0, 0, 0, 0, 0, 0, 0, 0);
     private flags = 0;
@@ -217,10 +216,4 @@ class Register implements IRegister {
         this.stackPointer = xIncrement(this.stackPointer);
         return this;
     }
-
-
-}
-
-export function buildRegister(memory: IMemory): IRegister {
-    return new Register(memory);
 }

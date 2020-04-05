@@ -1,8 +1,8 @@
 import {IExecute, IFetchDecode, IMemory, IProcessor, IRegister} from "../interface";
-import {buildRegister} from "./register";
-import {buildFetch} from "./fetch.decode";
+import {Register} from "./register";
+import {FetchDecode} from "./fetch.decode";
 import {buildExecute} from "./execute";
-import {buildAlu} from "./alu";
+import {Alu} from "./alu";
 
 
 class Processor implements IProcessor {
@@ -27,9 +27,9 @@ class Processor implements IProcessor {
 
 
 export function buildProcessor(memory: IMemory): IProcessor {
-    const register = buildRegister(memory);
-    const fetchDecode = buildFetch(memory, register);
-    const execute = buildExecute(register, buildAlu(), memory);
+    const register = new Register(memory);
+    const fetchDecode = new FetchDecode(memory, register);
+    const execute = buildExecute(register, new Alu(), memory);
     return new Processor(memory, register, execute, fetchDecode)
 }
 

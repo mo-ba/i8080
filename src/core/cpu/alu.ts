@@ -30,7 +30,7 @@ function calcFlags(a: number): {
 }
 
 
-class Alu implements IAlu {
+export class Alu implements IAlu {
 
 
     adc(a: number, b: number, c: boolean): IAluResult {
@@ -166,6 +166,3 @@ class Alu implements IAlu {
 
 }
 
-export function buildAlu(): IAlu {
-    return new Alu()
-}

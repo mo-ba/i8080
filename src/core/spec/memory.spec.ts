@@ -1,14 +1,13 @@
 import {IMemory} from "../interface";
-import {HighLowFN} from "../util";
-import {buildMemory} from "../cpu";
+import {Memory} from "../cpu";
+import {highLow} from "../util";
 
-const highLow = HighLowFN.highLow;
 describe('memory test', () => {
 
     let memory: IMemory;
 
     beforeEach(() => {
-        memory = buildMemory();
+        memory = new Memory();
     });
 
 

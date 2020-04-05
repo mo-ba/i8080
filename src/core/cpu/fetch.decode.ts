@@ -11,10 +11,8 @@ import {
 import {xIncrement} from "../util";
 
 
-export const XRMAP: { [n: number]: OperationT } = {}
 
-
-class FetchDecode implements IFetchDecode {
+export class FetchDecode implements IFetchDecode {
 
 
     constructor(
@@ -25,16 +23,12 @@ class FetchDecode implements IFetchDecode {
 
     next(): OperationT {
 
-        const opcode = this.fetch()
-        const op = this.decode(opcode)
-        XRMAP[opcode] = op;
-        return op
+        return this.decode(this.fetch())
 
     }
 
     private fetch(): number {
-        const val = this.memory.load(this.getProgramCounter())
-        return val;
+        return this.memory.load(this.getProgramCounter());
     }
 
     private getProgramCounter(): HighLow {
@@ -598,11 +592,4 @@ class FetchDecode implements IFetchDecode {
                 return {type: OPERATION.NOP};
         }
     }
-}
-
-export function buildFetch(
-    memory: IMemory,
-    register: IRegister
-): IFetchDecode {
-    return new FetchDecode(memory, register);
 }

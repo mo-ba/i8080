@@ -1,7 +1,5 @@
-import {HighLowFN, WORD_CARY_BIT} from "../util";
+import {toHighLow, toNumber, WORD_CARY_BIT} from "../util";
 
-const toHighLow = HighLowFN.toHighLow;
-const toNumber = HighLowFN.toNumber;
 
 describe('highLow test', () => {
     it('should number to highLow to number', () => {

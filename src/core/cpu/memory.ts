@@ -21,7 +21,3 @@ export class Memory implements IMemory {
     }
 
 }
-
-export function buildMemory(): IMemory {
-    return new Memory();
-}

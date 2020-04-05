@@ -1,9 +1,7 @@
-import {buildAlu} from "../cpu";
 import {IAlu, IFlags} from "../interface";
-import {HighLowFN, WORD_MAX} from "../util";
+import {toHighLow, toNumber, WORD_MAX} from "../util";
+import {Alu} from "../cpu";
 
-const toHighLow = HighLowFN.toHighLow;
-const toNumber = HighLowFN.toNumber;
 
 const binary = (s: string) => parseInt(s, 2);
 
@@ -25,7 +23,7 @@ describe('alu test', () => {
     let alu: IAlu;
 
     beforeEach(() => {
-        alu = buildAlu();
+        alu = new Alu();
     });
 
     it('should add', () => {

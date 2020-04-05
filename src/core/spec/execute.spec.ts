@@ -1,9 +1,7 @@
-import {buildAlu, buildExecute, buildMemory, buildRegister} from "../cpu";
+import {Alu, buildExecute, Memory, Register} from "../cpu";
 import {HighLow, IExecute, IMemory, IRegister, OPERATION, REGISTER, registerList} from "../interface";
-import {BYTE_MAX, calcParity, calcSign, calcZero, HighLowFN, xDecrement, xIncrement} from "../util";
+import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from "../util";
 
-const toHighLow = HighLowFN.toHighLow;
-const highLow = HighLowFN.highLow;
 
 const binary = (s: string) => parseInt(s, 2);
 
@@ -40,9 +38,9 @@ function testRandomFlags(it: () => void) {
 }
 
 function rebuild() {
-    memory = buildMemory();
-    register = buildRegister(memory);
-    executor = buildExecute(register, buildAlu(), memory);
+    memory = new Memory();
+    register = new Register(memory);
+    executor = buildExecute(register, new Alu(), memory);
 }
 
 describe('exec', () => {

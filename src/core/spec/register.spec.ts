@@ -1,9 +1,6 @@
 import {IRegister, REGISTER} from "../interface";
-import {HighLowFN} from "../util";
-import {buildMemory, buildRegister} from "../cpu";
-
-const toHighLow = HighLowFN.toHighLow;
-const highLow = HighLowFN.highLow;
+import {highLow, toHighLow} from "../util";
+import {Memory, Register} from "../cpu";
 
 
 describe('register test', () => {
@@ -11,7 +8,7 @@ describe('register test', () => {
     let register: IRegister;
 
     beforeEach(() => {
-        register = buildRegister(buildMemory());
+        register = new Register(new Memory());
     });
 
     const expectFalse = (...flags: boolean[]): void => flags.forEach(f => expect(f).toEqual(false));

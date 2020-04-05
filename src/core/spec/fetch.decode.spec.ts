@@ -1,37 +1,16 @@
 import {IFetchDecode, IMemory, IRegister, OPERATION, OperationT, REGISTER, RegisterOperation} from "../interface";
-import {buildFetch, buildMemory, buildRegister, XRMAP} from "../cpu";
-import {HighLowFN, xIncrement} from "../util";
+import {FetchDecode, Memory, Register} from "../cpu";
+import {highLow, toHighLow, xIncrement} from "../util";
 
-const toHighLow = HighLowFN.toHighLow;
-const highLow = HighLowFN.highLow;
 let memory: IMemory;
 let register: IRegister;
 let fetchDecode: IFetchDecode;
 
-function printCX(XRMAP: { [p: number]: OperationT }) {
-    let string = '';
-
-    function pad(type: string, pad: number) {
-        return type + ' '.repeat(pad - type.length);
-    }
-
-    for (let i = 0; i < 16; i++) {
-        for (let j = 0; j < 16; j++) {
-            const val = XRMAP[i * 16 + j];
-            string += val ? '| ' + pad(val.type, 4) : '|     '
-        }
-        string += '|\n'
-    }
-
-    console.log(string)
-
-
-}
 
 function reset() {
-    memory = buildMemory();
-    register = buildRegister(memory);
-    fetchDecode = buildFetch(memory, register);
+    memory = new Memory();
+    register = new Register(memory);
+    fetchDecode = new FetchDecode(memory, register);
 
 }
 
@@ -1235,7 +1214,6 @@ describe('fetch decode', () => {
                 expect(actual).toEqual(expected);
             })
 
-            printCX(XRMAP)
         });
 
     });

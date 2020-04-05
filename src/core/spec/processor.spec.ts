@@ -1,6 +1,6 @@
-import {buildMemory, buildProcessor} from "../cpu";
+import {buildProcessor, Memory} from "../cpu";
 import {IMemory, IProcessor} from "../interface";
-import {HighLowFN} from "../util";
+import {toHighLow} from "../util";
 
 let memory: IMemory;
 let processor: IProcessor;
@@ -8,12 +8,12 @@ let processor: IProcessor;
 describe('processor test', () => {
 
     beforeEach(() => {
-        memory = buildMemory();
+        memory = new Memory();
         processor = buildProcessor(memory)
     });
 
     it('should stop', () => {
-        memory.store(HighLowFN.toHighLow(0), 0x7e)
+        memory.store(toHighLow(0), 0x7e)
         expect(processor.getStopped()).not.toEqual(true);
     })
     it('should fibonacci', () => {
@@ -38,11 +38,11 @@ describe('processor test', () => {
 
 
         for (let i = 0; i < program.length; i++) {
-            memory.store(HighLowFN.toHighLow(i), program[i])
+            memory.store(toHighLow(i), program[i])
         }
         while (!processor.getStopped()) processor.next()
 
-        expect(memory.load(HighLowFN.toHighLow(0xffff))).toEqual(13);
+        expect(memory.load(toHighLow(0xffff))).toEqual(13);
 
     });
     it('should multiply', () => {
@@ -81,14 +81,14 @@ describe('processor test', () => {
         console.log([...program.entries()].map(([k, v]) => [k.toString(16), v.toString(16)]))
 
         for (let i = 0; i < program.length; i++) {
-            memory.store(HighLowFN.toHighLow(i), program[i])
+            memory.store(toHighLow(i), program[i])
         }
         while (!processor.getStopped()) {
             processor.next()
         }
 
-        expect(memory.load(HighLowFN.toHighLow(0xfffe))).toEqual(143);
-        expect(memory.load(HighLowFN.toHighLow(0xffff))).toEqual(1);
+        expect(memory.load(toHighLow(0xfffe))).toEqual(143);
+        expect(memory.load(toHighLow(0xffff))).toEqual(1);
 
     });
 });

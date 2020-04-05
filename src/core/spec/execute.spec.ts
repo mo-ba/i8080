@@ -1,5 +1,5 @@
 import {Alu, Execute, Memory, Register} from "../cpu";
-import {HighLow, IExecute, IMemory, IRegister, OPERATION, REGISTER, registerList} from "../interface";
+import {IWord, IExecute, IMemory, IRegister, OPERATION, REGISTER, registerList} from "../interface";
 import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from "../util";
 
 
@@ -635,7 +635,7 @@ describe('exec', () => {
         });
 
 
-        function checkCall(initialPosition: HighLow, call: () => void) {
+        function checkCall(initialPosition: IWord, call: () => void) {
 
             register.setProgramCounter(initialPosition);
             const oldStackPointer = register.getStackPointer();

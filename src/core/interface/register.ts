@@ -1,3 +1,6 @@
+import {IWord} from "./word";
+import {IProgramCounter} from "./program-counter";
+
 export enum REGISTER {
     B, C, D, E, H, L, M, A, PSW = 6, SP = 6,
 }
@@ -6,33 +9,20 @@ export const registerList = [
     REGISTER.B, REGISTER.C, REGISTER.D, REGISTER.E, REGISTER.H, REGISTER.L, REGISTER.M, REGISTER.A
 ];
 
-
-export interface HighLow {
-    readonly high: number;
-    readonly low: number;
-}
-
-export interface IHasProgramCounter {
-
-    getProgramCounter(): HighLow
-
-    setProgramCounter(programCounter: HighLow): IRegister
-}
-
-export interface IRegister extends IHasProgramCounter {
+export interface IRegister extends IProgramCounter {
 
     load(address: REGISTER): number;
 
     store(address: REGISTER, value: number): IRegister;
 
-    pop(): HighLow;
+    pop(): IWord;
 
-    push(value: HighLow): IRegister;
+    push(value: IWord): IRegister;
 
 
-    loadX(address: REGISTER): HighLow;
+    loadX(address: REGISTER): IWord;
 
-    storeX(address: REGISTER, value: HighLow): IRegister;
+    storeX(address: REGISTER, value: IWord): IRegister;
 
 
     setCarry(value: boolean): IRegister;
@@ -66,9 +56,12 @@ export interface IRegister extends IHasProgramCounter {
     getStopped(): boolean;
 
 
-    getStackPointer(): HighLow
+    getStackPointer(): IWord
 
-    setStackPointer(stackPointer: HighLow): IRegister
+    setStackPointer(stackPointer: IWord): IRegister
 
 
+    getProgramCounter(): IWord
+
+    setProgramCounter(programCounter: IWord): IRegister
 }

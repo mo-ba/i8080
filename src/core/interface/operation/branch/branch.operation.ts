@@ -1,6 +1,6 @@
-import {HighLow} from "../../register";
+import {IWord} from "../../word";
 
 
 export interface BranchToOperation {
-    position: HighLow
+    position: IWord
 }

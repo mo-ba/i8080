@@ -1,7 +1,7 @@
-import {HighLow} from "./register";
+import {IWord} from "./word";
 
 export interface IFetch {
     fetch(): number;
 
-    fetchWord(): HighLow;
+    fetchWord(): IWord;
 }

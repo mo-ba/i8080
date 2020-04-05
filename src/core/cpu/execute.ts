@@ -1,6 +1,6 @@
 import {
     BranchToOperation,
-    HighLow,
+    IWord,
     IAlu,
     IAluResult,
     IExecute,
@@ -14,7 +14,6 @@ import {
     REGISTER
 } from "../interface";
 import {BYTE_MAX, xIncrement} from "../util";
-
 
 export class Execute implements IExecute {
 
@@ -250,7 +249,7 @@ export class Execute implements IExecute {
                 return;
 
             case OPERATION.XTHL:
-                return ((oldHL: HighLow) => {
+                return ((oldHL: IWord) => {
                     this.register.store(REGISTER.L, this.memory.load(this.register.getStackPointer()));
                     this.register.store(REGISTER.H, this.memory.load(xIncrement(this.register.getStackPointer())));
 
@@ -259,7 +258,7 @@ export class Execute implements IExecute {
                 })(this.register.loadX(REGISTER.H));
 
             case OPERATION.XCHG:
-                return ((oldHL: HighLow) => {
+                return ((oldHL: IWord) => {
                     this.register.storeX(REGISTER.H, this.register.loadX(REGISTER.D));
                     this.register.storeX(REGISTER.D, oldHL);
 
@@ -416,7 +415,7 @@ export class Execute implements IExecute {
     }
 
 
-    private jumpToPosition(position: HighLow) {
+    private jumpToPosition(position: IWord) {
         this.register.setProgramCounter(position);
     }
 
@@ -433,7 +432,7 @@ export class Execute implements IExecute {
         return register === REGISTER.SP ? this.register.getStackPointer() : this.register.loadX(register)
     }
 
-    private store16BitValue(register: REGISTER, value: HighLow) {
+    private store16BitValue(register: REGISTER, value: IWord) {
         return register === REGISTER.SP ? this.register.setStackPointer(value) : this.register.storeX(register, value)
     }
 

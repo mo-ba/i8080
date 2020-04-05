@@ -1,4 +1,4 @@
-import {HighLow, IAlu, IAluResult, IXAluResult} from "../interface";
+import {IWord, IAlu, IAluResult, IXAluResult} from "../interface";
 import {
     AUX_BIT,
     BYTE_CARRY_BIT,
@@ -118,15 +118,15 @@ export class Alu implements IAlu {
     }
 
 
-    xAdd(a: HighLow, b: HighLow): IXAluResult {
+    xAdd(a: IWord, b: IWord): IXAluResult {
         return xAddWithFlags(a, b);
     }
 
-    xIncrement(a: HighLow): IXAluResult {
+    xIncrement(a: IWord): IXAluResult {
         return xIncrementWithFlags(a);
     }
 
-    xDecrement(a: HighLow): IXAluResult {
+    xDecrement(a: IWord): IXAluResult {
         return xDecrementWithFlags(a);
     }
 

@@ -6,3 +6,5 @@ export * from './memory';
 export * from './execute';
 export * from './flags';
 export * from './operation';
+export * from './word';
+export * from './program-counter';

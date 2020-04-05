@@ -1,5 +1,5 @@
 import {IFlags} from "./flags";
-import {HighLow} from "./register";
+import {IWord} from "./word";
 
 export interface IAluResult {
     readonly result: number;
@@ -7,7 +7,7 @@ export interface IAluResult {
 }
 
 export interface IXAluResult {
-    readonly result: HighLow;
+    readonly result: IWord;
     readonly flags: IFlags;
 }
 
@@ -47,9 +47,9 @@ export interface IAlu {
     complement(a: number): IAluResult;
 
 
-    xAdd(a: HighLow, b: HighLow): IXAluResult;
+    xAdd(a: IWord, b: IWord): IXAluResult;
 
-    xIncrement(a: HighLow): IXAluResult;
+    xIncrement(a: IWord): IXAluResult;
 
-    xDecrement(a: HighLow): IXAluResult;
+    xDecrement(a: IWord): IXAluResult;
 }

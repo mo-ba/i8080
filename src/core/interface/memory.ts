@@ -1,8 +1,8 @@
-import {HighLow} from "./register";
+import {IWord} from "./word";
 
 export interface IMemory {
-    load(address: HighLow): number;
+    load(address: IWord): number;
 
-    store(address: HighLow, value: number): IMemory;
+    store(address: IWord, value: number): IMemory;
 
 }

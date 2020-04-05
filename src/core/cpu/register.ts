@@ -1,4 +1,4 @@
-import {HighLow, IMemory, IRegister, REGISTER} from "../interface";
+import {IWord, IMemory, IRegister, REGISTER} from "../interface";
 import {BYTE_MAX, highLow, toHighLow, xDecrement, xIncrement} from "../util";
 
 
@@ -31,18 +31,18 @@ enum PATTERN {
     FLAGS = FLAG_BIT.Auxiliary | FLAG_BIT.Parity | FLAG_BIT.Carry | FLAG_BIT.Sign | FLAG_BIT.Zero
 }
 
-const map16bitRead: { [addr: number]: (reg: Int8Array, flag: number) => HighLow } = {
+const map16bitRead: { [addr: number]: (reg: Int8Array, flag: number) => IWord } = {
     [REGISTER.PSW]: (r: Int8Array, flags: number) => ({high: r[REGISTER.A] & BYTE_MAX, low: flags,}),
     [REGISTER.B]: (r: Int8Array) => ({high: r[REGISTER.B] & BYTE_MAX, low: r[REGISTER.C] & BYTE_MAX,}),
     [REGISTER.D]: (r: Int8Array) => ({high: r[REGISTER.D] & BYTE_MAX, low: r[REGISTER.E] & BYTE_MAX,}),
     [REGISTER.H]: (r: Int8Array) => ({high: r[REGISTER.H] & BYTE_MAX, low: r[REGISTER.L] & BYTE_MAX,}),
 };
 
-const map16bitStore: { [addr: number]: (reg: Register, values: HighLow) => Register } = {
-    [REGISTER.PSW]: (r: Register, v: HighLow) => r.store(REGISTER.A, v.high).setFlags(PATTERN.FLAGS & v.low),
-    [REGISTER.B]: (r: Register, v: HighLow) => r.store(REGISTER.B, v.high).store(REGISTER.C, v.low),
-    [REGISTER.D]: (r: Register, v: HighLow) => r.store(REGISTER.D, v.high).store(REGISTER.E, v.low),
-    [REGISTER.H]: (r: Register, v: HighLow) => r.store(REGISTER.H, v.high).store(REGISTER.L, v.low),
+const map16bitStore: { [addr: number]: (reg: Register, values: IWord) => Register } = {
+    [REGISTER.PSW]: (r: Register, v: IWord) => r.store(REGISTER.A, v.high).setFlags(PATTERN.FLAGS & v.low),
+    [REGISTER.B]: (r: Register, v: IWord) => r.store(REGISTER.B, v.high).store(REGISTER.C, v.low),
+    [REGISTER.D]: (r: Register, v: IWord) => r.store(REGISTER.D, v.high).store(REGISTER.E, v.low),
+    [REGISTER.H]: (r: Register, v: IWord) => r.store(REGISTER.H, v.high).store(REGISTER.L, v.low),
 };
 
 
@@ -51,8 +51,8 @@ export class Register implements IRegister {
     private registers = Int8Array.of(0, 0, 0, 0, 0, 0, 0, 0);
     private flags = 0;
 
-    private stackPointer: HighLow;
-    private programCounter: HighLow;
+    private stackPointer: IWord;
+    private programCounter: IWord;
     private isStopped = false;
 
     constructor(private readonly memory: IMemory) {
@@ -70,7 +70,7 @@ export class Register implements IRegister {
     }
 
 
-    loadX(address: REGISTER): HighLow {
+    loadX(address: REGISTER): IWord {
         return map16bitRead[address](this.registers, this.flags)
     }
 
@@ -88,7 +88,7 @@ export class Register implements IRegister {
         return this;
     }
 
-    storeX(address: REGISTER, value: HighLow): Register {
+    storeX(address: REGISTER, value: IWord): Register {
         return map16bitStore[address](this, value)
     }
 
@@ -140,7 +140,7 @@ export class Register implements IRegister {
     }
 
 
-    pop(): HighLow {
+    pop(): IWord {
         const low = this.incrementStackPointer()
             .loadMemory(this.stackPointer);
         const high = this.incrementStackPointer()
@@ -148,7 +148,7 @@ export class Register implements IRegister {
         return {high, low};
     }
 
-    push(value: HighLow): IRegister {
+    push(value: IWord): IRegister {
         return this
             .storeMemory(this.stackPointer, value.high)
             .decrementStackPointer()
@@ -157,21 +157,21 @@ export class Register implements IRegister {
 
     }
 
-    getProgramCounter(): HighLow {
+    getProgramCounter(): IWord {
         return this.programCounter;
     }
 
-    getStackPointer(): HighLow {
+    getStackPointer(): IWord {
         return this.stackPointer;
     }
 
 
-    setProgramCounter(value: HighLow): IRegister {
+    setProgramCounter(value: IWord): IRegister {
         this.programCounter = value;
         return this;
     }
 
-    setStackPointer(stackPointer: HighLow): IRegister {
+    setStackPointer(stackPointer: IWord): IRegister {
         this.stackPointer = stackPointer
         return this;
     }
@@ -185,7 +185,7 @@ export class Register implements IRegister {
         return this;
     }
 
-    private loadMemory(address: HighLow) {
+    private loadMemory(address: IWord) {
         return this.memory.load(address);
     }
 
@@ -196,7 +196,7 @@ export class Register implements IRegister {
         );
     }
 
-    private storeMemory(address: HighLow, value: number): Register {
+    private storeMemory(address: IWord, value: number): Register {
         this.memory.store(address, value)
         return this;
     }

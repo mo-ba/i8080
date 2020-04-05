@@ -54,8 +54,6 @@ class Execute implements IExecute {
         XCMAP[op.type]++;
 
         switch (op.type) {
-
-
             case OPERATION.MOV:
                 this.register.store(op.to, this.register.load(op.from));
                 return;
@@ -187,7 +185,6 @@ class Execute implements IExecute {
             case OPERATION.DCR:
                 return this.processIncOrDec(this.alu.decrement(this.register.load(op.register)), op);
 
-
             case OPERATION.RLC:
                 return processAluResult(
                     this.alu.rotateLeft(this.register.load(REGISTER.A)),
@@ -199,7 +196,6 @@ class Execute implements IExecute {
                     this.alu.rotateRight(this.register.load(REGISTER.A)),
                     (flags) => this.storeCarry(flags)
                 );
-
 
             case OPERATION.RAL:
                 return processAluResult(
@@ -214,26 +210,20 @@ class Execute implements IExecute {
                 );
 
             case OPERATION.DAD:
-
                 return ((result: IXAluResult) => {
                     this.store16BitValue(REGISTER.H, result.result);
                     this.storeCarry(result.flags)
                 })(this.alu.xAdd(this.register.loadX(REGISTER.H), this.load16BitValue(op.register)));
 
-
             case OPERATION.INX:
-
                 return ((result: IXAluResult) => {
                     this.store16BitValue(op.register, result.result);
                 })(this.alu.xIncrement(this.load16BitValue(op.register)));
 
-
             case OPERATION.DCX:
-
                 return ((result: IXAluResult) => {
                     this.store16BitValue(op.register, result.result);
                 })(this.alu.xDecrement(this.load16BitValue(op.register)));
-
 
             case OPERATION.LXI:
                 this.store16BitValue(op.register, op.value);
@@ -246,7 +236,6 @@ class Execute implements IExecute {
             case OPERATION.LDA:
                 this.register.store(REGISTER.A, this.memory.load(op.value));
                 return;
-
 
             case OPERATION.STAX:
                 this.memory.store(this.register.loadX(op.register), this.register.load(REGISTER.A));
@@ -266,7 +255,6 @@ class Execute implements IExecute {
                 this.register.store(REGISTER.H, this.memory.load(xIncrement(op.value)));
                 return;
 
-
             case OPERATION.XTHL:
                 return ((oldHL: HighLow) => {
                     this.register.store(REGISTER.L, this.memory.load(this.register.getStackPointer()));
@@ -276,7 +264,6 @@ class Execute implements IExecute {
                     this.memory.store(xIncrement(this.register.getStackPointer()), oldHL.high);
                 })(this.register.loadX(REGISTER.H));
 
-
             case OPERATION.XCHG:
                 return ((oldHL: HighLow) => {
                     this.register.storeX(REGISTER.H, this.register.loadX(REGISTER.D));
@@ -284,134 +271,93 @@ class Execute implements IExecute {
 
                 })(this.register.loadX(REGISTER.H));
 
-
             case OPERATION.SPHL:
                 this.register.setStackPointer(this.register.loadX(REGISTER.H));
                 return;
 
-
             case OPERATION.PCHL:
-                this.jumpToPosition(this.register.loadX(REGISTER.H));
-                return;
-
+                return this.jumpToPosition(this.register.loadX(REGISTER.H));
 
             case OPERATION.JMP:
-                this.jump(op);
-                return;
-
+                return this.jump(op);
 
             case OPERATION.JNZ:
-                this.ifNotZero(() => this.jump(op));
-                return;
+                return this.ifNotZero(() => this.jump(op));
 
             case OPERATION.JZ:
-                this.ifZero(() => this.jump(op));
-                return;
-
+                return this.ifZero(() => this.jump(op));
 
             case OPERATION.JNC:
-                this.ifNotCarry(() => this.jump(op));
-                return;
+                return this.ifNotCarry(() => this.jump(op));
 
             case OPERATION.JC:
-                this.ifCarry(() => this.jump(op));
-                return;
+                return this.ifCarry(() => this.jump(op));
 
             case OPERATION.JPE:
-                this.ifParityEven(() => this.jump(op));
-                return;
+                return this.ifParityEven(() => this.jump(op));
 
             case OPERATION.JPO:
-                this.ifParityOdd(() => this.jump(op));
-                return;
+                return this.ifParityOdd(() => this.jump(op));
 
             case OPERATION.JP:
-                this.ifPositive(() => this.jump(op));
-                return;
+                return this.ifPositive(() => this.jump(op));
 
             case OPERATION.JM:
-                this.ifNegative(() => this.jump(op));
-                return;
+                return this.ifNegative(() => this.jump(op));
 
             case OPERATION.CALL:
-                this.call(op);
-                return;
-
+                return this.call(op);
 
             case OPERATION.CNZ:
-                this.ifNotZero(() => this.call(op));
-                return;
-
+                return this.ifNotZero(() => this.call(op));
 
             case OPERATION.CZ:
-                this.ifZero(() => this.call(op));
-                return;
-
+                return this.ifZero(() => this.call(op));
 
             case OPERATION.CNC:
-                this.ifNotCarry(() => this.call(op));
-                return;
+                return this.ifNotCarry(() => this.call(op));
 
             case OPERATION.CC:
-                this.ifCarry(() => this.call(op));
-                return;
+                return this.ifCarry(() => this.call(op));
 
             case OPERATION.CPE:
-                this.ifParityEven(() => this.call(op));
-                return;
+                return this.ifParityEven(() => this.call(op));
 
             case OPERATION.CPO:
-                this.ifParityOdd(() => this.call(op));
-                return;
+                return this.ifParityOdd(() => this.call(op));
 
             case OPERATION.CP:
-                this.ifPositive(() => this.call(op));
-                return;
+                return this.ifPositive(() => this.call(op));
 
             case OPERATION.CM:
-                this.ifNegative(() => this.call(op));
-                return;
-
+                return this.ifNegative(() => this.call(op));
 
             case OPERATION.RET:
-                this.returnTo();
-                return;
-
+                return this.returnTo();
 
             case OPERATION.RNZ:
-                this.ifNotZero(() => this.returnTo());
-                return;
-
+                return this.ifNotZero(() => this.returnTo());
 
             case OPERATION.RZ:
-                this.ifZero(() => this.returnTo());
-                return;
-
+                return this.ifZero(() => this.returnTo());
 
             case OPERATION.RNC:
-                this.ifNotCarry(() => this.returnTo());
-                return;
+                return this.ifNotCarry(() => this.returnTo());
 
             case OPERATION.RC:
-                this.ifCarry(() => this.returnTo());
-                return;
+                return this.ifCarry(() => this.returnTo());
 
             case OPERATION.RPE:
-                this.ifParityEven(() => this.returnTo());
-                return;
+                return this.ifParityEven(() => this.returnTo());
 
             case OPERATION.RPO:
-                this.ifParityOdd(() => this.returnTo());
-                return;
+                return this.ifParityOdd(() => this.returnTo());
 
             case OPERATION.RP:
-                this.ifPositive(() => this.returnTo());
-                return;
+                return this.ifPositive(() => this.returnTo());
 
             case OPERATION.RM:
-                this.ifNegative(() => this.returnTo());
-                return;
-
+                return this.ifNegative(() => this.returnTo());
 
             case OPERATION.HLT:
                 this.register.setStopped(true)

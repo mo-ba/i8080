@@ -87,7 +87,6 @@ describe('processor test', () => {
             0xc5,               // PUSH B
             0x76,               // halt
         ];
-        console.log([...program.entries()].map(([k, v]) => [k.toString(16), v.toString(16)]))
 
         for (let i = 0; i < program.length; i++) {
             memory.store(toHighLow(i), program[i])

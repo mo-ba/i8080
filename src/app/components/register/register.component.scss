@@ -1,0 +1,40 @@
+table.table {
+  text-align: center;
+  width: 100%;
+  min-width: 12em;
+
+  th, td {
+    padding-left: 0;
+    padding-right: 0;
+
+    &[colspan='1'] {
+      width: 10%;
+    }
+
+    &[colspan='5'] {
+      width: 50%;
+    }
+
+    &[colspan='10'] {
+      width: 100%;
+    }
+  }
+
+  th {
+    background-color: #eeeeee;
+    border-top-color: #555555;
+  }
+}
+
+
+.btn-byte-group {
+
+
+  .btn-byte {
+    border-width: 1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

@@ -1,6 +1,9 @@
 import {async, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {CpuModule} from "./cpu/cpu.module";
+import {RegisterModule} from "./components/register/register.module";
+import {MemoryModule} from "./components/memory/memory.module";
+import {ControlModule} from "./components/control/control.module";
 
 describe('AppComponent', () => {
     beforeEach(async(() => {
@@ -9,7 +12,10 @@ describe('AppComponent', () => {
                 AppComponent
             ],
             imports: [
-                CpuModule
+                CpuModule,
+                RegisterModule,
+                MemoryModule,
+                ControlModule,
             ],
         }).compileComponents();
     }));
@@ -30,6 +36,6 @@ describe('AppComponent', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
         const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('.content span').textContent).toContain('i8080 app is running!');
+        expect(compiled.querySelector('h1').textContent).toContain('i8080');
     });
 });

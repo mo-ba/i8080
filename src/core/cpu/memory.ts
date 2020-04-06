@@ -3,7 +3,7 @@ import {BYTE_CARRY_BIT, BYTE_MAX} from "../util";
 
 export class Memory implements IMemory {
 
-    private readonly data: Array<Int8Array>;
+    public readonly data: Array<Int8Array>;
 
     constructor() {
         this.data = new Array(BYTE_CARRY_BIT).fill(null)

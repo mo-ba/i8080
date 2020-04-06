@@ -1,4 +1,4 @@
-import {IAlu, IAluResult, IWord, IXAluResult} from "../interface";
+import {IAlu, IAluResult, IWord, IXAluResult, NO_FLAGS} from "../interface";
 import {
     AUX_BIT,
     BYTE_CARRY_BIT,
@@ -15,7 +15,6 @@ import {
     xDecrementWithFlags,
     xIncrementWithFlags
 } from "../util";
-import {NO_FLAGS} from "./flags";
 
 function calcFlags(a: number): {
     zero: boolean;

@@ -539,7 +539,6 @@ export class Decode implements IDecode {
             case 0xdb: // IN
             case 0xf3: // DI
             case 0xfb: // EI
-                console.error('opCode ' + opCode.toString(16) + ' not supported')
                 return {type: OPERATION._};
 
 

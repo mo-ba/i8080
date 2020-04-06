@@ -1,15 +1,21 @@
 import {Injectable} from "@angular/core";
 import {IDecode, OperationT} from "../../core/interface";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable()
 export class ObservableDecode implements IDecode {
 
 
-    constructor(private instance: IDecode) {
+    constructor(
+        private instance: IDecode,
+        private subject: BehaviorSubject<OperationT>,
+    ) {
 
     }
 
     decode(opCode: number): OperationT {
-        return this.instance.decode(opCode);
+        const val = this.instance.decode(opCode);
+        this.subject.next(val);
+        return val;
     }
 }

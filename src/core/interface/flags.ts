@@ -5,3 +5,11 @@ export interface IFlags {
     readonly parity: boolean;
     readonly aux: boolean;
 }
+
+export const NO_FLAGS: IFlags = {
+    carry: false,
+    zero: false,
+    sign: false,
+    parity: false,
+    aux: false,
+};

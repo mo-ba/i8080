@@ -4,5 +4,4 @@ export * from './register';
 export * from './decode';
 export * from './memory';
 export * from './execute';
-export * from './flags';
 export * from './fetch';

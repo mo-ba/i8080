@@ -42,7 +42,6 @@ export function buildSymbolMap(lines: Lines) {
         if (line.operation) {
             const size = getSize(line.operation.code);
             instructionCount += size;
-            console.log(instructionCount, size)
         }
     }
     return symbolMap;

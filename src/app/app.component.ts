@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {TOKEN} from "./cpu/tokens";
-import {IDecode, IExecute, IMemory, IProcessor, IRegister} from "../core/interface";
-import {IFetch} from "../core/interface/fetch";
+import {IMemory, IProcessor} from "../core/interface";
+import {toHighLow} from "../core/util";
 
 @Component({
     selector: 'app-root',
@@ -12,19 +12,51 @@ export class AppComponent {
     title = 'i8080';
 
     constructor(
-        @Inject(TOKEN.REGISTER) private register: IRegister,
         @Inject(TOKEN.MEMORY) private memory: IMemory,
-        @Inject(TOKEN.FETCH) private fetch: IFetch,
-        @Inject(TOKEN.DECODE) private decode: IDecode,
-        @Inject(TOKEN.EXECUTE) private execute: IExecute,
         @Inject(TOKEN.PROCESSOR) private processor: IProcessor,
     ) {
-        console.log(register)
-        console.log(memory)
-        console.log(fetch)
-        console.log(decode)
-        console.log(execute)
-        console.log(processor)
+        const program = [
+            // 21 * 19 = 399 = 256 + 143
+            0x0e, 0x15,         // c = 21
+            0x16, 0x13,         // d = 19
+
+            //MULT:
+            0x06, 0x00,         // b = 0
+            0x1e, 0x09,         // e = 9
+
+
+            //MULT0:
+            0x79,               // a = c
+            0x1f,               // rar
+            0x4f,               // c = a
+            0x1d,               // e--;
+            0xca, 0x19, 0x00,   // if 0 -> jump DONE;
+            0x78,               // a = c
+
+            0xd2, 0x14, 0x00,   // if !0 -> jump  MULT1:
+            0x82,               // a += d
+
+            // MULT1:
+            0x1f,               // rar
+            0x47,               // b = a
+            0xc3, 0x08, 0x00,   // jump  MULT0:
+
+            // DONE:
+            0xc5,               // PUSH B
+            0x76,               // halt
+        ];
+
+        for (let i = 0; i < program.length; i++) {
+            memory.store(toHighLow(i), program[i])
+        }
+
+        const h = setInterval(() => {
+
+            processor.next()
+            if (processor.getStopped()) {
+                clearInterval(h)
+            }
+        }, 100)
     }
 
 }

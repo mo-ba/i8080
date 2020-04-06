@@ -1,0 +1,60 @@
+<h3>Memory</h3>
+<div class="tabs">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <span class="nav-link"
+                  [class.active]="activeTab === 'program'"
+                  (click)="onTabClick('program')">
+                Program
+            </span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link"
+                  [class.active]="activeTab === 'hl'"
+                  (click)="onTabClick('hl')">
+                HL
+            </span>
+        </li>
+        <li class="nav-item">
+            <span class="nav-link"
+                  [class.active]="activeTab === 'stack'"
+                  (click)="onTabClick('stack')">
+                Stack
+            </span>
+        </li>
+    </ul>
+
+
+    <div class="tab" [hidden]="activeTab !== 'program'">
+
+        <div class="memory-wrapper">
+            <app-memory-page *ngIf="registerStatus"
+                             [byte]="base"
+                             [highlight]="registerStatus.programCounter.low"
+                             [page]="registerStatus.programCounter.high"
+            ></app-memory-page>
+        </div>
+
+    </div>
+    <div class="tab" [hidden]="activeTab !== 'hl'">
+        <div class="memory-wrapper">
+            <app-memory-page *ngIf="registerStatus"
+                             [byte]="base"
+                             [highlight]="hl.low"
+                             [page]="hl.high"
+            ></app-memory-page>
+        </div>
+
+    </div>
+    <div class="tab" [hidden]="activeTab !== 'stack'">
+        <div class="memory-wrapper">
+            <app-memory-page *ngIf="registerStatus"
+                             [byte]="base"
+                             [highlight]="registerStatus.stackPointer.low"
+                             [page]="registerStatus.stackPointer.high"
+            ></app-memory-page>
+        </div>
+
+    </div>
+</div>

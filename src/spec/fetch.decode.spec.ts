@@ -1152,7 +1152,6 @@ describe('fetch decode', () => {
                     const actual = decode.decode(fetch.fetch());
                     const expected: OperationT = {type: OPERATION.CALL, position: addr};
                     expect(actual).toEqual(expected);
-                    console.log({actual, expected})
                 })
 
             });

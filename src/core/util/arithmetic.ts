@@ -1,8 +1,7 @@
-import {IWord, IXAluResult} from "../interface";
 import {WORD_MAX} from "./bits";
-import {NO_FLAGS} from "../cpu";
 
 import {toHighLow, toNumber} from "./high-low.function";
+import {IWord, IXAluResult, NO_FLAGS} from "../interface";
 
 
 export function xAdd(a: IWord, b: IWord): IWord {

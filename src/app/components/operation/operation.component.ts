@@ -97,9 +97,12 @@ export class OperationComponent implements OnInit {
             this.buffer.push(value)
         })
 
-        return this.controlService.getBase().subscribe(base =>
+        this.controlService.getBase().subscribe(base =>
             this.base = base
-        )
+        );
+        this.controlService.getReset().subscribe(play => {
+            this.buffer = new RingBuffer<OperationT>(20)
+        })
     }
 
     register(register: REGISTER) {

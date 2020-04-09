@@ -1,18 +1,7 @@
-import {
-    Component,
-    ElementRef,
-    Inject,
-    Input,
-    OnChanges,
-    OnInit,
-    Renderer2,
-    SimpleChanges,
-    ViewChild
-} from '@angular/core';
+import {Component, Inject, Input, OnInit, Renderer2} from '@angular/core';
 import {TOKEN} from "../../../cpu/tokens";
 import {Observable} from "rxjs";
 import {IMemory} from "../../../../core/interface";
-import {toHighLow} from "../../../../core/util";
 
 
 @Component({
@@ -23,13 +12,12 @@ import {toHighLow} from "../../../../core/util";
 export class MemoryPageComponent implements OnInit {
 
 
-    @Input() page: number = 0
-    @Input() highlight: number = 0
-    @Input() byte: number = 16
+    @Input() page: number = 0;
+    @Input() highlight: number = 0;
+    @Input() byte: number = 16;
+
     memoryStatus: Array<Int8Array> = [];
 
-    @ViewChild('table', {static: false})
-    table: ElementRef<HTMLElement>
 
     constructor(
         private renderer2: Renderer2,
@@ -52,8 +40,13 @@ export class MemoryPageComponent implements OnInit {
         return low + (high << this.highShift())
     };
 
-    content(high: number, low: number) {
-        return this.memoryStatus[this.page][this.toByte(high, low)]
+    getPage(): Int8Array {
+        return this.memoryStatus ? this.memoryStatus[this.page] : new Int8Array()
+    }
+
+    content(high: number, low: number): number {
+        const page = this.getPage();
+        return page ? page[this.toByte(high, low)] : 0
     }
 
     lowRange() {

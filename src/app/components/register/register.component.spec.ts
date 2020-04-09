@@ -5,6 +5,7 @@ import {CpuModule} from "../../cpu/cpu.module";
 import {TOKEN} from "../../cpu/tokens";
 import {IRegister, REGISTER} from "../../../core/interface";
 import {PipesModule} from "../../pipes/pipes.module";
+import {ControlModule} from "../control/control.module";
 
 describe('RegisterComponent', () => {
     let component: RegisterComponent;
@@ -17,6 +18,7 @@ describe('RegisterComponent', () => {
             imports: [
                 CpuModule,
                 PipesModule,
+                ControlModule,
             ],
         })
             .compileComponents();

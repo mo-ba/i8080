@@ -10,7 +10,7 @@ import {PipesModule} from "../../pipes/pipes.module";
   exports: [OperationComponent],
   imports: [
     CommonModule,
-    PipesModule
+    PipesModule,
   ]
 })
 export class OperationModule { }

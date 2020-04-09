@@ -30,7 +30,8 @@ export class RegisterComponent implements OnInit {
 
         this.controlService.getBase().subscribe(base =>
             this.base = base
-        )
+        );
+
         this.controlService.getReset().subscribe(() => {
                 this.register.setProgramCounter(toHighLow(0));
                 this.register.setStackPointer(toHighLow(0xffff));

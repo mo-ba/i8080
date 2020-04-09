@@ -1,17 +1,21 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {TOKEN} from "./cpu/tokens";
 import {IMemory, IProcessor} from "../core/interface";
 import {toHighLow} from "../core/util";
+import {ControlService} from "./components/control/control.service";
+import {Clock} from "./cpu/clock";
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = 'i8080';
 
     constructor(
+        private control: ControlService,
+        private clock: Clock,
         @Inject(TOKEN.MEMORY) private memory: IMemory,
         @Inject(TOKEN.PROCESSOR) private processor: IProcessor,
     ) {
@@ -50,13 +54,27 @@ export class AppComponent {
             memory.store(toHighLow(i), program[i])
         }
 
-        const h = setInterval(() => {
-
-            processor.next()
-            if (processor.getStopped()) {
-                clearInterval(h)
-            }
-        }, 100)
     }
+
+    ngOnInit(): void {
+        this.control.getReset().subscribe(play => {
+            this.clock.pause()
+            this.control.play(false)
+        })
+        this.control.getStepForward().subscribe(_ => {
+            this.clock.tick()
+        })
+        this.control.getInterval().subscribe(interval => {
+            this.clock.setIntervalTime(interval)
+        })
+        this.control.getPlay().subscribe(play => {
+            if (play) {
+                this.clock.continue()
+            } else {
+                this.clock.pause()
+            }
+        })
+    }
+
 
 }

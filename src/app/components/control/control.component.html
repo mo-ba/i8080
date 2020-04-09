@@ -9,22 +9,40 @@
 </div>
 
 <div class="btn-group mx-3" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-sm btn-outline-secondary mr-1">
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary mr-1"
+            (click)="onSlower()">
         <fa-icon [icon]="faBackward"></fa-icon>
     </button>
-    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onReset()">
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary"
+            (click)="onReset()">
         <fa-icon [icon]="faRedo"></fa-icon>
     </button>
-    <button type="button" class="btn btn-sm btn-outline-secondary">
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary"
+            [class.active]="!(this.controlService.getPlay()|async)"
+            (click)="onPause()">
         <fa-icon [icon]="faPause"></fa-icon>
     </button>
-    <button type="button" class="btn btn-sm btn-outline-secondary">
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary"
+            [class.active]="this.controlService.getPlay()|async"
+            (click)="onPlay()">
         <fa-icon [icon]="faPlay"></fa-icon>
     </button>
-    <button type="button" class="btn btn-sm btn-outline-secondary">
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary"
+            [disabled]="this.controlService.getPlay()|async"
+            (click)="onStep()">
         <fa-icon [icon]="faStepForward"></fa-icon>
     </button>
-    <button type="button" class="btn btn-sm btn-outline-secondary ml-1">
+    <button type="button"
+            class="btn btn-sm btn-outline-secondary ml-1"
+            (click)="onFaster()">
+
         <fa-icon [icon]="faForward"></fa-icon>
     </button>
 </div>
+
+<span>{{(1000/(controlService.getInterval()|async) | number)}} Hz</span>

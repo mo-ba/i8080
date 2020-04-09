@@ -4,6 +4,7 @@ import {CpuModule} from "./cpu/cpu.module";
 import {RegisterModule} from "./components/register/register.module";
 import {MemoryModule} from "./components/memory/memory.module";
 import {ControlModule} from "./components/control/control.module";
+import {OperationModule} from "./components/operation/operation.module";
 
 describe('AppComponent', () => {
     beforeEach(async(() => {
@@ -16,6 +17,7 @@ describe('AppComponent', () => {
                 RegisterModule,
                 MemoryModule,
                 ControlModule,
+                OperationModule,
             ],
         }).compileComponents();
     }));

@@ -11,7 +11,8 @@ import {ObservableExecute} from "./execute";
 import {IDecode, IExecute, IRegister, OperationT} from "../../core/interface";
 import {IFetch} from "../../core/interface/fetch";
 import {ObservableProcessor} from "./processor";
-import {BehaviorSubject, Subject} from "rxjs";
+import {BehaviorSubject} from "rxjs";
+import {Clock} from "./clock";
 
 
 const OBSERVABLE_TOKENS = [
@@ -26,7 +27,7 @@ const TOKENS = [
     {provide: TOKEN.FETCH, useClass: ObservableFetch, deps: [Fetch]},
     {provide: TOKEN.DECODE, useClass: ObservableDecode, deps: [Decode, TOKEN.OBSERVABLE.DECODE]},
     {provide: TOKEN.EXECUTE, useClass: ObservableExecute, deps: [Execute]},
-    {provide: TOKEN.PROCESSOR, useClass: ObservableProcessor, deps: [Processor]},
+    {provide: TOKEN.PROCESSOR, useClass: ObservableProcessor, deps: [Processor, Clock]},
 ]
 
 const processorFactory = (register: IRegister, execute: IExecute, decode: IDecode, fetch: IFetch) =>
@@ -66,6 +67,7 @@ const PARTS = [
 @NgModule({
     declarations: [],
     providers: [
+        Clock,
         ...PARTS,
         ...OBSERVABLE_TOKENS,
         ...TOKENS

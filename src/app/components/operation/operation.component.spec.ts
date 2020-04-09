@@ -1,25 +1,34 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OperationComponent } from './operation.component';
+import {OperationComponent} from './operation.component';
+import {PipesModule} from "../../pipes/pipes.module";
+import {CpuModule} from "../../cpu/cpu.module";
+import {ControlModule} from "../control/control.module";
 
 describe('OperationComponent', () => {
-  let component: OperationComponent;
-  let fixture: ComponentFixture<OperationComponent>;
+    let component: OperationComponent;
+    let fixture: ComponentFixture<OperationComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ OperationComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [OperationComponent],
+            imports: [
+                PipesModule,
+                CpuModule,
+                ControlModule,
+            ]
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(OperationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        })
+            .compileComponents();
+    }));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(OperationComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

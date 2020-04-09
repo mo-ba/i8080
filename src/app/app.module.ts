@@ -18,7 +18,7 @@ import {OperationModule} from "./components/operation/operation.module";
         RegisterModule,
         MemoryModule,
         ControlModule,
-        OperationModule,
+        OperationModule
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -2,15 +2,15 @@
     <tr>
         <td></td>
         <th *ngFor="let l of lowRange()">
-            {{l | byte:16}}
+            {{l | byte | base:16}}
         </th>
     </tr>
     <tr *ngFor="let h of highRange()">
-        <th>{{toByte(h,0)  | byte:16}}</th>
+        <th>{{toByte(h, 0)  | byte | base:16}}</th>
         <td *ngFor="let l of lowRange()"
             [class.highlight]="(toByte(h,l)) === highlight"
-            [title]="(page| byte:16)+(toByte(h,l) | byte:16)">
-            {{content(h, l) | byte:byte}}
+            [title]="(page| byte | base:16)+(toByte(h,l) | byte | base:16)">
+            {{content(h, l) | byte | base:byte}}
         </td>
     </tr>
 </table>

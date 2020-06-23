@@ -1,13 +1,16 @@
-import {Injectable} from "@angular/core";
-import {IFetch} from "../../core/interface/fetch";
-import {IWord} from "../../core/interface";
+import {Inject, Injectable} from '@angular/core';
+import {IFetch} from '../../core/interface/fetch';
+import {IWord} from '../../core/interface';
+import {TOKEN} from './tokens';
 
 
 @Injectable()
 export class ObservableFetch implements IFetch {
 
 
-    constructor(private instance: IFetch) {
+    constructor(
+        @Inject(TOKEN.ABSTRACT.FETCH) private instance: IFetch
+    ) {
 
     }
 

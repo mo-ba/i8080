@@ -1,0 +1,16 @@
+.template-editor {
+  height: calc(100vh - 200px);
+}
+
+.result {
+
+}
+
+.op-code {
+  width: 4em;
+
+  background-color: #17a2b8;
+  &:first-child {
+    background-color: #6c757d;
+  }
+}

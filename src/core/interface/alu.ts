@@ -1,5 +1,5 @@
-import {IFlags} from "./flags";
-import {IWord} from "./word";
+import {IFlags} from './flags';
+import {IWord} from './word';
 
 export interface IAluResult {
     readonly result: number;

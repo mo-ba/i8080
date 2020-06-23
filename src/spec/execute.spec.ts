@@ -1,9 +1,9 @@
-import {Alu, Execute, Memory, Register} from "../core/cpu";
-import {IExecute, IMemory, IRegister, IWord, OPERATION, REGISTER, registerList} from "../core/interface";
-import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from "../core/util";
-import {async, TestBed} from "@angular/core/testing";
-import {CpuModule} from "../app/cpu/cpu.module";
-import {TOKEN} from "../app/cpu/tokens";
+import {Alu, Execute, Memory, Register} from '../core/cpu';
+import {IExecute, IMemory, IRegister, IWord, OPERATION, REGISTER, registerList} from '../core/interface';
+import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from '../core/util';
+import {async, TestBed} from '@angular/core/testing';
+import {CpuModule} from '../app/cpu/cpu.module';
+import {TOKEN} from '../app/cpu/tokens';
 
 
 const binary = (s: string) => parseInt(s, 2);
@@ -411,7 +411,7 @@ describe('exec', () => {
                     expect(register.getParity()).toEqual(calcParity(expected));
                     expect(register.getSign()).toEqual(calcSign(expected), expected + '');
                 });
-            })
+            });
         });
 
         it('should dec ', () => {
@@ -429,7 +429,7 @@ describe('exec', () => {
                     expect(register.getParity()).toEqual(calcParity(expected));
                     expect(register.getSign()).toEqual(calcSign(expected));
                 });
-            })
+            });
         });
 
         it('should inc M', () => {
@@ -644,7 +644,7 @@ describe('exec', () => {
                 const position = highLow(23, 45);
                 executor.execute({type: OPERATION.CALL, position});
                 expect(register.getProgramCounter()).toEqual(position);
-            })
+            });
 
 
         });
@@ -903,7 +903,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RLC});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(true)
+            expect(register.getCarry()).toEqual(true);
 
         });
         it('should rotate right 00010011', () => {
@@ -915,7 +915,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RLC});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(false)
+            expect(register.getCarry()).toEqual(false);
 
         });
         it('should rotate right through carry 10001001 0', () => {
@@ -927,7 +927,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAL});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(true)
+            expect(register.getCarry()).toEqual(true);
 
         });
         it('should rotate right through carry 10001001 1', () => {
@@ -939,7 +939,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAL});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(true)
+            expect(register.getCarry()).toEqual(true);
 
         });
         it('should rotate right through carry 00010011 0', () => {
@@ -951,7 +951,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAL});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(false)
+            expect(register.getCarry()).toEqual(false);
 
         });
         it('should rotate right through carry  00010011 1', () => {
@@ -963,9 +963,9 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAL});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(false)
+            expect(register.getCarry()).toEqual(false);
 
-        })
+        });
     });
     describe('test rotation right', () => {
 
@@ -979,7 +979,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RRC});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(true)
+            expect(register.getCarry()).toEqual(true);
 
         });
         it('should rotate right 00010010', () => {
@@ -991,7 +991,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RRC});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(false)
+            expect(register.getCarry()).toEqual(false);
 
         });
         it('should rotate right through carry  00010010 1', () => {
@@ -1003,7 +1003,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAR});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(true)
+            expect(register.getCarry()).toEqual(true);
 
         });
         it('should rotate right through carry  10001001 1', () => {
@@ -1015,7 +1015,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAR});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(true)
+            expect(register.getCarry()).toEqual(true);
 
         });
         it('should rotate right through carry 00010010 0', () => {
@@ -1027,7 +1027,7 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAR});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(false)
+            expect(register.getCarry()).toEqual(false);
 
         });
         it('should rotate right through carry  00010010 1', () => {
@@ -1039,9 +1039,9 @@ describe('exec', () => {
 
             executor.execute({type: OPERATION.RAR});
             expect(register.load(REGISTER.A)).toEqual(b);
-            expect(register.getCarry()).toEqual(false)
+            expect(register.getCarry()).toEqual(false);
 
-        })
+        });
     });
 
     describe('test 16bit', () => {
@@ -1068,7 +1068,7 @@ describe('exec', () => {
 
                 expect(register.loadX(REGISTER.D)).toEqual(toHighLow(0x8510));
                 expect(register.loadX(REGISTER.H)).toEqual(toHighLow(0x0875));
-                expect(register.getCarry()).toEqual(true)
+                expect(register.getCarry()).toEqual(true);
 
             });
         });
@@ -1080,7 +1080,7 @@ describe('exec', () => {
                 executor.execute({type: OPERATION.DAD, register: REGISTER.H});
 
                 expect(register.loadX(REGISTER.H)).toEqual(toHighLow(8730));
-                expect(register.getCarry()).toEqual(false)
+                expect(register.getCarry()).toEqual(false);
 
             });
         });
@@ -1092,7 +1092,7 @@ describe('exec', () => {
                 executor.execute({type: OPERATION.DAD, register: REGISTER.SP});
                 expect(register.getStackPointer()).toEqual(toHighLow(1510));
                 expect(register.loadX(REGISTER.H)).toEqual(toHighLow(5875));
-                expect(register.getCarry()).toEqual(false)
+                expect(register.getCarry()).toEqual(false);
             });
         });
 
@@ -1469,8 +1469,8 @@ describe('exec', () => {
             executor.execute({type: OPERATION.MOV, to: REGISTER.B, from: REGISTER.C});
             executor.execute({type: OPERATION.MOV, to: REGISTER.C, from: REGISTER.A});
 
-            expect(register.load(REGISTER.A)).toEqual(8)
-
+            expect(register.load(REGISTER.A)).toEqual(8);
+            console.log(Object.values(OPERATION));
 
         });
     });

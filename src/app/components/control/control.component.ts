@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ControlService} from "./control.service";
-import {Observable} from "rxjs";
+import {ControlService} from './control.service';
+import {Observable} from 'rxjs';
 
 import * as icon from '@fortawesome/free-solid-svg-icons';
 
@@ -11,21 +11,21 @@ import * as icon from '@fortawesome/free-solid-svg-icons';
 })
 export class ControlComponent implements OnInit {
 
-    faPlay = icon.faPlay
-    faPause = icon.faPause
-    faRedo = icon.faRedo
-    faStepForward = icon.faStepForward
+    faPlay = icon.faPlay;
+    faPause = icon.faPause;
+    faRedo = icon.faRedo;
+    faStepForward = icon.faStepForward;
 
-    faForward = icon.faForward
-    faBackward = icon.faBackward
+    faForward = icon.faForward;
+    faBackward = icon.faBackward;
 
     bytes = [2, 10, 16];
 
-    constructor(private controlService: ControlService) {
+    constructor(public controlService: ControlService) {
     }
 
     getBase(): Observable<number> {
-        return this.controlService.getBase()
+        return this.controlService.getBase();
     }
 
     ngOnInit() {
@@ -33,30 +33,30 @@ export class ControlComponent implements OnInit {
 
 
     onByte(base: number) {
-        this.controlService.setBase(base)
+        this.controlService.setBase(base);
     }
 
     onReset() {
-        this.controlService.reset()
+        this.controlService.reset();
     }
 
     onPause() {
-        this.controlService.play(false)
+        this.controlService.play(false);
     }
 
     onPlay() {
-        this.controlService.play(true)
+        this.controlService.play(true);
     }
 
     onStep() {
-        this.controlService.stepForward()
+        this.controlService.stepForward();
     }
 
     onFaster() {
-        this.controlService.faster()
+        this.controlService.faster();
     }
 
     onSlower() {
-        this.controlService.slower()
+        this.controlService.slower();
     }
 }

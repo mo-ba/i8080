@@ -1,8 +1,9 @@
-import {IWord} from "./word";
+import {IWord} from './word';
 
 export interface IMemory {
     load(address: IWord): number;
 
     store(address: IWord, value: number): IMemory;
 
+    getMemory(): Array<Int8Array>;
 }

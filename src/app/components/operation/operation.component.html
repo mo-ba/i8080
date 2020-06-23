@@ -2,12 +2,12 @@
 
 <div class="instructions">
     <div *ngFor="let item of buffer.reverse()" class="instruction">
-        <span class="type badge badge-secondary">{{item?.type}}</span>
-        <span class="arg badge badge-info" *ngIf="isSet(item?.position)">0x{{ item?.position.low | byte:16 }}</span>
-        <span class="arg badge badge-info" *ngIf="isSet(item?.position)">0x{{ item?.position.high | byte:16 }}</span>
+        <span class="type badge badge-secondary">{{item?.type}}&nbsp;</span>
+        <span class="arg badge badge-info" *ngIf="isSet(item?.position)">0x{{ item?.position.low | byte | base:16 }}</span>
+        <span class="arg badge badge-info" *ngIf="isSet(item?.position)">0x{{ item?.position.high | byte | base:16 }}</span>
         <span class="arg badge badge-info" *ngIf="isSet(item?.register)">{{ register(item?.register)}}</span>
         <span class="arg badge badge-info" *ngIf="isSet(item?.to)">{{ register(item?.to)}}</span>
         <span class="arg badge badge-info" *ngIf="isSet(item?.from)">{{ register(item?.from)}}</span>
-        <span class="arg badge badge-info" *ngIf="isSet(item?.value)">0x{{ item?.value | byte:16}}</span>
+        <span class="arg badge badge-info" *ngIf="isSet(item?.value)">0x{{ item?.value | byte | base:16}}</span>
     </div>
 </div>

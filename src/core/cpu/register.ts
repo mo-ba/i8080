@@ -1,5 +1,5 @@
-import {IMemory, IRegister, IWord, REGISTER} from "../interface";
-import {BYTE_MAX, highLow, toHighLow, xDecrement, xIncrement} from "../util";
+import {IMemory, IRegister, IWord, REGISTER} from '../interface';
+import {BYTE_MAX, highLow, toHighLow, xDecrement, xIncrement} from '../util';
 
 
 enum FLAG_INDEX {
@@ -24,7 +24,6 @@ enum FLAG_BIT {
     Sign = 1 << FLAG_INDEX.Sign,
 }
 
-//use enum to enforce compile-time-calculations
 enum PATTERN {
     NOT = -1,
     FLAGS = FLAG_BIT.Auxiliary | FLAG_BIT.Parity | FLAG_BIT.Carry | FLAG_BIT.Sign | FLAG_BIT.Zero
@@ -62,7 +61,7 @@ export class Register implements IRegister {
 
     load(address: REGISTER): number {
         if (address === REGISTER.M) {
-            return this.loadMemory(this.getAddressFromHighLow())
+            return this.loadMemory(this.getAddressFromHighLow());
         } else {
             return this.registers[address] & BYTE_MAX;
         }
@@ -70,7 +69,7 @@ export class Register implements IRegister {
 
 
     loadX(address: REGISTER): IWord {
-        return map16bitRead[address](this.registers, this.flags)
+        return map16bitRead[address](this.registers, this.flags);
     }
 
     store(address: REGISTER, value: number): Register {
@@ -88,7 +87,7 @@ export class Register implements IRegister {
     }
 
     storeX(address: REGISTER, value: IWord): Register {
-        return map16bitStore[address](this, value)
+        return map16bitStore[address](this, value);
     }
 
 
@@ -152,7 +151,7 @@ export class Register implements IRegister {
             .storeMemory(this.stackPointer, value.high)
             .decrementStackPointer()
             .storeMemory(this.stackPointer, value.low)
-            .decrementStackPointer()
+            .decrementStackPointer();
 
     }
 
@@ -171,7 +170,7 @@ export class Register implements IRegister {
     }
 
     setStackPointer(stackPointer: IWord): IRegister {
-        this.stackPointer = stackPointer
+        this.stackPointer = stackPointer;
         return this;
     }
 
@@ -196,7 +195,7 @@ export class Register implements IRegister {
     }
 
     private storeMemory(address: IWord, value: number): Register {
-        this.memory.store(address, value)
+        this.memory.store(address, value);
         return this;
     }
 

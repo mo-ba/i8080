@@ -5,26 +5,32 @@
     <tr>
         <th colspan="5">B</th>
         <th colspan="5">C</th>
+        <th colspan="5">x</th>
     </tr>
     <tr>
-        <td colspan="5">{{status[REGISTER.B] | byte:base}}</td>
-        <td colspan="5">{{status[REGISTER.C] | byte:base}}</td>
+        <td colspan="5">{{status[REGISTER.B] | byte | base:base}}</td>
+        <td colspan="5">{{status[REGISTER.C] | byte | base:base}}</td>
+        <td colspan="5">{{hl(REGISTER.B) | base:base}}</td>
     </tr>
     <tr>
         <th colspan="5">D</th>
         <th colspan="5">E</th>
+        <th colspan="5">x</th>
     </tr>
     <tr>
-        <td colspan="5">{{status[REGISTER.D] | byte:base}}</td>
-        <td colspan="5">{{status[REGISTER.E] | byte:base}}</td>
+        <td colspan="5">{{status[REGISTER.D] | byte | base:base}}</td>
+        <td colspan="5">{{status[REGISTER.E] | byte | base:base}}</td>
+        <td colspan="5">{{hl(REGISTER.D) | base:base}}</td>
     </tr>
     <tr>
         <th colspan="5">H</th>
         <th colspan="5">L</th>
+        <th colspan="5">x</th>
     </tr>
     <tr>
-        <td colspan="5">{{status[REGISTER.H]| byte:base}}</td>
-        <td colspan="5">{{status[REGISTER.L]| byte:base}}</td>
+        <td colspan="5">{{status[REGISTER.H]| byte | base:base}}</td>
+        <td colspan="5">{{status[REGISTER.L]| byte | base:base}}</td>
+        <td colspan="5">{{hl(REGISTER.H) | base:base}}</td>
     </tr>
     <tr>
         <th colspan="5">A</th>
@@ -33,28 +39,34 @@
         <th colspan="1">z</th>
         <th colspan="1">p</th>
         <th colspan="1">a</th>
+        <th colspan="5"> </th>
     </tr>
     <tr>
-        <td colspan="5">{{status[REGISTER.A]| byte:base}}</td>
+        <td colspan="5">{{status[REGISTER.A]| byte | base:base}}</td>
         <td colspan="1">{{status.flags.sign | bool}} </td>
         <td colspan="1">{{status.flags.carry | bool}}</td>
         <td colspan="1">{{status.flags.zero | bool}}</td>
         <td colspan="1">{{status.flags.parity | bool}}</td>
         <td colspan="1">{{status.flags.aux | bool}}</td>
+        <td colspan="5"></td>
     </tr>
     <tr>
         <th colspan="10">Stackpointer</th>
+        <th colspan="5"> </th>
     </tr>
     <tr>
-        <td colspan="5">{{status.stackPointer.high | byte:base}}</td>
-        <td colspan="5">{{status.stackPointer.low  | byte:base}}</td>
+        <td colspan="5">{{status.stackPointer.high | byte | base:base}}</td>
+        <td colspan="5">{{status.stackPointer.low  | byte | base:base}}</td>
+        <td colspan="5"> </td>
     </tr>
     <tr>
         <th colspan="10">Programcounter</th>
+        <th colspan="5"> </th>
     </tr>
     <tr>
-        <td colspan="5">{{status.programCounter.high | byte:base}}</td>
-        <td colspan="5">{{status.programCounter.low  | byte:base}}</td>
+        <td colspan="5">{{status.programCounter.high | byte | base:base}}</td>
+        <td colspan="5">{{status.programCounter.low  | byte | base:base}}</td>
+        <td colspan="5"> </td>
     </tr>
 
 </table>

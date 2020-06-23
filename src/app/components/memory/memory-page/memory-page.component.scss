@@ -1,8 +1,15 @@
 table {
+  margin-top: 1em;
   line-height: 0.9;
 
-  .highlight{
+  .highlight {
     background-color: #333333;
     color: #eeeeee;
   }
+
+  td, th{
+    text-align: center;
+    border: 1px solid #cbcbcb;
+  }
+
 }

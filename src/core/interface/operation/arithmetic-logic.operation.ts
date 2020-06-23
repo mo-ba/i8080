@@ -1,5 +1,5 @@
-import {ImmediateValueOperation, Operation, RegisterOperation} from "./operation";
-import {OPERATION} from "./operation.types";
+import {ImmediateValueOperation, Operation, RegisterOperation} from './operation';
+import {OPERATION} from './operation.types';
 
 export interface AddOperation extends RegisterOperation, Operation {
     readonly type: OPERATION.ADD;

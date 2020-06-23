@@ -1,5 +1,5 @@
-import {IDecode, IExecute, IProcessor, IRegister} from "../interface";
-import {IFetch} from "../interface/fetch";
+import {IDecode, IExecute, IProcessor, IRegister} from '../interface';
+import {IFetch} from '../interface/fetch';
 
 
 export class Processor implements IProcessor {

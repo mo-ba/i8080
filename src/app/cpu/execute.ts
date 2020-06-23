@@ -1,12 +1,15 @@
-import {Injectable} from "@angular/core";
-import {IExecute, OperationT} from "../../core/interface";
+import {Inject, Injectable} from '@angular/core';
+import {IExecute, OperationT} from '../../core/interface';
+import {TOKEN} from './tokens';
 
 
 @Injectable()
 export class ObservableExecute implements IExecute {
 
 
-    constructor(private instance: IExecute) {
+    constructor(
+        @Inject(TOKEN.ABSTRACT.EXECUTE
+        ) private instance: IExecute) {
     }
 
     execute(op: OperationT): void {

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 @Injectable()
 export class ControlService {
@@ -9,7 +9,7 @@ export class ControlService {
     private stepForward$ = new Subject<void>();
     private play$ = new BehaviorSubject<boolean>(false);
 
-    private interval = [5, 10, 20, 50, 100, 200, 400, 500, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000];
+    private interval = [0, 5, 10, 20, 50, 100, 200, 400, 500, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000];
 
     private intervalIndex = Math.floor(this.interval.length / 2);
 
@@ -20,12 +20,12 @@ export class ControlService {
 
     faster() {
         this.intervalIndex = Math.max(0, Math.min(this.interval.length, --this.intervalIndex));
-        this.interval$.next(this.interval[this.intervalIndex])
+        this.interval$.next(this.interval[this.intervalIndex]);
     }
 
     slower() {
         this.intervalIndex = Math.max(0, Math.min(this.interval.length, ++this.intervalIndex));
-        this.interval$.next(this.interval[this.intervalIndex])
+        this.interval$.next(this.interval[this.intervalIndex]);
     }
 
     getInterval(): Observable<number> {

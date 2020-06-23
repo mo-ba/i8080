@@ -1,6 +1,6 @@
-import {Parser} from "./parser";
-import {Assembler, buildSymbolMap, getCode, registerSymbolMap} from "./assembler";
-import {OPERATION} from "../interface";
+import {Parser} from './parser';
+import {Assembler, buildSymbolMap, getCode, registerSymbolMap} from './assembler';
+import {OPERATION} from '../interface';
 
 
 describe('Assembler test', () => {
@@ -19,11 +19,11 @@ describe('Assembler test', () => {
         MV2: MVI d,   4   ; foo bar%
          ; foo bar% !?$§&|<<>>[](){}
         JNZ MV3
-         
-         
+
+
         DIV0: MVI   e, 5, 64H
         `));
-        expect(map).toEqual({...registerSymbolMap, MV1: 1, MV3: 3, MV2: 7, DIV0: 12})
+        expect(map).toEqual({...registerSymbolMap, MV1: 1, MV3: 3, MV2: 7, DIV0: 12});
     });
 
     it('should getCodeNOP', () => {
@@ -100,14 +100,14 @@ describe('Assembler test', () => {
         ).toThrowError(('invalid value'));
         expect(() => getCode(
             {code: op, operands: [9, 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('invalid value'))
+        ).toThrowError(('invalid value'));
 
         expect(() => getCode(
             {code: op, operands: ['H', 0x15612]}, {...registerSymbolMap, REG: 1})
         ).toThrowError(('invalid value'));
     });
     it('should getCodeSTAX', () => {
-        const op = OPERATION.STAX
+        const op = OPERATION.STAX;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x02]);
@@ -123,10 +123,10 @@ describe('Assembler test', () => {
         ).toThrowError(('invalid value'));
         expect(() => getCode(
             {code: op, operands: [5]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('invalid value'))
+        ).toThrowError(('invalid value'));
     });
     it('should getCodeLDAX', () => {
-        const op = OPERATION.LDAX
+        const op = OPERATION.LDAX;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x0a]);
@@ -142,11 +142,11 @@ describe('Assembler test', () => {
         ).toThrowError(('invalid value'));
         expect(() => getCode(
             {code: op, operands: [5]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('invalid value'))
+        ).toThrowError(('invalid value'));
     });
 
     it('should getCodeSHLD', () => {
-        const op = OPERATION.SHLD
+        const op = OPERATION.SHLD;
         expect(getCode(
             {code: op, operands: [0x5672]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x22, 0x72, 0x56]);
@@ -157,7 +157,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeLHLD', () => {
-        const op = OPERATION.LHLD
+        const op = OPERATION.LHLD;
         expect(getCode(
             {code: op, operands: [0x5672]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x2a, 0x72, 0x56]);
@@ -168,7 +168,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeSTA', () => {
-        const op = OPERATION.STA
+        const op = OPERATION.STA;
         expect(getCode(
             {code: op, operands: [0x5672]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x32, 0x72, 0x56]);
@@ -182,7 +182,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeLDA', () => {
-        const op = OPERATION.LDA
+        const op = OPERATION.LDA;
         expect(getCode(
             {code: op, operands: [0x5672]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x3a, 0x72, 0x56]);
@@ -197,7 +197,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeINX', () => {
-        const op = OPERATION.INX
+        const op = OPERATION.INX;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x03]);
@@ -220,11 +220,11 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['SP', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
     });
 
     it('should getCodePOP', () => {
-        const op = OPERATION.POP
+        const op = OPERATION.POP;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xc1]);
@@ -247,10 +247,10 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['SP', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
     });
     it('should getCodePUSH', () => {
-        const op = OPERATION.PUSH
+        const op = OPERATION.PUSH;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xc5]);
@@ -273,11 +273,11 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['SP', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
     });
 
     it('should getCodeDAD', () => {
-        const op = OPERATION.DAD
+        const op = OPERATION.DAD;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x09]);
@@ -300,11 +300,11 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['SP', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
 
     });
     it('should getCodeDCX', () => {
-        const op = OPERATION.DCX
+        const op = OPERATION.DCX;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x0b]);
@@ -327,11 +327,11 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['SP', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
 
     });
     it('should getCodeINR', () => {
-        const op = OPERATION.INR
+        const op = OPERATION.INR;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x04]);
@@ -363,11 +363,11 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['A', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
 
     });
     it('should getCodeDCR', () => {
-        const op = OPERATION.DCR
+        const op = OPERATION.DCR;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x05]);
@@ -399,11 +399,11 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['A', 0x5612]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 1 (2 given)'))
+        ).toThrowError(('operand count not 1 (2 given)'));
 
     });
     it('should getCodeMVI', () => {
-        const op = OPERATION.MVI
+        const op = OPERATION.MVI;
         expect(getCode(
             {code: op, operands: ['B', 0x56]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x06, 0x56]);
@@ -439,99 +439,99 @@ describe('Assembler test', () => {
 
         expect(() => getCode(
             {code: op, operands: ['A', 34, 0x100]}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 2 (3 given)'))
+        ).toThrowError(('operand count not 2 (3 given)'));
 
     });
     it('should getCodeRLC', () => {
-        const op = OPERATION.RLC
+        const op = OPERATION.RLC;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x07]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeRAL', () => {
-        const op = OPERATION.RAL
+        const op = OPERATION.RAL;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x17]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeDAA', () => {
-        const op = OPERATION.DAA
+        const op = OPERATION.DAA;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x27]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeSTC', () => {
-        const op = OPERATION.STC
+        const op = OPERATION.STC;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x37]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeRRC', () => {
-        const op = OPERATION.RRC
+        const op = OPERATION.RRC;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x0f]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeRAR', () => {
-        const op = OPERATION.RAR
+        const op = OPERATION.RAR;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x1f]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeCMA', () => {
-        const op = OPERATION.CMA
+        const op = OPERATION.CMA;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x2f]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeCMC', () => {
-        const op = OPERATION.CMC
+        const op = OPERATION.CMC;
         expect(getCode(
             {code: op, operands: []}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x3f]);
 
         expect(() => getCode(
             {code: op, operands: ['x']}, {...registerSymbolMap, REG: 1})
-        ).toThrowError(('operand count not 0 (1 given)'))
+        ).toThrowError(('operand count not 0 (1 given)'));
 
     });
     it('should getCodeMOV B', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['B', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x40]);
@@ -560,7 +560,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeMOV C', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['C', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x48]);
@@ -588,7 +588,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeMOV D', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['D', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x50]);
@@ -617,7 +617,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeMOV E', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['E', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x58]);
@@ -645,7 +645,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeMOV H', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['H', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x60]);
@@ -674,7 +674,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeMOV E', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['L', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x68]);
@@ -702,7 +702,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeMOV M', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['M', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x70]);
@@ -728,7 +728,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeMOV A', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: ['A', 'B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x78]);
@@ -757,7 +757,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeMOV by number', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(getCode(
             {code: op, operands: [2, 'M']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x56]);
@@ -767,7 +767,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeMOV Invalid', () => {
-        const op = OPERATION.MOV
+        const op = OPERATION.MOV;
         expect(() => getCode(
             {code: op, operands: ['A', 'A', 'A']}, {...registerSymbolMap, REG: 1})
         ).toThrowError(('operand count not 2 (3 given)'));
@@ -787,7 +787,7 @@ describe('Assembler test', () => {
 
 
     it('should getCodeADD', () => {
-        const op = OPERATION.ADD
+        const op = OPERATION.ADD;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x80]);
@@ -824,7 +824,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeADC', () => {
-        const op = OPERATION.ADC
+        const op = OPERATION.ADC;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x88]);
@@ -862,7 +862,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeSUB', () => {
-        const op = OPERATION.SUB
+        const op = OPERATION.SUB;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x90]);
@@ -899,7 +899,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeSBB', () => {
-        const op = OPERATION.SBB
+        const op = OPERATION.SBB;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0x98]);
@@ -937,7 +937,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeANA', () => {
-        const op = OPERATION.ANA
+        const op = OPERATION.ANA;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xa0]);
@@ -974,7 +974,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeXRA', () => {
-        const op = OPERATION.XRA
+        const op = OPERATION.XRA;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xa8]);
@@ -1012,7 +1012,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeORA', () => {
-        const op = OPERATION.ORA
+        const op = OPERATION.ORA;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xb0]);
@@ -1049,7 +1049,7 @@ describe('Assembler test', () => {
 
     });
     it('should getCodeCMP', () => {
-        const op = OPERATION.CMP
+        const op = OPERATION.CMP;
         expect(getCode(
             {code: op, operands: ['B']}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xb8]);
@@ -1088,7 +1088,7 @@ describe('Assembler test', () => {
 
     describe('should return', () => {
         it('should getCodeRNZ', () => {
-            const op = OPERATION.RNZ
+            const op = OPERATION.RNZ;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xc0]);
@@ -1098,7 +1098,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeRNC', () => {
-            const op = OPERATION.RNC
+            const op = OPERATION.RNC;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xd0]);
@@ -1108,7 +1108,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeRPO', () => {
-            const op = OPERATION.RPO
+            const op = OPERATION.RPO;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xe0]);
@@ -1117,7 +1117,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 0 (1 given)'));
         });
         it('should getCodeRP', () => {
-            const op = OPERATION.RP
+            const op = OPERATION.RP;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xf0]);
@@ -1126,7 +1126,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 0 (1 given)'));
         });
         it('should getCodeRZ', () => {
-            const op = OPERATION.RZ
+            const op = OPERATION.RZ;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xc8]);
@@ -1136,7 +1136,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeRC', () => {
-            const op = OPERATION.RC
+            const op = OPERATION.RC;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xd8]);
@@ -1145,7 +1145,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 0 (1 given)'));
         });
         it('should getCodeRPE', () => {
-            const op = OPERATION.RPE
+            const op = OPERATION.RPE;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xe8]);
@@ -1154,7 +1154,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 0 (1 given)'));
         });
         it('should getCodeRM', () => {
-            const op = OPERATION.RM
+            const op = OPERATION.RM;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xf8]);
@@ -1163,7 +1163,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 0 (1 given)'));
         });
         it('should getCodeRET', () => {
-            const op = OPERATION.RET
+            const op = OPERATION.RET;
             expect(getCode(
                 {code: op, operands: []}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xc9]);
@@ -1175,7 +1175,7 @@ describe('Assembler test', () => {
 
     describe('should jump', () => {
         it('should getCodeJNZ', () => {
-            const op = OPERATION.JNZ
+            const op = OPERATION.JNZ;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xc2, 0x34, 0x12]);
@@ -1188,7 +1188,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeJNC', () => {
-            const op = OPERATION.JNC
+            const op = OPERATION.JNC;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xd2, 0x34, 0x12]);
@@ -1201,7 +1201,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeJPO', () => {
-            const op = OPERATION.JPO
+            const op = OPERATION.JPO;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xe2, 0x34, 0x12]);
@@ -1213,7 +1213,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeJP', () => {
-            const op = OPERATION.JP
+            const op = OPERATION.JP;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xf2, 0x34, 0x12]);
@@ -1225,7 +1225,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeJZ', () => {
-            const op = OPERATION.JZ
+            const op = OPERATION.JZ;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xca, 0x34, 0x12]);
@@ -1238,7 +1238,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeJC', () => {
-            const op = OPERATION.JC
+            const op = OPERATION.JC;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xda, 0x34, 0x12]);
@@ -1250,7 +1250,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeJPE', () => {
-            const op = OPERATION.JPE
+            const op = OPERATION.JPE;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xea, 0x34, 0x12]);
@@ -1262,7 +1262,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeJM', () => {
-            const op = OPERATION.JM
+            const op = OPERATION.JM;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xfa, 0x34, 0x12]);
@@ -1274,7 +1274,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeJMP', () => {
-            const op = OPERATION.JMP
+            const op = OPERATION.JMP;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xc3, 0x34, 0x12]);
@@ -1289,7 +1289,7 @@ describe('Assembler test', () => {
 
     describe('should call', () => {
         it('should getCodeCNZ', () => {
-            const op = OPERATION.CNZ
+            const op = OPERATION.CNZ;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xc4, 0x34, 0x12]);
@@ -1302,7 +1302,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeCNC', () => {
-            const op = OPERATION.CNC
+            const op = OPERATION.CNC;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xd4, 0x34, 0x12]);
@@ -1315,7 +1315,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeCPO', () => {
-            const op = OPERATION.CPO
+            const op = OPERATION.CPO;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xe4, 0x34, 0x12]);
@@ -1327,7 +1327,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeCP', () => {
-            const op = OPERATION.CP
+            const op = OPERATION.CP;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xf4, 0x34, 0x12]);
@@ -1339,7 +1339,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeCZ', () => {
-            const op = OPERATION.CZ
+            const op = OPERATION.CZ;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xcc, 0x34, 0x12]);
@@ -1352,7 +1352,7 @@ describe('Assembler test', () => {
         });
 
         it('should getCodeCC', () => {
-            const op = OPERATION.CC
+            const op = OPERATION.CC;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xdc, 0x34, 0x12]);
@@ -1364,7 +1364,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeCPE', () => {
-            const op = OPERATION.CPE
+            const op = OPERATION.CPE;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xec, 0x34, 0x12]);
@@ -1376,7 +1376,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeCM', () => {
-            const op = OPERATION.CM
+            const op = OPERATION.CM;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xfc, 0x34, 0x12]);
@@ -1388,7 +1388,7 @@ describe('Assembler test', () => {
             ).toThrowError(('operand count not 1 (2 given)'));
         });
         it('should getCodeCALL', () => {
-            const op = OPERATION.CALL
+            const op = OPERATION.CALL;
             expect(getCode(
                 {code: op, operands: [0x1234]}, {...registerSymbolMap, REG: 1})
             ).toEqual([0xcd, 0x34, 0x12]);
@@ -1402,7 +1402,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeADI', () => {
-        const op = OPERATION.ADI
+        const op = OPERATION.ADI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xc6, 0x12]);
@@ -1419,7 +1419,7 @@ describe('Assembler test', () => {
         ).toThrowError(('operand count not 1 (0 given)'));
     });
     it('should getCodeACI', () => {
-        const op = OPERATION.ACI
+        const op = OPERATION.ACI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xce, 0x12]);
@@ -1438,7 +1438,7 @@ describe('Assembler test', () => {
 
 
     it('should getCodeSUI', () => {
-        const op = OPERATION.SUI
+        const op = OPERATION.SUI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xd6, 0x12]);
@@ -1455,7 +1455,7 @@ describe('Assembler test', () => {
         ).toThrowError(('operand count not 1 (0 given)'));
     });
     it('should getCodeSBI', () => {
-        const op = OPERATION.SBI
+        const op = OPERATION.SBI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xde, 0x12]);
@@ -1473,7 +1473,7 @@ describe('Assembler test', () => {
     });
 
     it('should getCodeANI', () => {
-        const op = OPERATION.ANI
+        const op = OPERATION.ANI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xe6, 0x12]);
@@ -1490,7 +1490,7 @@ describe('Assembler test', () => {
         ).toThrowError(('operand count not 1 (0 given)'));
     });
     it('should getCodeXRI', () => {
-        const op = OPERATION.XRI
+        const op = OPERATION.XRI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xee, 0x12]);
@@ -1509,7 +1509,7 @@ describe('Assembler test', () => {
 
 
     it('should getCodeORI', () => {
-        const op = OPERATION.ORI
+        const op = OPERATION.ORI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xf6, 0x12]);
@@ -1526,7 +1526,7 @@ describe('Assembler test', () => {
         ).toThrowError(('operand count not 1 (0 given)'));
     });
     it('should getCodeCPI', () => {
-        const op = OPERATION.CPI
+        const op = OPERATION.CPI;
         expect(getCode(
             {code: op, operands: [0x12]}, {...registerSymbolMap, REG: 1})
         ).toEqual([0xfe, 0x12]);
@@ -1551,23 +1551,31 @@ describe('Assembler test', () => {
              MVI    C, 23
         MV2: MVI    D,   4   ; foo bar%
          ; foo bar% !?$§&|<<>>[](){}
-         
-        
-        
-         
+
+
+
+
         DIV0: MVI   E, 5
-        `)
-        expect(assembled).toEqual([0x1f, 0x3e, 0x01, 0x06, 0x02, 0x0e, 0x17, 0x16, 0x04, 0x1e, 0x05])
-    })
+        `);
+        expect(assembled).toEqual([0x1f, 0x3e, 0x01, 0x06, 0x02, 0x0e, 0x17, 0x16, 0x04, 0x1e, 0x05]);
+    });
+    it('should assemble hl label', () => {
+        const assembled = assembler.assemble(
+            `LXI H, Label
+Label:
+    HLT
+`);
+        expect(assembled).toEqual([0x21, 0x03, 0x00, 0x76]);
+    });
     it('should assemble fib', () => {
-        const assembled = assembler.assemble(`
-MVI A,1
+        const assembled = assembler.assembleMap(
+            `MVI A,1
 MVI B,1
 MVI D,5
-         
-LOOP:  
+
+LOOP:
 MOV C,A
-ADD B 
+ADD B
 MOV B,C
 DCR D
 JNZ LOOP
@@ -1577,22 +1585,22 @@ HLT
 `
         );
 
-        const program = [
-            0x3e, 0x01,         // a = 1
-            0x06, 0x01,         // b = 1
-            0x16, 0x05,         // d = 5
+        const program: Array<[number, number]> = [
+            [0x3e, 1], [0x01, 1],                   // a = 1
+            [0x06, 2], [0x01, 2],                   // b = 1
+            [0x16, 3], [0x05, 3],                   // d = 5
 
             // LOOP:
-            0x4f,               // c = a
-            0x80,               // a += b
-            0x41,               // b = c
+            [0x4f, 6],                              // c = a
+            [0x80, 7],                              // a += b
+            [0x41, 8],                              // b = c
 
-            0x15,               // d--;
-            0xc2, 0x06, 0x00,   // if !0 -> jump LOOP
+            [0x15, 9],                              // d--;
+            [0xc2, 10], [0x06, 10], [0x00, 10],        // if !0 -> jump LOOP
 
-            0xf5,               // push PSW;
-            0x76,               // halt
+            [0xf5, 12],                             // push PSW;
+            [0x76, 13],                             // halt
         ];
-        expect(assembled).toEqual(program)
-    })
+        expect(assembled).toEqual(program);
+    });
 });

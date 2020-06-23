@@ -5,8 +5,8 @@ import {
     Operation,
     RegisterOperation,
     StoreToOperation
-} from "./operation";
-import {OPERATION} from "./operation.types";
+} from './operation';
+import {OPERATION} from './operation.types';
 
 export interface MoveOperation extends LoadFromOperation, StoreToOperation, Operation {
     readonly type: OPERATION.MOV;

@@ -1,5 +1,5 @@
-import {IWord} from "../interface";
-import {BYTE_LENGTH, BYTE_MAX} from "./bits";
+import {IWord} from '../interface';
+import {BYTE_LENGTH, BYTE_MAX} from './bits';
 
 export function highLow(high: number, low: number): IWord {
     return {high, low};

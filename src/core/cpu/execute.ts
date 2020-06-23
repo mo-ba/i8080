@@ -12,8 +12,8 @@ import {
     OPERATION,
     OperationT,
     REGISTER
-} from "../interface";
-import {BYTE_MAX, xIncrement} from "../util";
+} from '../interface';
+import {BYTE_MAX, xIncrement} from '../util';
 
 export class Execute implements IExecute {
 
@@ -27,11 +27,11 @@ export class Execute implements IExecute {
         this.register.setSign(flags.sign);
         this.register.setZero(flags.zero);
         this.register.setAuxiliary(flags.aux);
-        this.register.setParity(flags.parity)
+        this.register.setParity(flags.parity);
     }
 
     private storeCarry(flags: IFlags) {
-        this.register.setCarry(flags.carry)
+        this.register.setCarry(flags.carry);
     }
 
     private storeAllFlags(flags: IFlags) {
@@ -43,7 +43,7 @@ export class Execute implements IExecute {
     execute(op: OperationT): void {
         const processAluResult = (result: IAluResult, flags: (flags: IFlags) => void) => {
             this.register.store(REGISTER.A, result.result);
-            flags(result.flags)
+            flags(result.flags);
         };
 
         switch (op.type) {
@@ -205,7 +205,7 @@ export class Execute implements IExecute {
             case OPERATION.DAD:
                 return ((result: IXAluResult) => {
                     this.store16BitValue(REGISTER.H, result.result);
-                    this.storeCarry(result.flags)
+                    this.storeCarry(result.flags);
                 })(this.alu.xAdd(this.register.loadX(REGISTER.H), this.load16BitValue(op.register)));
 
             case OPERATION.INX:
@@ -353,12 +353,12 @@ export class Execute implements IExecute {
                 return this.ifNegative(() => this.returnTo());
 
             case OPERATION.HLT:
-                this.register.setStopped(true)
+                this.register.setStopped(true);
                 return;
 
             case OPERATION.NOP:
             default:
-                return
+                return;
         }
     }
 
@@ -424,16 +424,16 @@ export class Execute implements IExecute {
     }
 
     private call(op: BranchToOperation) {
-        this.register.push(this.register.getProgramCounter())
+        this.register.push(this.register.getProgramCounter());
         this.jumpToPosition(op.position);
     }
 
     private load16BitValue(register: REGISTER) {
-        return register === REGISTER.SP ? this.register.getStackPointer() : this.register.loadX(register)
+        return register === REGISTER.SP ? this.register.getStackPointer() : this.register.loadX(register);
     }
 
     private store16BitValue(register: REGISTER, value: IWord) {
-        return register === REGISTER.SP ? this.register.setStackPointer(value) : this.register.storeX(register, value)
+        return register === REGISTER.SP ? this.register.setStackPointer(value) : this.register.storeX(register, value);
     }
 
     private processIncOrDec(result: IAluResult, op: IncOrDecOperation) {

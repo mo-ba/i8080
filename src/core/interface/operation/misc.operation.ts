@@ -1,5 +1,5 @@
-import {OPERATION} from "./operation.types";
-import {Operation} from "./operation";
+import {OPERATION} from './operation.types';
+import {Operation} from './operation';
 
 
 export interface NoOperation extends Operation {

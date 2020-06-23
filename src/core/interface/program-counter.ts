@@ -1,5 +1,5 @@
-import {IWord} from "./word";
-import {IRegister} from "./register";
+import {IWord} from './word';
+import {IRegister} from './register';
 
 export interface IProgramCounter {
 

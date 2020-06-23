@@ -1,5 +1,5 @@
-import {IFlags, IRegister, IWord, REGISTER} from "../../core/interface";
-import {Subject} from "rxjs";
+import {IFlags, IRegister, IWord, REGISTER} from '../../core/interface';
+import {Subject} from 'rxjs';
 
 export interface RegisterStatus {
     [REGISTER.B]: number,
@@ -18,7 +18,8 @@ export class ObservableRegister implements IRegister {
 
 
     constructor(private register: IRegister, private subject: Subject<RegisterStatus>) {
-        this.emmit(() => {})
+        this.emmit(() => {
+        });
     }
 
     getAuxiliary(): boolean {
@@ -127,7 +128,7 @@ export class ObservableRegister implements IRegister {
             sign: this.getSign(),
             parity: this.getParity(),
             aux: this.getAuxiliary(),
-        }
+        };
     }
 
     private buildRegisterStatus() {
@@ -139,7 +140,7 @@ export class ObservableRegister implements IRegister {
             [REGISTER.H]: this.load(REGISTER.H),
             [REGISTER.L]: this.load(REGISTER.L),
             [REGISTER.A]: this.load(REGISTER.A),
-        }
+        };
     }
 
     private buildStatus() {
@@ -148,6 +149,6 @@ export class ObservableRegister implements IRegister {
             flags: this.buildFlagStatus(),
             stackPointer: this.getStackPointer(),
             programCounter: this.getProgramCounter(),
-        }
+        };
     }
 }

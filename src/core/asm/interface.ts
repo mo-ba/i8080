@@ -1,4 +1,4 @@
-import {OPERATION} from "../interface/operation/operation.types";
+import {OPERATION} from '../interface/operation/operation.types';
 
 export type AsmOperand = (string | number)
 export type AsmOperands = any[]

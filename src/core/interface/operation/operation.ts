@@ -1,6 +1,6 @@
-import {REGISTER} from "../register";
-import {IWord} from "../word";
-import {OPERATION} from "./operation.types";
+import {REGISTER} from '../register';
+import {IWord} from '../word';
+import {OPERATION} from './operation.types';
 
 
 export interface Operation {

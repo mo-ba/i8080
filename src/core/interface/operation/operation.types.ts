@@ -92,3 +92,6 @@ export enum OPERATION {
 
     _ = '╳╳╳', // NOT IMPLEMENTED
 }
+
+// console.log(Object.keys(OPERATION));
+console.log('length', Object.keys(OPERATION).length);

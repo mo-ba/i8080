@@ -1,9 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {OperationComponent} from './operation.component';
-import {PipesModule} from "../../pipes/pipes.module";
-import {CpuModule} from "../../cpu/cpu.module";
-import {ControlModule} from "../control/control.module";
+import {PipesModule} from '../../pipes/pipes.module';
+import {CpuModule} from '../../cpu/cpu.module';
+import {ControlModule} from '../control/control.module';
 
 describe('OperationComponent', () => {
     let component: OperationComponent;

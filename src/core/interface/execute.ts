@@ -1,4 +1,4 @@
-import {OperationT} from "./operation";
+import {OperationT} from './operation';
 
 export interface IExecute {
 

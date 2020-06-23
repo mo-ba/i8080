@@ -1,5 +1,5 @@
-import {IDecode, OPERATION, OperationT, REGISTER} from "../interface";
-import {IFetch} from "../interface/fetch";
+import {IDecode, OPERATION, OperationT, REGISTER} from '../interface';
+import {IFetch} from '../interface/fetch';
 
 
 export class Decode implements IDecode {

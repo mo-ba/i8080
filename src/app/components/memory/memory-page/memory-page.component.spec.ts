@@ -1,8 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MemoryPageComponent} from './memory-page.component';
-import {CpuModule} from "../../../cpu/cpu.module";
-import {PipesModule} from "../../../pipes/pipes.module";
+import {CpuModule} from '../../../cpu/cpu.module';
+import {PipesModule} from '../../../pipes/pipes.module';
 
 describe('MemoryPageComponent', () => {
     let component: MemoryPageComponent;

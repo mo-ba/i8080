@@ -1,5 +1,5 @@
-import {Subject} from "rxjs";
-import {Injectable} from "@angular/core";
+import {Subject} from 'rxjs';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class Clock {
@@ -8,7 +8,7 @@ export class Clock {
     private paused = false;
 
 
-    private intervalTime = 100000
+    private intervalTime = 100000;
     private handle: any;
 
 
@@ -18,39 +18,45 @@ export class Clock {
 
 
     setIntervalTime(value: number) {
-        console.log('setIntervalTime')
+        console.log('setIntervalTime');
         this.intervalTime = value;
-        if(!this.paused){
-            this.setPulse()
+        if (!this.paused) {
+            this.setPulse();
         }
     }
 
     setPulse() {
-        console.log('setPulse')
+        console.log('setPulse');
         clearInterval(this.handle);
-        this.handle = setInterval(() => {
-            this.subject$.next()
-        }, this.intervalTime)
+        if (this.intervalTime) {
+            this.handle = setInterval(() => {
+                this.subject$.next();
+            }, this.intervalTime);
+        } else {
+            while (!this.paused) {
+                this.subject$.next();
+            }
+        }
 
     }
 
     observable() {
-        return this.subject$.asObservable()
+        return this.subject$.asObservable();
     }
 
     pause() {
-        clearInterval(this.handle)
-        this.paused = true
+        clearInterval(this.handle);
+        this.paused = true;
     }
 
     continue() {
-        this.paused = false
+        this.paused = false;
         this.setPulse();
     }
 
     tick() {
         if (this.paused) {
-            this.subject$.next()
+            this.subject$.next();
         }
     }
 }

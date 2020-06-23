@@ -1,4 +1,4 @@
-import {calcParity, calcSign, calcZero} from "./index";
+import {calcParity, calcSign, calcZero} from './index';
 
 describe('flag test', () => {
     it('should calcParity', () => {
@@ -8,7 +8,7 @@ describe('flag test', () => {
         expect(calcParity(3)).toEqual(false);
         expect(calcParity(4)).toEqual(true);
         expect(calcParity(243)).toEqual(false);
-        expect(calcParity(244)).toEqual(true)
+        expect(calcParity(244)).toEqual(true);
     });
     it('should calcZero', () => {
         expect(calcZero(0)).toEqual(true);
@@ -18,7 +18,7 @@ describe('flag test', () => {
         expect(calcZero(4)).toEqual(false);
         expect(calcZero(243)).toEqual(false);
         expect(calcZero(244)).toEqual(false);
-        expect(calcZero(255)).toEqual(false)
+        expect(calcZero(255)).toEqual(false);
     });
 
     it('should calcSign', () => {
@@ -31,6 +31,6 @@ describe('flag test', () => {
         expect(calcSign(128)).toEqual(true);
         expect(calcSign(243)).toEqual(true);
         expect(calcSign(244)).toEqual(true);
-        expect(calcSign(255)).toEqual(true)
-    })
+        expect(calcSign(255)).toEqual(true);
+    });
 });

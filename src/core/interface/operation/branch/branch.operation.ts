@@ -1,4 +1,4 @@
-import {IWord} from "../../word";
+import {IWord} from '../../word';
 
 
 export interface BranchToOperation {

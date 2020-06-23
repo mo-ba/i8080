@@ -1,11 +1,10 @@
 table.table {
   text-align: center;
-  width: 100%;
+  width: inherit;
   min-width: 12em;
 
   th, td {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
 
     &[colspan='1'] {
       width: 10%;

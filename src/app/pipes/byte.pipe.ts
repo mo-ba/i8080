@@ -1,8 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {BYTE_MAX} from "../../core/util";
+import {BYTE_MAX} from '../../core/util';
 
-function pad(string: string, length: number, char: string) {
-    return string.length < length ? char.repeat(length - string.length) + string : string
+function pad(str: string, length: number, char: string) {
+    return str.length < length ? (char.repeat(length - str.length)) + str : str;
 }
 
 @Pipe({
@@ -10,19 +10,29 @@ function pad(string: string, length: number, char: string) {
 })
 export class BytePipe implements PipeTransform {
 
+    transform(value: number, base?: number): number {
+        // tslint:disable-next-line:no-bitwise
+        return value & BYTE_MAX;
+    }
+}
+
+@Pipe({
+    name: 'base'
+})
+export class BasePipe implements PipeTransform {
+
     transform(value: number, base?: number): string {
-        const val = value & BYTE_MAX
         switch (base) {
             case 2:
-                return pad(val.toString(base), 8, '0')
+                return pad(value.toString(base), 8, '0');
             case 8:
-                return pad(val.toString(base), 3, '0')
+                return pad(value.toString(base), 3, '0');
             case 10:
-                return pad(val.toString(base), 3, '0')
+                return pad(value.toString(base), 3, '0');
             case 16:
-                return pad(val.toString(base), 2, '0')
+                return pad(value.toString(base), 2, '0');
             default:
-                return val.toString();
+                return value.toString();
         }
 
     }

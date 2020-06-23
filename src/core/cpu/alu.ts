@@ -1,4 +1,4 @@
-import {IAlu, IAluResult, IWord, IXAluResult, NO_FLAGS} from "../interface";
+import {IAlu, IAluResult, IWord, IXAluResult, NO_FLAGS} from '../interface';
 import {
     AUX_BIT,
     BYTE_CARRY_BIT,
@@ -14,7 +14,8 @@ import {
     xAddWithFlags,
     xDecrementWithFlags,
     xIncrementWithFlags
-} from "../util";
+} from '../util';
+import {Injectable} from '@angular/core';
 
 function calcFlags(a: number): {
     zero: boolean;
@@ -29,6 +30,7 @@ function calcFlags(a: number): {
 }
 
 
+@Injectable()
 export class Alu implements IAlu {
 
 
@@ -87,7 +89,7 @@ export class Alu implements IAlu {
     }
 
     increment(a: number): IAluResult {
-        const result = this.add(a, 1)
+        const result = this.add(a, 1);
         return result;
     }
 
@@ -97,22 +99,22 @@ export class Alu implements IAlu {
     }
 
     and(a: number, b: number): IAluResult {
-        const result = (a & b) & BYTE_MAX
+        const result = (a & b) & BYTE_MAX;
         return {result, flags: {...NO_FLAGS, ...calcFlags(result)}};
     }
 
     or(a: number, b: number): IAluResult {
-        const result = (a | b) & BYTE_MAX
+        const result = (a | b) & BYTE_MAX;
         return {result, flags: {...NO_FLAGS, ...calcFlags(result)}};
     }
 
     xor(a: number, b: number): IAluResult {
-        const result = (a ^ b) & BYTE_MAX
+        const result = (a ^ b) & BYTE_MAX;
         return {result, flags: {...NO_FLAGS, ...calcFlags(result)}};
     }
 
     complement(a: number): IAluResult {
-        const result = (a ^ BYTE_MAX) & BYTE_MAX
+        const result = (a ^ BYTE_MAX) & BYTE_MAX;
         return {result, flags: {...NO_FLAGS, ...calcFlags(result)}};
     }
 

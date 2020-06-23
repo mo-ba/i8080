@@ -1,9 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MemoryComponent} from './memory.component';
-import {MemoryPageModule} from "./memory-page/memory-page.module";
-import {CpuModule} from "../../cpu/cpu.module";
-import {ControlModule} from "../control/control.module";
+import {MemoryPageModule} from './memory-page/memory-page.module';
+import {CpuModule} from '../../cpu/cpu.module';
+import {ControlModule} from '../control/control.module';
 
 describe('MemoryComponent', () => {
     let component: MemoryComponent;

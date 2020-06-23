@@ -1,11 +1,11 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RegisterComponent} from './register.component';
-import {CpuModule} from "../../cpu/cpu.module";
-import {TOKEN} from "../../cpu/tokens";
-import {IRegister, REGISTER} from "../../../core/interface";
-import {PipesModule} from "../../pipes/pipes.module";
-import {ControlModule} from "../control/control.module";
+import {CpuModule} from '../../cpu/cpu.module';
+import {TOKEN} from '../../cpu/tokens';
+import {IRegister, REGISTER} from '../../../core/interface';
+import {PipesModule} from '../../pipes/pipes.module';
+import {ControlModule} from '../control/control.module';
 
 describe('RegisterComponent', () => {
     let component: RegisterComponent;
@@ -37,6 +37,6 @@ describe('RegisterComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
 
-        register.store(REGISTER.D, 42)
+        register.store(REGISTER.D, 42);
     });
 });

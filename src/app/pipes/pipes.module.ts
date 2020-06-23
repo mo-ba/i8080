@@ -1,17 +1,19 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {BytePipe} from "./byte.pipe";
-import { BoolPipe } from './bool.pipe';
+import {BasePipe, BytePipe} from './byte.pipe';
+import {BoolPipe} from './bool.pipe';
 
 
 @NgModule({
     declarations: [
         BytePipe,
+        BasePipe,
         BoolPipe,
     ],
     exports: [
         BytePipe,
         BoolPipe,
+        BasePipe,
     ],
     imports: [
         CommonModule

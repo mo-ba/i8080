@@ -1,9 +1,9 @@
-import {IDecode, IMemory, IRegister, OPERATION, OperationT, REGISTER, RegisterOperation} from "../core/interface";
-import {highLow, toHighLow, xIncrement} from "../core/util";
-import {IFetch} from "../core/interface/fetch";
-import {async, TestBed} from "@angular/core/testing";
-import {CpuModule} from "../app/cpu/cpu.module";
-import {TOKEN} from "../app/cpu/tokens";
+import {IDecode, IMemory, IRegister, OPERATION, OperationT, REGISTER, RegisterOperation} from '../core/interface';
+import {highLow, toHighLow, xIncrement} from '../core/util';
+import {IFetch} from '../core/interface/fetch';
+import {async, TestBed} from '@angular/core/testing';
+import {CpuModule} from '../app/cpu/cpu.module';
+import {TOKEN} from '../app/cpu/tokens';
 
 let memory: IMemory;
 let register: IRegister;
@@ -364,8 +364,11 @@ describe('fetch decode', () => {
 
                 function between(a: number, b: number, op: OPERATION) {
                     const match = i >= a && i < b;
-                    if (match) expect(actual.type).toEqual(op);
-                    else expect(actual.type).not.toEqual(op);
+                    if (match) {
+                        expect(actual.type).toEqual(op);
+                    } else {
+                        expect(actual.type).not.toEqual(op);
+                    }
                 }
 
                 between(0x80, 0x88, OPERATION.ADD);
@@ -769,8 +772,8 @@ describe('fetch decode', () => {
                     const actual = decode.decode(fetch.fetch());
                     const expected: OperationT = {type: OPERATION._};
                     expect(actual).toEqual(expected, val.toString(16));
-                })
-            })
+                });
+            });
 
     });
 

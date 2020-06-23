@@ -1,8 +1,8 @@
-import {IRegister, REGISTER} from "../core/interface";
-import {highLow, toHighLow} from "../core/util";
-import {async, TestBed} from "@angular/core/testing";
-import {TOKEN} from "../app/cpu/tokens";
-import {CpuModule} from "../app/cpu/cpu.module";
+import {IRegister, REGISTER} from '../core/interface';
+import {highLow, toHighLow} from '../core/util';
+import {async, TestBed} from '@angular/core/testing';
+import {TOKEN} from '../app/cpu/tokens';
+import {CpuModule} from '../app/cpu/cpu.module';
 
 
 describe('register test', () => {
@@ -34,7 +34,7 @@ describe('register test', () => {
 
         expect(register.toggleCarry().getCarry()).toEqual(false);
         expectFalse(register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
-        expect(register.loadX(REGISTER.PSW)).toEqual({high: 0, low: 0})
+        expect(register.loadX(REGISTER.PSW)).toEqual({high: 0, low: 0});
     });
     it('should do zero operations', () => {
         expect(1).toEqual(1);
@@ -43,7 +43,7 @@ describe('register test', () => {
         expect(register.setZero(true).getZero()).toEqual(true);
         expectFalse(register.getCarry(), register.getSign(), register.getAuxiliary(), register.getParity());
         expect(register.setZero(false).getZero()).toEqual(false);
-        expectFalse(register.getCarry(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getSign(), register.getAuxiliary(), register.getParity());
 
     });
     it('should do sign operations', () => {
@@ -51,21 +51,21 @@ describe('register test', () => {
         expect(register.setSign(true).getSign()).toEqual(true);
         expectFalse(register.getCarry(), register.getZero(), register.getAuxiliary(), register.getParity());
         expect(register.setSign(false).getSign()).toEqual(false);
-        expectFalse(register.getCarry(), register.getZero(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getAuxiliary(), register.getParity());
     });
     it('should do auxilary operations', () => {
         expect(register.getAuxiliary()).toEqual(false);
         expect(register.setAuxiliary(true).getAuxiliary()).toEqual(true);
         expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getParity());
         expect(register.setAuxiliary(false).getAuxiliary()).toEqual(false);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getParity());
     });
     it('should do parity operations', () => {
         expect(register.getParity()).toEqual(false);
         expect(register.setParity(true).getParity()).toEqual(true);
         expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary());
         expect(register.setParity(false).getParity()).toEqual(false);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary());
     });
     it('should have correct number (ENUM REGISTER)', () => {
         expect(REGISTER.B).toEqual(0);
@@ -90,7 +90,7 @@ describe('register test', () => {
             register.load(REGISTER.E),
             register.load(REGISTER.H),
             register.load(REGISTER.L),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
     it('should load store B', () => {
         const r = REGISTER.B;
@@ -102,7 +102,7 @@ describe('register test', () => {
             register.load(REGISTER.E),
             register.load(REGISTER.H),
             register.load(REGISTER.L),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
     it('should load store C', () => {
         const r = REGISTER.C;
@@ -114,7 +114,7 @@ describe('register test', () => {
             register.load(REGISTER.E),
             register.load(REGISTER.H),
             register.load(REGISTER.L),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
     it('should load store D', () => {
         const r = REGISTER.D;
@@ -126,7 +126,7 @@ describe('register test', () => {
             register.load(REGISTER.E),
             register.load(REGISTER.H),
             register.load(REGISTER.L),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
     it('should load store E', () => {
         const r = REGISTER.E;
@@ -138,7 +138,7 @@ describe('register test', () => {
             register.load(REGISTER.D),
             register.load(REGISTER.H),
             register.load(REGISTER.L),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
     it('should load store H', () => {
         const r = REGISTER.H;
@@ -150,7 +150,7 @@ describe('register test', () => {
             register.load(REGISTER.D),
             register.load(REGISTER.E),
             register.load(REGISTER.L),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
     it('should load store L', () => {
         const r = REGISTER.L;
@@ -162,7 +162,7 @@ describe('register test', () => {
             register.load(REGISTER.D),
             register.load(REGISTER.E),
             register.load(REGISTER.H),
-        ]).toEqual([0, 0, 0, 0, 0, 0])
+        ]).toEqual([0, 0, 0, 0, 0, 0]);
     });
 
     it('should loadX BC', () => {
@@ -175,7 +175,7 @@ describe('register test', () => {
             register.load(REGISTER.H),
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0]);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
     });
 
 
@@ -189,7 +189,7 @@ describe('register test', () => {
             register.load(REGISTER.H),
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0]);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
     });
 
     it('should loadX HL', () => {
@@ -202,7 +202,7 @@ describe('register test', () => {
             register.load(REGISTER.D),
             register.load(REGISTER.E),
         ]).toEqual([0, 0, 0, 0, 0]);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
     });
     it('should loadX PSW', () => {
         register.store(REGISTER.A, 42);
@@ -215,7 +215,7 @@ describe('register test', () => {
             register.load(REGISTER.H),
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0, 0]);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
     });
     it('should loadX PSW', () => {
         register
@@ -233,7 +233,7 @@ describe('register test', () => {
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0, 0]);
         expect([register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity()])
-            .toEqual([false, true, false, false, true])
+            .toEqual([false, true, false, false, true]);
     });
 
     it('should storeX loadX DE', () => {
@@ -246,7 +246,7 @@ describe('register test', () => {
             register.load(REGISTER.H),
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0]);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
     });
     it('should storeX loadX HL', () => {
         register.storeX(REGISTER.H, highLow(42, 23));
@@ -258,7 +258,7 @@ describe('register test', () => {
             register.load(REGISTER.D),
             register.load(REGISTER.E),
         ]).toEqual([0, 0, 0, 0, 0]);
-        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity())
+        expectFalse(register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
     });
     it('should storeX loadX PSW', () => {
         register.storeX(REGISTER.PSW, {high: 42, low: 1});
@@ -272,7 +272,7 @@ describe('register test', () => {
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0, 0]);
         expectFalse(register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity());
-        expect(register.getCarry()).toEqual(true)
+        expect(register.getCarry()).toEqual(true);
 
     });
     it('should storeX loadX PSW', () => {
@@ -289,7 +289,7 @@ describe('register test', () => {
             register.load(REGISTER.L),
         ]).toEqual([0, 0, 0, 0, 0, 0]);
         expect([register.getCarry(), register.getZero(), register.getSign(), register.getAuxiliary(), register.getParity()])
-            .toEqual([false, true, false, false, true])
+            .toEqual([false, true, false, false, true]);
     });
 
     it('should store', () => {
@@ -319,7 +319,7 @@ describe('register test', () => {
         register
             .store(REGISTER.H, 0)
             .store(REGISTER.L, 2);
-        expect(register.load(REGISTER.M)).toEqual(23)
+        expect(register.load(REGISTER.M)).toEqual(23);
     });
     it('should use stack', () => {
         register.push(toHighLow(11111));
@@ -327,13 +327,13 @@ describe('register test', () => {
         register.push(toHighLow(33333));
         register.push(toHighLow(44444));
         register.push(toHighLow(55555));
-        expect(register.pop()).toEqual(toHighLow(55555))
-        expect(register.pop()).toEqual(toHighLow(44444))
-        expect(register.pop()).toEqual(toHighLow(33333))
-        expect(register.pop()).toEqual(toHighLow(22222))
-        expect(register.pop()).toEqual(toHighLow(11111))
+        expect(register.pop()).toEqual(toHighLow(55555));
+        expect(register.pop()).toEqual(toHighLow(44444));
+        expect(register.pop()).toEqual(toHighLow(33333));
+        expect(register.pop()).toEqual(toHighLow(22222));
+        expect(register.pop()).toEqual(toHighLow(11111));
 
 
-    })
+    });
 
 });

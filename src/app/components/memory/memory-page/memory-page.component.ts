@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnInit, Renderer2} from '@angular/core';
-import {TOKEN} from "../../../cpu/tokens";
-import {Observable} from "rxjs";
-import {IMemory} from "../../../../core/interface";
+import {TOKEN} from '../../../cpu/tokens';
+import {Observable} from 'rxjs';
+import {IMemory} from '../../../../core/interface';
 
 
 @Component({
@@ -32,42 +32,42 @@ export class MemoryPageComponent implements OnInit {
 
     ngOnInit() {
         this.memoryObs.subscribe(status => {
-            this.memoryStatus = status
+            this.memoryStatus = status;
         });
     }
 
     toByte(high: number, low: number): number {
-        return low + (high << this.highShift())
+        return low + (high << this.highShift());
     };
 
     getPage(): Int8Array {
-        return this.memoryStatus ? this.memoryStatus[this.page] : new Int8Array()
+        return this.memoryStatus ? this.memoryStatus[this.page] : new Int8Array();
     }
 
     content(high: number, low: number): number {
         const page = this.getPage();
-        return page ? page[this.toByte(high, low)] : 0
+        return page ? page[this.toByte(high, low)] : 0;
     }
 
     lowRange() {
         switch (this.byte) {
             case 2:
-                return this.range(4)
+                return this.range(4);
             case 10:
-                return this.range(8)
+                return this.range(8);
             default:
-                return this.range(16)
+                return this.range(16);
         }
     }
 
     highRange() {
         switch (this.byte) {
             case 2:
-                return this.range(64)
+                return this.range(64);
             case 10:
-                return this.range(32)
+                return this.range(32);
             default:
-                return this.range(16)
+                return this.range(16);
         }
     }
 

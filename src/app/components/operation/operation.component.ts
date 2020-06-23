@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {TOKEN} from "../../cpu/tokens";
-import {Observable} from "rxjs";
-import {OperationT} from "../../../core/interface/operation";
-import {REGISTER} from "../../../core/interface";
-import {ControlService} from "../control/control.service";
+import {TOKEN} from '../../cpu/tokens';
+import {Observable} from 'rxjs';
+import {OperationT} from '../../../core/interface/operation';
+import {REGISTER} from '../../../core/interface';
+import {ControlService} from '../control/control.service';
 
 export class RingBuffer<T> extends Array<T> {
     constructor(size: number) {
@@ -83,7 +83,7 @@ export class RingBuffer<T> extends Array<T> {
     styleUrls: ['./operation.component.scss']
 })
 export class OperationComponent implements OnInit {
-    buffer = new RingBuffer<OperationT>(20)
+    buffer = new RingBuffer<OperationT>(20);
     public base: number;
 
     constructor(
@@ -94,15 +94,15 @@ export class OperationComponent implements OnInit {
 
     ngOnInit() {
         this.decodeOps.subscribe(value => {
-            this.buffer.push(value)
-        })
+            this.buffer.push(value);
+        });
 
         this.controlService.getBase().subscribe(base =>
             this.base = base
         );
         this.controlService.getReset().subscribe(play => {
-            this.buffer = new RingBuffer<OperationT>(20)
-        })
+            this.buffer = new RingBuffer<OperationT>(20);
+        });
     }
 
     register(register: REGISTER) {
@@ -121,6 +121,6 @@ export class OperationComponent implements OnInit {
     }
 
     isSet(val: any): boolean {
-        return val !== undefined && val !== null
+        return val !== undefined && val !== null;
     }
 }

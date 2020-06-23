@@ -1,6 +1,6 @@
-import {IMemory, IProgramCounter, IWord} from "../interface";
-import {xIncrement} from "../util";
-import {IFetch} from "../interface/fetch";
+import {IMemory, IProgramCounter, IWord} from '../interface';
+import {xIncrement} from '../util';
+import {IFetch} from '../interface/fetch';
 
 
 export class Fetch implements IFetch {
@@ -15,10 +15,10 @@ export class Fetch implements IFetch {
     }
 
     public fetchWord(): IWord {
-        const low = this.fetch()
-        const high = this.fetch()
+        const low = this.fetch();
+        const high = this.fetch();
 
-        return {low, high}
+        return {low, high};
     };
 
 

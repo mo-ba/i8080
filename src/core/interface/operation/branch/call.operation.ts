@@ -1,6 +1,6 @@
-import {Operation} from "../operation";
-import {OPERATION} from "../operation.types";
-import {BranchToOperation} from "./branch.operation";
+import {Operation} from '../operation';
+import {OPERATION} from '../operation.types';
+import {BranchToOperation} from './branch.operation';
 
 
 export interface CallOperation extends BranchToOperation, Operation {

@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {TOKEN} from "../../cpu/tokens";
-import {Observable} from "rxjs";
-import {RegisterStatus} from "../../cpu/register";
-import {IRegister, REGISTER} from "../../../core/interface";
-import {toHighLow} from "../../../core/util";
-import {ControlService} from "../control/control.service";
+import {TOKEN} from '../../cpu/tokens';
+import {Observable} from 'rxjs';
+import {RegisterStatus} from '../../cpu/register';
+import {IRegister, REGISTER} from '../../../core/interface';
+import {highLow, toHighLow, toNumber} from '../../../core/util';
+import {ControlService} from '../control/control.service';
 
 @Component({
     selector: 'app-register',
@@ -14,7 +14,7 @@ import {ControlService} from "../control/control.service";
 export class RegisterComponent implements OnInit {
     status: RegisterStatus;
     REGISTER = REGISTER;
-    base: number = 16;
+    base = 16;
 
     constructor(
         private controlService: ControlService,
@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         this.registerObs.subscribe(status => {
-            this.status = status
+            this.status = status;
         });
 
         this.controlService.getBase().subscribe(base =>
@@ -41,9 +41,12 @@ export class RegisterComponent implements OnInit {
                 this.register.storeX(REGISTER.PSW, toHighLow(0));
                 this.register.setStopped(false);
             }
-        )
+        );
 
 
     }
 
+    hl(reg: REGISTER) {
+        return toNumber(highLow(this.status[reg], this.status[reg + 1]));
+    }
 }

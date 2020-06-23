@@ -1,1 +1,20 @@
-<p>assembler works!</p>
+<div class="row">
+    <div class="col-9">
+        <h2>Editor</h2>
+        <ngx-monaco-editor class="template-editor" [options]="editorOptions" [ngModel]="code" (ngModelChange)="onChange($event)"></ngx-monaco-editor>
+
+    </div>
+    <div class="col-3">
+        <h2>Assembled</h2>
+        <button class="btn btn-outline-primary btn-block" (click)="onLoadIntoMemory()">load into memory</button>
+        <div class="result">
+
+            <div *ngFor="let line of compiledMapped">
+                <span class="badge badge-dark op-code ml-1 px-2" *ngFor="let n of line">{{n | byte: 16}} </span>
+            </div>
+
+        </div>
+
+        <div class="result error" *ngIf="error">{{error}}</div>
+    </div>
+</div>

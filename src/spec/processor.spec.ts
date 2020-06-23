@@ -1,8 +1,8 @@
-import {IMemory, IProcessor} from "../core/interface";
-import {toHighLow} from "../core/util";
-import {async, TestBed} from "@angular/core/testing";
-import {CpuModule} from "../app/cpu/cpu.module";
-import {TOKEN} from "../app/cpu/tokens";
+import {IMemory, IProcessor} from '../core/interface';
+import {toHighLow} from '../core/util';
+import {async, TestBed} from '@angular/core/testing';
+import {CpuModule} from '../app/cpu/cpu.module';
+import {TOKEN} from '../app/cpu/tokens';
 
 let memory: IMemory;
 let processor: IProcessor;
@@ -22,9 +22,9 @@ describe('processor test', () => {
     });
 
     it('should stop', () => {
-        memory.store(toHighLow(0), 0x7e)
+        memory.store(toHighLow(0), 0x7e);
         expect(processor.getStopped()).not.toEqual(true);
-    })
+    });
     it('should fibonacci', () => {
         expect(memory).not.toEqual(null);
         expect(processor).not.toEqual(null);
@@ -47,9 +47,11 @@ describe('processor test', () => {
 
 
         for (let i = 0; i < program.length; i++) {
-            memory.store(toHighLow(i), program[i])
+            memory.store(toHighLow(i), program[i]);
         }
-        while (!processor.getStopped()) processor.next()
+        while (!processor.getStopped()) {
+            processor.next();
+        }
 
         expect(memory.load(toHighLow(0xffff))).toEqual(13);
 
@@ -89,10 +91,10 @@ describe('processor test', () => {
         ];
 
         for (let i = 0; i < program.length; i++) {
-            memory.store(toHighLow(i), program[i])
+            memory.store(toHighLow(i), program[i]);
         }
         while (!processor.getStopped()) {
-            processor.next()
+            processor.next();
         }
 
         expect(memory.load(toHighLow(0xfffe))).toEqual(143);

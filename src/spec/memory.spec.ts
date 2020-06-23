@@ -1,8 +1,8 @@
-import {IMemory} from "../core/interface";
-import {highLow} from "../core/util";
-import {async, TestBed} from "@angular/core/testing";
-import {TOKEN} from "../app/cpu/tokens";
-import {CpuModule} from "../app/cpu/cpu.module";
+import {IMemory} from '../core/interface';
+import {highLow} from '../core/util';
+import {async, TestBed} from '@angular/core/testing';
+import {TOKEN} from '../app/cpu/tokens';
+import {CpuModule} from '../app/cpu/cpu.module';
 
 describe('memory test', () => {
 

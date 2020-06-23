@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {TOKEN} from "../../cpu/tokens";
-import {Observable} from "rxjs";
-import {RegisterStatus} from "../../cpu/register";
-import {IWord, REGISTER} from "../../../core/interface";
-import {highLow} from "../../../core/util";
-import {ControlService} from "../control/control.service";
+import {TOKEN} from '../../cpu/tokens';
+import {Observable} from 'rxjs';
+import {RegisterStatus} from '../../cpu/register';
+import {IWord, REGISTER} from '../../../core/interface';
+import {highLow} from '../../../core/util';
+import {ControlService} from '../control/control.service';
 
 @Component({
     selector: 'app-memory',
@@ -16,7 +16,7 @@ export class MemoryComponent implements OnInit {
     memoryStatus: Array<Int8Array>;
 
 
-    activeTab: string = 'program'
+    activeTab = 'program';
     public base: number;
 
     constructor(
@@ -29,20 +29,20 @@ export class MemoryComponent implements OnInit {
 
     ngOnInit() {
         this.registerObs.subscribe(status => {
-            this.registerStatus = status
+            this.registerStatus = status;
         });
         this.memoryObs.subscribe(status => {
-            this.memoryStatus = status
+            this.memoryStatus = status;
         });
 
         return this.controlService.getBase().subscribe(base =>
             this.base = base
-        )
+        );
     }
 
 
     get hl(): IWord {
-        return highLow(this.registerStatus[REGISTER.H], this.registerStatus[REGISTER.L])
+        return highLow(this.registerStatus[REGISTER.H], this.registerStatus[REGISTER.L]);
     }
 
     onTabClick(name: string) {

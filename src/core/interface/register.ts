@@ -1,5 +1,5 @@
-import {IWord} from "./word";
-import {IProgramCounter} from "./program-counter";
+import {IWord} from './word';
+import {IProgramCounter} from './program-counter';
 
 export enum REGISTER {
     B, C, D, E, H, L, M, A, PSW = 6, SP = 6,

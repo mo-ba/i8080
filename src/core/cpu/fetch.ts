@@ -19,7 +19,7 @@ export class Fetch implements IFetch {
         const high = this.fetch();
 
         return {low, high};
-    };
+    }
 
 
     private getProgramCounter(): IWord {

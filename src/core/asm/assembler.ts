@@ -15,7 +15,7 @@ export const registerSymbolMap = {
 };
 
 export function buildSymbolMap(lines: Lines) {
-    function getSize(code: string): number {
+    function getSize(code: string | number): number {
 
         const size: { [code: string]: number } = {
                 [OPERATION.XRI]: 2, [OPERATION.ORI]: 2, [OPERATION.SUI]: 2, [OPERATION.JM]: 3, [OPERATION.ANI]: 2,

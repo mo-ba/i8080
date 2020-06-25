@@ -1,96 +1,96 @@
 export enum OPERATION {
-    DAA = 'DAA',
-    STC = 'STC',
-    CMC = 'CMC',
-    CMA = 'CMA',
+    DAA,
+    STC,
+    CMC,
+    CMA,
 
-    RLC = 'RLC',
-    RAL = 'RAL',
-    RRC = 'RRC',
-    RAR = 'RAR',
+    RLC,
+    RAL,
+    RRC,
+    RAR,
 
-    ADD = 'ADD',
-    ADC = 'ADC',
-    SUB = 'SUB',
-    SBB = 'SBB',
+    ADD,
+    ADC,
+    SUB,
+    SBB,
 
-    ANA = 'ANA',
-    XRA = 'XRA',
-    ORA = 'ORA',
-    CMP = 'CMP',
+    ANA,
+    XRA,
+    ORA,
+    CMP,
 
-    ADI = 'ADI',
-    ACI = 'ACI',
-    SUI = 'SUI',
-    SBI = 'SBI',
+    ADI,
+    ACI,
+    SUI,
+    SBI,
 
-    ANI = 'ANI',
-    XRI = 'XRI',
-    ORI = 'ORI',
-    CPI = 'CPI',
+    ANI,
+    XRI,
+    ORI,
+    CPI,
 
-    INR = 'INR',
-    DCR = 'DCR',
+    INR,
+    DCR,
 
-    DAD = 'DAD',
-    INX = 'INX',
-    DCX = 'DCX',
-    LXI = 'LXI',
-    LDAX = 'LDAX',
-    LDA = 'LDA',
-    STAX = 'STAX',
-    STA = 'STA',
-    SHLD = 'SHLD',
-    LHLD = 'LHLD',
+    DAD,
+    INX,
+    DCX,
+    LXI,
+    LDAX,
+    LDA,
+    STAX,
+    STA,
+    SHLD,
+    LHLD,
 
-    XTHL = 'XTHL',
-    SPHL = 'SPHL',
-    XCHG = 'XCHG',
+    XTHL,
+    SPHL,
+    XCHG,
 
-    PCHL = 'PCHL',
+    PCHL,
 
-    MOV = 'MOV',
-    MVI = 'MVI',
-    PUSH = 'PUSH',
-    POP = 'POP',
-
-
-    NOP = 'NOP',
-    HLT = 'HLT',
+    MOV,
+    MVI,
+    PUSH,
+    POP,
 
 
-    RET = 'RET',   //Return
-    RNZ = 'RNZ',   //Return NOT Zero
-    RZ = 'RZ',     //Return Zero
-    RNC = 'RNC',   //Return NOT Carry
-    RC = 'RC',     //Return Carry
-    RPO = 'RPO',   //Return Parity Odd
-    RPE = 'RPE',   //Return Parity Even
-    RP = 'RP',     //Return Positive
-    RM = 'RM',     //Return Negative
-
-    JMP = 'JMP',   //Jump
-    JNZ = 'JNZ',   //Jump NOT Zero
-    JZ = 'JZ',     //Jump Zero
-    JNC = 'JNC',   //Jump NOT Carry
-    JC = 'JC',     //Jump Carry
-    JPO = 'JPO',   //Jump Parity Odd
-    JPE = 'JPE',   //Jump Parity Even
-    JP = 'JP',     //Jump Positive
-    JM = 'JM',     //Jump Negative
-
-    CALL = 'CALL', //Call
-    CNZ = 'CNZ',   //Call NOT Zero
-    CZ = 'CZ',     //Call Zero
-    CNC = 'CNC',   //Call NOT Carry
-    CC = 'CC',     //Call Carry
-    CPO = 'CPO',   //Jump Parity Odd
-    CPE = 'CPE',   //Call Parity Even
-    CP = 'CP',     //Call Positive
-    CM = 'CM',     //Call Negative
+    NOP,
+    HLT,
 
 
-    _ = '╳╳╳', // NOT IMPLEMENTED
+    RET,   //Return
+    RNZ,   //Return NOT Zero
+    RZ,     //Return Zero
+    RNC,   //Return NOT Carry
+    RC,     //Return Carry
+    RPO,   //Return Parity Odd
+    RPE,   //Return Parity Even
+    RP,     //Return Positive
+    RM,     //Return Negative
+
+    JMP,   //Jump
+    JNZ,   //Jump NOT Zero
+    JZ,     //Jump Zero
+    JNC,   //Jump NOT Carry
+    JC,     //Jump Carry
+    JPO,   //Jump Parity Odd
+    JPE,   //Jump Parity Even
+    JP,     //Jump Positive
+    JM,     //Jump Negative
+
+    CALL, //Call
+    CNZ,   //Call NOT Zero
+    CZ,     //Call Zero
+    CNC,   //Call NOT Carry
+    CC,     //Call Carry
+    CPO,   //Jump Parity Odd
+    CPE,   //Call Parity Even
+    CP,     //Call Positive
+    CM,     //Call Negative
+
+
+    _, // NOT IMPLEMENTED
 }
 
 // console.log(Object.keys(OPERATION));

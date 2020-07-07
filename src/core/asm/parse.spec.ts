@@ -15,7 +15,7 @@ describe('Parser test', () => {
                         start: {column: 1, line: 1, offset: 0}
                     },
                     operation: {
-                        code: OPERATION.MVI, operands: ['a', 4]
+                        code: 'MVI', operands: ['a', 4]
                     }
                 }
             ]);
@@ -26,7 +26,7 @@ describe('Parser test', () => {
         expect(result).toEqual(
             [{
                 label: null,
-                operation: {code: OPERATION.MVI, operands: ['a', 4, 100]},
+                operation: {code: 'MVI', operands: ['a', 4, 100]},
                 comment: null,
                 location: {
                     start: {offset: 1, line: 1, column: 2},
@@ -40,7 +40,7 @@ describe('Parser test', () => {
         expect(result).toEqual(
             [{
                 label: null,
-                operation: {code: OPERATION.MVI, operands: ['a', 4, 170]},
+                operation: {code: 'MVI', operands: ['a', 4, 170]},
                 comment: null,
                 location: {
                     start: {offset: 1, line: 1, column: 2},
@@ -56,7 +56,7 @@ describe('Parser test', () => {
         expect(result).toEqual(
             [{
                 label: null,
-                operation: {code: OPERATION.RAR, operands: null},
+                operation: {code: 'RAR', operands: null},
                 comment: null,
                 location: {
                     start: {offset: 1, line: 1, column: 2},
@@ -64,7 +64,7 @@ describe('Parser test', () => {
                 }
             }, {
                 label: 'HELLO',
-                operation: {code: OPERATION.MVI, operands: ['a', 4, 64]},
+                operation: {code: 'MVI', operands: ['a', 4, 64]},
                 comment: null,
                 location: {
                     start: {offset: 13, line: 2, column: 9},
@@ -88,7 +88,7 @@ describe('Parser test', () => {
         HELLO: MVI   e, 5, 64H`);
         expect(result).toEqual([{
                 label: null,
-                operation: {code: OPERATION.RAR, operands: null},
+                operation: {code: 'RAR', operands: null},
                 comment: null,
                 location: {
                     start: {offset: 9, line: 2, column: 9},
@@ -96,7 +96,7 @@ describe('Parser test', () => {
                 }
             }, {
                 label: 'HELLO',
-                operation: {code: OPERATION.MVI, operands: ['a', 1, 64]},
+                operation: {code: 'MVI', operands: ['a', 1, 64]},
                 comment: null,
                 location: {
                     start: {offset: 21, line: 3, column: 9},
@@ -104,7 +104,7 @@ describe('Parser test', () => {
                 }
             }, {
                 label: 'HELLO',
-                operation: {code: OPERATION.MVI, operands: ['b', 2]},
+                operation: {code: 'MVI', operands: ['b', 2]},
                 comment: null,
                 location: {
                     start: {offset: 51, line: 4, column: 9},
@@ -112,7 +112,7 @@ describe('Parser test', () => {
                 }
             }, {
                 label: null,
-                operation: {code: OPERATION.MVI, operands: ['c']},
+                operation: {code: 'MVI', operands: ['c']},
                 comment: null,
                 location: {
                     start: {offset: 84, line: 5, column: 16},
@@ -120,7 +120,7 @@ describe('Parser test', () => {
                 }
             }, {
                 label: 'HELLO',
-                operation: {code: OPERATION.MVI, operands: ['d', 4]},
+                operation: {code: 'MVI', operands: ['d', 4]},
                 comment: ' foo bar%',
                 location: {
                     start: {offset: 100, line: 6, column: 9},
@@ -136,7 +136,7 @@ describe('Parser test', () => {
                 }
             }, {
                 label: 'HELLO',
-                operation: {code: OPERATION.MVI, operands: ['e', 5, 100]},
+                operation: {code: 'MVI', operands: ['e', 5, 100]},
                 comment: null,
                 location: {
                     start: {offset: 179, line: 11, column: 9},

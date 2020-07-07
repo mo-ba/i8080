@@ -18,13 +18,13 @@ export function buildSymbolMap(lines: Lines) {
     function getSize(code: string | number): number {
 
         const size: { [code: string]: number } = {
-                [OPERATION.XRI]: 2, [OPERATION.ORI]: 2, [OPERATION.SUI]: 2, [OPERATION.JM]: 3, [OPERATION.ANI]: 2,
-                [OPERATION.MVI]: 2, [OPERATION.ADI]: 2, [OPERATION.ACI]: 2, [OPERATION.CPI]: 2, [OPERATION.SBI]: 2,
-                [OPERATION.LXI]: 3, [OPERATION.JP]: 3, [OPERATION.SHLD]: 3, [OPERATION.LHLD]: 3, [OPERATION.STA]: 3,
-                [OPERATION.LDA]: 3, [OPERATION.JNZ]: 3, [OPERATION.JMP]: 3, [OPERATION.CNZ]: 3, [OPERATION.CP]: 3,
-                [OPERATION.JZ]: 3, [OPERATION.CZ]: 3, [OPERATION.CALL]: 3, [OPERATION.JNC]: 3, [OPERATION.CPE]: 3,
-                [OPERATION.CNC]: 3, [OPERATION.JC]: 3, [OPERATION.CC]: 3, [OPERATION.JPE]: 3, [OPERATION.CPO]: 3,
-                [OPERATION.JPO]: 3, [OPERATION.CM]: 3,
+                ['XRI']: 2, ['ORI']: 2, ['SUI']: 2, ['JM']: 3, ['ANI']: 2,
+                ['MVI']: 2, ['ADI']: 2, ['ACI']: 2, ['CPI']: 2, ['SBI']: 2,
+                ['LXI']: 3, ['JP']: 3, ['SHLD']: 3, ['LHLD']: 3, ['STA']: 3,
+                ['LDA']: 3, ['JNZ']: 3, ['JMP']: 3, ['CNZ']: 3, ['CP']: 3,
+                ['JZ']: 3, ['CZ']: 3, ['CALL']: 3, ['JNC']: 3, ['CPE']: 3,
+                ['CNC']: 3, ['JC']: 3, ['CC']: 3, ['JPE']: 3, ['CPO']: 3,
+                ['JPO']: 3, ['CM']: 3,
             }
         ;
         return size[code] || 1;
@@ -184,165 +184,165 @@ export function getCode(operation: AsmOperation, symbolMap: SymbolMap): number[]
 
 
     switch (operation.code) {
-        case OPERATION.NOP:
+        case 'NOP':
             return getCodeSingleValue(0x00);
-        case OPERATION.LXI:
+        case 'LXI':
             return getCodeLXI();
 
-        case OPERATION.STAX:
+        case 'STAX':
             return getCodeHalfRegisterPairOperation(0x02);
-        case OPERATION.LDAX:
+        case 'LDAX':
             return getCodeHalfRegisterPairOperation(0x0a);
-        case OPERATION.SHLD:
+        case 'SHLD':
             return getCodeImmediateWord(0x22);
-        case OPERATION.LHLD:
+        case 'LHLD':
             return getCodeImmediateWord(0x2a);
-        case OPERATION.STA:
+        case 'STA':
             return getCodeImmediateWord(0x32);
-        case OPERATION.LDA:
+        case 'LDA':
             return getCodeImmediateWord(0x3a);
 
-        case OPERATION.INX:
+        case 'INX':
             return getCodeRegisterPairOperation(0x03);
-        case OPERATION.DAD:
+        case 'DAD':
             return getCodeRegisterPairOperation(0x09);
-        case OPERATION.DCX:
+        case 'DCX':
             return getCodeRegisterPairOperation(0x0b);
 
-        case OPERATION.INR:
+        case 'INR':
             return getCodeRegisterOperation(0x04);
-        case OPERATION.DCR:
+        case 'DCR':
             return getCodeRegisterOperation(0x05);
 
-        case OPERATION.RLC:
+        case 'RLC':
             return getCodeSingleValue(0x07);
-        case OPERATION.RAL:
+        case 'RAL':
             return getCodeSingleValue(0x17);
-        case OPERATION.DAA:
+        case 'DAA':
             return getCodeSingleValue(0x27);
-        case OPERATION.STC:
+        case 'STC':
             return getCodeSingleValue(0x37);
-        case OPERATION.RRC:
+        case 'RRC':
             return getCodeSingleValue(0x0f);
-        case OPERATION.RAR:
+        case 'RAR':
             return getCodeSingleValue(0x1f);
-        case OPERATION.CMA:
+        case 'CMA':
             return getCodeSingleValue(0x2f);
-        case OPERATION.CMC:
+        case 'CMC':
             return getCodeSingleValue(0x3f);
 
 
-        case OPERATION.MVI:
+        case 'MVI':
             return getCodeMVI();
-        case OPERATION.MOV:
+        case 'MOV':
             return getCodeMOV();
-        case OPERATION.HLT:
+        case 'HLT':
             return getCodeSingleValue(0x76);
 
-        case OPERATION.ADD:
+        case 'ADD':
             return getCodeAluA(0x80);
-        case OPERATION.ADC:
+        case 'ADC':
             return getCodeAluA(0x88);
-        case OPERATION.SUB:
+        case 'SUB':
             return getCodeAluA(0x90);
-        case OPERATION.SBB:
+        case 'SBB':
             return getCodeAluA(0x98);
-        case OPERATION.ANA:
+        case 'ANA':
             return getCodeAluA(0xa0);
-        case OPERATION.XRA:
+        case 'XRA':
             return getCodeAluA(0xa8);
-        case OPERATION.ORA:
+        case 'ORA':
             return getCodeAluA(0xb0);
-        case OPERATION.CMP:
+        case 'CMP':
             return getCodeAluA(0xb8);
 
-        case OPERATION.ADI:
+        case 'ADI':
             return getCodeImmediateByte(0xc6);
-        case OPERATION.SUI:
+        case 'SUI':
             return getCodeImmediateByte(0xd6);
-        case OPERATION.ANI:
+        case 'ANI':
             return getCodeImmediateByte(0xe6);
-        case OPERATION.ORI:
+        case 'ORI':
             return getCodeImmediateByte(0xf6);
-        case OPERATION.ACI:
+        case 'ACI':
             return getCodeImmediateByte(0xce);
-        case OPERATION.SBI:
+        case 'SBI':
             return getCodeImmediateByte(0xde);
-        case OPERATION.XRI:
+        case 'XRI':
             return getCodeImmediateByte(0xee);
-        case OPERATION.CPI:
+        case 'CPI':
             return getCodeImmediateByte(0xfe);
 
-        case OPERATION.PUSH:
+        case 'PUSH':
             return getCodePUSH();
-        case OPERATION.POP:
+        case 'POP':
             return getCodePOP();
 
-        case OPERATION.RNZ:
+        case 'RNZ':
             return getCodeSingleValue(0xc0);
-        case OPERATION.RNC:
+        case 'RNC':
             return getCodeSingleValue(0xd0);
-        case OPERATION.RPO:
+        case 'RPO':
             return getCodeSingleValue(0xe0);
-        case OPERATION.RP:
+        case 'RP':
             return getCodeSingleValue(0xf0);
-        case OPERATION.RZ:
+        case 'RZ':
             return getCodeSingleValue(0xc8);
-        case OPERATION.RC:
+        case 'RC':
             return getCodeSingleValue(0xd8);
-        case OPERATION.RPE:
+        case 'RPE':
             return getCodeSingleValue(0xe8);
-        case OPERATION.RM:
+        case 'RM':
             return getCodeSingleValue(0xf8);
-        case OPERATION.RET:
+        case 'RET':
             return getCodeSingleValue(0xc9);
 
-        case OPERATION.JNZ:
+        case 'JNZ':
             return getCodeImmediateWord(0xc2);
-        case OPERATION.JNC:
+        case 'JNC':
             return getCodeImmediateWord(0xd2);
-        case OPERATION.JPO:
+        case 'JPO':
             return getCodeImmediateWord(0xe2);
-        case OPERATION.JP:
+        case 'JP':
             return getCodeImmediateWord(0xf2);
-        case OPERATION.JZ:
+        case 'JZ':
             return getCodeImmediateWord(0xca);
-        case OPERATION.JC:
+        case 'JC':
             return getCodeImmediateWord(0xda);
-        case OPERATION.JPE:
+        case 'JPE':
             return getCodeImmediateWord(0xea);
-        case OPERATION.JM:
+        case 'JM':
             return getCodeImmediateWord(0xfa);
-        case OPERATION.JMP:
+        case 'JMP':
             return getCodeImmediateWord(0xc3);
 
 
-        case OPERATION.CNZ:
+        case 'CNZ':
             return getCodeImmediateWord(0xc4);
-        case OPERATION.CNC:
+        case 'CNC':
             return getCodeImmediateWord(0xd4);
-        case OPERATION.CPO:
+        case 'CPO':
             return getCodeImmediateWord(0xe4);
-        case OPERATION.CP:
+        case 'CP':
             return getCodeImmediateWord(0xf4);
-        case OPERATION.CZ:
+        case 'CZ':
             return getCodeImmediateWord(0xcc);
-        case OPERATION.CC:
+        case 'CC':
             return getCodeImmediateWord(0xdc);
-        case OPERATION.CPE:
+        case 'CPE':
             return getCodeImmediateWord(0xec);
-        case OPERATION.CM:
+        case 'CM':
             return getCodeImmediateWord(0xfc);
-        case OPERATION.CALL:
+        case 'CALL':
             return getCodeImmediateWord(0xcd);
 
-        case OPERATION.PCHL:
+        case 'PCHL':
             return getCodeSingleValue(0xe9);
-        case OPERATION.SPHL:
+        case 'SPHL':
             return getCodeSingleValue(0xf9);
-        case OPERATION.XCHG:
+        case 'XCHG':
             return getCodeSingleValue(0xeb);
-        case OPERATION.XTHL:
+        case 'XTHL':
             return getCodeSingleValue(0xe3);
 
 

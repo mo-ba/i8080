@@ -4,7 +4,7 @@ export type AsmOperand = (string | number)
 export type AsmOperands = any[]
 
 export interface AsmOperation {
-    code?: OPERATION;
+    code?: string;
     operands?: AsmOperands | null;
 }
 

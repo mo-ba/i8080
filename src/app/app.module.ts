@@ -14,14 +14,14 @@ import {AssemblerModule} from './components/assembler/assembler.module';
 export function onMonacoLoad() {
 
     const monaco = (window as any).monaco;
-    console.log('A');
-    console.log((window as any).monaco);
+    // console.log('A');
+    // console.log((window as any).monaco);
 
     // Register a new language
     monaco.languages.register({id: 'mySpecialLanguage'});
 
 // Register a tokens provider for the language
-    (window as any).monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
+    monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
 
 
         keywords: [
@@ -36,7 +36,7 @@ export function onMonacoLoad() {
             'CZ', 'CNC', 'CC', 'CPO', 'CPE', 'CP', 'CM'],
 
         registers: [
-            'A', 'B', 'C', 'D', 'E', 'H',  'L', 'M', 'PSW']
+            'A', 'B', 'C', 'D', 'E', 'H', 'L', 'M', 'PSW']
         ,
         tokenizer: {
             root: [
@@ -62,20 +62,21 @@ export function onMonacoLoad() {
     } as any);
 
 // Define a new theme that contains only rules that match this language
-    (window as any).monaco.editor.defineTheme('myCoolTheme', {
+    const theme = {
         base: 'vs',
         inherit: true,
+        colors: {},
         rules: [
-            {token: 'number', foreground: '7586ff'},
-            {token: 'comment', foreground: '777777'},
-            {token: 'param', foreground: '008800'},
-            {token: 'register', foreground: '555555'},
-            {token: 'operation', foreground: 'a31515', fontStyle: 'bold'},
-            {token: 'label', foreground: '008800'},
+            {token: 'number', foreground: '#7586ff'},
+            {token: 'comment', foreground: '#777777'},
+            {token: 'param', foreground: '#008800'},
+            {token: 'register', foreground: '#555555'},
+            {token: 'operation', foreground: '#a31515', fontStyle: 'bold'},
+            {token: 'label', foreground: '#008800'},
         ]
-    }as any);
+    };
 
-
+    monaco.editor.defineTheme('myCoolTheme', theme);
 }
 
 const monacoConfig: NgxMonacoEditorConfig = {
@@ -95,7 +96,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
         MemoryModule,
         ControlModule,
         OperationModule,
-        MonacoEditorModule.forRoot(),
+        MonacoEditorModule.forRoot(monacoConfig),
         AssemblerModule
     ],
     providers: [],

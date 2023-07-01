@@ -43,7 +43,7 @@ export class Alu implements IAlu {
         const aux: boolean = 0 !== (resultLow & AUX_BIT);
 
         const resultTotal = a + b + +carryIn;
-        const carry: boolean = 0 != (resultTotal & BYTE_CARRY_BIT);
+        const carry: boolean = 0 !== (resultTotal & BYTE_CARRY_BIT);
         const result = resultTotal & BYTE_MAX;
         const flags = {...calcFlags(result), carry, aux};
 

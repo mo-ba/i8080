@@ -10,12 +10,15 @@ import {OperationModule} from './components/operation/operation.module';
 import {MonacoEditorModule, NgxMonacoEditorConfig} from 'ngx-monaco-editor-v2';
 import {AssemblerModule} from './components/assembler/assembler.module';
 
+
 export function onMonacoLoad() {
 
+    const monaco = (window as any).monaco;
+    console.log('A');
     console.log((window as any).monaco);
 
     // Register a new language
-    (window as any).monaco.languages.register({id: 'mySpecialLanguage'});
+    monaco.languages.register({id: 'mySpecialLanguage'});
 
 // Register a tokens provider for the language
     (window as any).monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
@@ -92,7 +95,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
         MemoryModule,
         ControlModule,
         OperationModule,
-        MonacoEditorModule.forRoot(monacoConfig),
+        MonacoEditorModule.forRoot(),
         AssemblerModule
     ],
     providers: [],

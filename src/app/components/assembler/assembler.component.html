@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-9">
         <h2>Editor</h2>
-        <ngx-monaco-editor class="template-editor" [options]="editorOptions" [ngModel]="code" (ngModelChange)="onChange($event)"></ngx-monaco-editor>
-
+<!--        <ngx-monaco-editor class="template-editor" [options]="editorOptions" [ngModel]="code" (ngModelChange)="onChange($event)"></ngx-monaco-editor>-->
+        <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
     </div>
     <div class="col-3">
         <h2>Assembled</h2>

@@ -130,7 +130,6 @@
       }
     }
   },
-  "defaultProject": "i8080",
   "cli": {
     "analytics": false
   }

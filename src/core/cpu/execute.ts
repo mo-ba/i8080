@@ -157,7 +157,11 @@ export class Execute implements IExecute {
 
             case OPERATION.DAA:
                 return processAluResult(
-                    this.alu.decimalAdjustAccumulator(this.register.load(REGISTER.A), this.register.getCarry(), this.register.getAuxiliary()),
+                    this.alu.decimalAdjustAccumulator(
+                        this.register.load(REGISTER.A),
+                        this.register.getCarry(),
+                        this.register.getAuxiliary()
+                    ),
                     (flags) => this.storeAllFlags(flags)
                 );
             case OPERATION.CMC:

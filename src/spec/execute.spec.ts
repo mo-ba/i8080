@@ -1,7 +1,8 @@
+/* tslint:disable:no-bitwise */
 import {Alu, Execute, Memory, Register} from '../core/cpu';
-import {IExecute, IMemory, IRegister, IWord, OPERATION, REGISTER, registerList} from '../core/interface';
+import {IExecute, IMemory, IRegister, IWord, OPERATION, REGISTER, registerList, registerName} from '../core/interface';
 import {BYTE_MAX, calcParity, calcSign, calcZero, highLow, toHighLow, xDecrement, xIncrement} from '../core/util';
-import {async, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {CpuModule} from '../app/cpu/cpu.module';
 import {TOKEN} from '../app/cpu/tokens';
 
@@ -48,19 +49,19 @@ function rebuild() {
 
 describe('exec', () => {
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
                 CpuModule
             ],
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
 
-        memory = TestBed.get(TOKEN.MEMORY);
-        register = TestBed.get(TOKEN.REGISTER);
-        executor = TestBed.get(TOKEN.EXECUTE);
+        memory = TestBed.inject<Memory>(TOKEN.MEMORY);
+        register = TestBed.inject<Register>(TOKEN.REGISTER);
+        executor = TestBed.inject<Execute>(TOKEN.EXECUTE);
 
     });
     describe('exec test move', () => {
@@ -73,7 +74,7 @@ describe('exec', () => {
         });
         it('should move ', () => {
             register.store(REGISTER.A, 42);
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.B,});
+            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(42);
             expect(register.load(REGISTER.B)).toEqual(42);
 
@@ -81,11 +82,11 @@ describe('exec', () => {
         it('should move ', () => {
             register.store(REGISTER.A, 42);
             register.store(REGISTER.B, 21);
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.M,});
+            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.M});
             expect(register.load(REGISTER.A)).toEqual(42);
             expect(register.load(REGISTER.B)).toEqual(21);
             expect(register.load(REGISTER.M)).toEqual(42);
-            executor.execute({type: OPERATION.MOV, from: REGISTER.B, to: REGISTER.M,});
+            executor.execute({type: OPERATION.MOV, from: REGISTER.B, to: REGISTER.M});
             expect(register.load(REGISTER.A)).toEqual(42);
             expect(register.load(REGISTER.B)).toEqual(21);
             expect(register.load(REGISTER.M)).toEqual(21);
@@ -97,7 +98,7 @@ describe('exec', () => {
             register.store(REGISTER.H, 0);
             register.store(REGISTER.L, 0);
             register.store(REGISTER.M, 1);
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.M,});
+            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.M});
             expect(register.load(REGISTER.A)).toEqual(1);
             expect(register.load(REGISTER.B)).toEqual(2);
             expect(register.load(REGISTER.H)).toEqual(0);
@@ -107,7 +108,7 @@ describe('exec', () => {
 
             register.store(REGISTER.H, 1);
             register.store(REGISTER.L, 1);
-            executor.execute({type: OPERATION.MOV, from: REGISTER.B, to: REGISTER.M,});
+            executor.execute({type: OPERATION.MOV, from: REGISTER.B, to: REGISTER.M});
             expect(register.load(REGISTER.A)).toEqual(1);
             expect(register.load(REGISTER.B)).toEqual(2);
             expect(register.load(REGISTER.H)).toEqual(1);
@@ -123,7 +124,7 @@ describe('exec', () => {
             expect(register.load(REGISTER.L)).toEqual(0);
             expect(register.load(REGISTER.M)).toEqual(1);
 
-            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.M,});
+            executor.execute({type: OPERATION.MOV, from: REGISTER.A, to: REGISTER.M});
             expect(register.load(REGISTER.A)).toEqual(1);
             expect(register.load(REGISTER.B)).toEqual(2);
             expect(register.load(REGISTER.H)).toEqual(0);
@@ -208,7 +209,7 @@ describe('exec', () => {
             register.store(REGISTER.A, 42);
             register.store(REGISTER.B, 42);
             register.setCarry(true);
-            executor.execute({type: OPERATION.ADD, register: REGISTER.B,});
+            executor.execute({type: OPERATION.ADD, register: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(84);
             expect(register.load(REGISTER.B)).toEqual(42);
             expect(register.getCarry()).toEqual(false);
@@ -219,7 +220,7 @@ describe('exec', () => {
             register.store(REGISTER.A, 42);
             register.store(REGISTER.B, 42);
             register.setCarry(true);
-            executor.execute({type: OPERATION.ADC, register: REGISTER.B,});
+            executor.execute({type: OPERATION.ADC, register: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(85);
             expect(register.load(REGISTER.B)).toEqual(42);
             expect(register.getCarry()).toEqual(false);
@@ -245,7 +246,7 @@ describe('exec', () => {
             register.store(REGISTER.B, 128);
             expect(register.load(REGISTER.B)).toEqual(128);
             register.setCarry(true);
-            executor.execute({type: OPERATION.ADD, register: REGISTER.B,});
+            executor.execute({type: OPERATION.ADD, register: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(0);
             expect(register.load(REGISTER.B)).toEqual(128);
             expect(register.getCarry()).toEqual(true);
@@ -263,17 +264,17 @@ describe('exec', () => {
             register.setCarry(true);
             register.setZero(true);
             {
-                executor.execute({type: OPERATION.CMP, register: REGISTER.B,});
+                executor.execute({type: OPERATION.CMP, register: REGISTER.B});
                 expect(register.getCarry()).toEqual(false);
                 expect(register.getZero()).toEqual(false);
             }
             {
-                executor.execute({type: OPERATION.CMP, register: REGISTER.C,});
+                executor.execute({type: OPERATION.CMP, register: REGISTER.C});
                 expect(register.getCarry()).toEqual(false);
                 expect(register.getZero()).toEqual(true);
             }
             {
-                executor.execute({type: OPERATION.CMP, register: REGISTER.D,});
+                executor.execute({type: OPERATION.CMP, register: REGISTER.D});
                 expect(register.getCarry()).toEqual(true);
                 expect(register.getZero()).toEqual(false);
             }
@@ -319,7 +320,7 @@ describe('exec', () => {
             register.store(REGISTER.A, 42);
             register.store(REGISTER.B, 40);
             register.setCarry(true);
-            executor.execute({type: OPERATION.SUB, register: REGISTER.B,});
+            executor.execute({type: OPERATION.SUB, register: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(2);
             expect(register.load(REGISTER.B)).toEqual(40);
             expect(register.getCarry()).toEqual(false);
@@ -330,7 +331,7 @@ describe('exec', () => {
             register.store(REGISTER.A, 42);
             register.store(REGISTER.B, 20);
             register.setCarry(true);
-            executor.execute({type: OPERATION.SBB, register: REGISTER.B,});
+            executor.execute({type: OPERATION.SBB, register: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(21);
             expect(register.load(REGISTER.B)).toEqual(20);
             expect(register.getCarry()).toEqual(false);
@@ -357,7 +358,7 @@ describe('exec', () => {
             register.store(REGISTER.B, 128);
             expect(register.load(REGISTER.B)).toEqual(128);
             register.setCarry(true);
-            executor.execute({type: OPERATION.SUB, register: REGISTER.B,});
+            executor.execute({type: OPERATION.SUB, register: REGISTER.B});
             expect(register.load(REGISTER.A)).toEqual(0);
             expect(register.load(REGISTER.B)).toEqual(128);
             expect(register.getCarry()).toEqual(false);
@@ -367,6 +368,12 @@ describe('exec', () => {
     });
     describe('exec test sub', () => {
 
+        function testFlags(expected: number) {
+            expect(register.getCarry()).toEqual(true);
+            expect(register.getZero()).toEqual(calcZero(expected));
+            expect(register.getParity()).toEqual(calcParity(expected));
+            expect(register.getSign()).toEqual(calcSign(expected), expected + '');
+        }
 
         it('should inr 127', () => {
             const num = 127;
@@ -376,10 +383,7 @@ describe('exec', () => {
             register.setCarry(true);
             executor.execute({type: OPERATION.INR, register: reg});
             expect(register.load(reg)).toEqual(expected);
-            expect(register.getCarry()).toEqual(true);
-            expect(register.getZero()).toEqual(calcZero(expected));
-            expect(register.getParity()).toEqual(calcParity(expected));
-            expect(register.getSign()).toEqual(calcSign(expected), expected + '');
+            testFlags(expected);
         });
         it('should inr 0', () => {
             const num = 0;
@@ -389,45 +393,40 @@ describe('exec', () => {
             register.setCarry(true);
             executor.execute({type: OPERATION.INR, register: reg});
             expect(register.load(reg)).toEqual(expected);
-            expect(register.getCarry()).toEqual(true);
-            expect(register.getZero()).toEqual(calcZero(expected));
-            expect(register.getParity()).toEqual(calcParity(expected));
-            expect(register.getSign()).toEqual(calcSign(expected), expected + '');
+            testFlags(expected);
         });
 
-
-        it('should inr', () => {
+        describe('dec', () => {
             registerList.forEach(reg => {
                 [0, 1, 127, 128, 255, 254].forEach(num => {
-                    rebuild();
-                    const expected = (num + 1) & BYTE_MAX;
-                    register.store(reg, num);
-                    register.setCarry(true);
-                    executor.execute({type: OPERATION.INR, register: reg});
-                    const actual = register.load(reg);
-                    expect(actual).toEqual(expected, JSON.stringify({actual, expected, num, reg}));
-                    expect(register.getCarry()).toEqual(true);
-                    expect(register.getZero()).toEqual(calcZero(expected));
-                    expect(register.getParity()).toEqual(calcParity(expected));
-                    expect(register.getSign()).toEqual(calcSign(expected), expected + '');
+                    it('should inr [' + registerName[reg] + '] (' + num + ')', () => {
+
+                        rebuild();
+                        const expected = (num + 1) & BYTE_MAX;
+                        register.store(reg, num);
+                        register.setCarry(true);
+                        executor.execute({type: OPERATION.INR, register: reg});
+                        const actual = register.load(reg);
+                        expect(actual).toEqual(expected, JSON.stringify({actual, expected, num, reg}));
+                        testFlags(expected);
+                    });
                 });
             });
         });
 
-        it('should dec ', () => {
+        describe('dec', () => {
             registerList.forEach(reg => {
                 [0, 1, 127, 128, 255, 254].forEach(num => {
-                    rebuild();
-                    const expected = (num - 1) & BYTE_MAX;
-                    register.store(reg, num);
-                    register.setCarry(true);
-                    executor.execute({type: OPERATION.DCR, register: reg});
-                    const actual = register.load(reg);
-                    expect(actual).toEqual(expected, JSON.stringify({actual, expected, num, reg}));
-                    expect(register.getCarry()).toEqual(true);
-                    expect(register.getZero()).toEqual(calcZero(expected));
-                    expect(register.getParity()).toEqual(calcParity(expected));
-                    expect(register.getSign()).toEqual(calcSign(expected));
+                    it('should dec [' + registerName[reg] + '] (' + num + ')', () => {
+                        rebuild();
+                        const expected = (num - 1) & BYTE_MAX;
+                        register.store(reg, num);
+                        register.setCarry(true);
+                        executor.execute({type: OPERATION.DCR, register: reg});
+                        const actual = register.load(reg);
+                        expect(actual).toEqual(expected, JSON.stringify({actual, expected, num, reg}));
+                        testFlags(expected);
+                    });
                 });
             });
         });
@@ -440,10 +439,7 @@ describe('exec', () => {
             register.setCarry(true);
             executor.execute({type: OPERATION.INR, register: reg});
             expect(register.load(reg)).toEqual(expected);
-            expect(register.getCarry()).toEqual(true);
-            expect(register.getZero()).toEqual(calcZero(expected));
-            expect(register.getParity()).toEqual(calcParity(expected));
-            expect(register.getSign()).toEqual(calcSign(expected), expected + '');
+            testFlags(expected);
         });
     });
     describe('test alu-misc', () => {

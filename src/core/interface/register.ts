@@ -9,6 +9,10 @@ export const registerList = [
     REGISTER.B, REGISTER.C, REGISTER.D, REGISTER.E, REGISTER.H, REGISTER.L, REGISTER.M, REGISTER.A
 ];
 
+export const registerName = [
+    'B', 'C', 'D', 'E', 'H', 'L', 'M', 'A'
+];
+
 export interface IRegister extends IProgramCounter {
 
     load(address: REGISTER): number;
@@ -56,12 +60,12 @@ export interface IRegister extends IProgramCounter {
     getStopped(): boolean;
 
 
-    getStackPointer(): IWord
+    getStackPointer(): IWord;
 
-    setStackPointer(stackPointer: IWord): IRegister
+    setStackPointer(stackPointer: IWord): IRegister;
 
 
-    getProgramCounter(): IWord
+    getProgramCounter(): IWord;
 
-    setProgramCounter(programCounter: IWord): IRegister
+    setProgramCounter(programCounter: IWord): IRegister;
 }

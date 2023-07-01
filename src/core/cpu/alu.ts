@@ -78,7 +78,7 @@ export class Alu implements IAlu {
             (r0 & BYTE_HIGH_BITS) > DECIMAL_MAX_DIGIT << NIBBLE_LENGTH ||
             carryIn ? DECIMAL_ADJUST << NIBBLE_LENGTH : 0
         );
-        const carry = 0 != (r1 & BYTE_CARRY_BIT) || carryIn;
+        const carry = !!(r1 & BYTE_CARRY_BIT) || carryIn;
         const result = r1 & BYTE_MAX;
 
         return {result, flags: {...NO_FLAGS, carry, ...calcFlags(result)}};
@@ -89,8 +89,7 @@ export class Alu implements IAlu {
     }
 
     increment(a: number): IAluResult {
-        const result = this.add(a, 1);
-        return result;
+        return this.add(a, 1);
     }
 
 
@@ -133,14 +132,14 @@ export class Alu implements IAlu {
 
     rotateLeft(a: number): IAluResult {
         const shifted = a << 1;
-        const carry = 0 != (shifted & BYTE_CARRY_BIT);
+        const carry = !!(shifted & BYTE_CARRY_BIT);
         const result = (shifted | +carry) & BYTE_MAX;
 
         return {result, flags: {...NO_FLAGS, carry}};
     }
 
     rotateRight(a: number): IAluResult {
-        const carry = 0 != (a & 1);
+        const carry = !!(a & 1);
         const shifted = a >> 1;
         const result = (shifted | +carry << 7) & BYTE_MAX;
 
@@ -150,14 +149,14 @@ export class Alu implements IAlu {
     rotateLeftThroughCarry(a: number, carryIn: boolean): IAluResult {
 
         const shifted = a << 1;
-        const carry = 0 != (shifted & BYTE_CARRY_BIT);
+        const carry = !!(shifted & BYTE_CARRY_BIT);
         const result = (shifted | +carryIn) & BYTE_MAX;
 
         return {result, flags: {...NO_FLAGS, carry}};
     }
 
     rotateRightThroughCarry(a: number, carryIn: boolean): IAluResult {
-        const carry = 0 != (a & 1);
+        const carry = !!(a & 1);
         const shifted = a >> 1;
         const result = (shifted | +carryIn << 7) & BYTE_MAX;
 

@@ -7,7 +7,7 @@ import {RegisterModule} from './components/register/register.module';
 import {MemoryModule} from './components/memory/memory.module';
 import {ControlModule} from './components/control/control.module';
 import {OperationModule} from './components/operation/operation.module';
-import {MonacoEditorModule, NgxMonacoEditorConfig} from 'ngx-monaco-editor';
+import {MonacoEditorModule, NgxMonacoEditorConfig} from 'ngx-monaco-editor-v2';
 import {AssemblerModule} from './components/assembler/assembler.module';
 
 export function onMonacoLoad() {
@@ -15,10 +15,10 @@ export function onMonacoLoad() {
     console.log((window as any).monaco);
 
     // Register a new language
-    monaco.languages.register({id: 'mySpecialLanguage'});
+    (window as any).monaco.languages.register({id: 'mySpecialLanguage'});
 
 // Register a tokens provider for the language
-    monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
+    (window as any).monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
 
 
         keywords: [
@@ -59,7 +59,7 @@ export function onMonacoLoad() {
     } as any);
 
 // Define a new theme that contains only rules that match this language
-    monaco.editor.defineTheme('myCoolTheme', {
+    (window as any).monaco.editor.defineTheme('myCoolTheme', {
         base: 'vs',
         inherit: true,
         rules: [
